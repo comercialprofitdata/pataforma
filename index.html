@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PataForma — Gestão Inteligente de Pet Shop (B2B SaaS Multi-Tenant)</title>
+    <title>PataForma — Gestão Inteligente de Pet Shop</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -37,11 +37,11 @@
             <!-- Connection Status -->
             <div class="status-indicator" id="online-status">
                 <span class="status-dot"></span>
-                <span>PWA Multi-Tenant</span>
+                <span>PWA Online</span>
             </div>
 
             <!-- Master Login Trigger -->
-            <button class="btn-master" onclick="openModal('modal-login-master')">👑 Master Login</button>
+            <button class="btn-master" onclick="openModal('modal-login-master')">👑 Login Master</button>
 
             <!-- Role Selector (RBAC simulation) -->
             <div class="role-selector">
@@ -60,12 +60,15 @@
     <!-- Main Navigation Tabs -->
     <nav class="main-nav">
         <button class="nav-btn active" id="nav-kanban" onclick="switchTab('kanban')">📋 Kanban Operacional</button>
-        <button class="nav-btn" id="nav-cadastros" onclick="switchTab('cadastros')">📁 Cadastros & Assinaturas</button>
+        <button class="nav-btn" id="nav-clientes-pets" onclick="switchTab('clientes-pets')">🐾 Clientes & Pets</button>
+        <button class="nav-btn" id="nav-produtos" onclick="switchTab('produtos')">🏷️ Cadastros de Produtos</button>
+        <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Gestão de Estoque</button>
+        <button class="nav-btn" id="nav-assinaturas" onclick="switchTab('assinaturas')">💳 Assinaturas & Pacotes</button>
         <button class="nav-btn" id="nav-caixa" onclick="switchTab('caixa')">🛒 Caixa / POS</button>
-        <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Estoque FEFO</button>
         <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
+        <button class="nav-btn" id="nav-equipe" onclick="switchTab('equipe')">👥 Equipe & RBAC</button>
         <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
-        <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #fbbf24;">👑 Master SaaS & Governança</button>
+        <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #fbbf24;">👑 Master SaaS</button>
     </nav>
 
     <!-- 1. KANBAN SECTION -->
@@ -142,118 +145,117 @@
         </div>
     </section>
 
-    <!-- 2. CADASTROS & ASSINATURAS SECTION -->
-    <section class="view-section" id="section-cadastros">
-        <div class="sub-nav">
-            <button class="sub-nav-btn active" id="subnav-clientes" onclick="switchSubTab('clientes')">👤 Clientes (Tutores)</button>
-            <button class="sub-nav-btn" id="subnav-pets" onclick="switchSubTab('pets')">🐾 Pets (Cães & Gatos)</button>
-            <button class="sub-nav-btn" id="subnav-funcionarios" onclick="switchSubTab('funcionarios')">👥 Equipe & RBAC</button>
-            <button class="sub-nav-btn" id="subnav-produtos-crud" onclick="switchSubTab('produtos-crud')">🏷️ Catálogo de Produtos</button>
-            <button class="sub-nav-btn" id="subnav-assinaturas" onclick="switchSubTab('assinaturas')">💳 Assinaturas & Pacotes</button>
-        </div>
-
-        <div class="sub-view active" id="subview-clientes">
-            <div class="action-header">
-                <h3>Gestão de Tutores / Clientes</h3>
+    <!-- 2. CLIENTES & PETS SECTION -->
+    <section class="view-section" id="section-clientes-pets">
+        <div class="action-header">
+            <h2 style="font-weight: 600;">Gestão de Tutores & Pets (Cães 🐶 e Gatos 🐱)</h2>
+            <div style="display:flex; gap:0.5rem;">
                 <button class="btn-primary" onclick="openModal('modal-cliente')">➕ Novo Cliente</button>
-            </div>
-            <div class="glass-panel table-panel">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Telefone</th>
-                            <th>E-mail</th>
-                            <th>Endereço</th>
-                            <th>Pets Vinculados</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-clientes-body"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="sub-view" id="subview-pets">
-            <div class="action-header">
-                <h3>Gestão de Pets (Cães & Gatos)</h3>
                 <button class="btn-primary" onclick="abrirModalNovoPet()">➕ Novo Pet</button>
             </div>
-            <div class="glass-panel table-panel">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Espécie</th>
-                            <th>Raça / Porte</th>
-                            <th>Temperamento</th>
-                            <th>Tutor</th>
-                            <th>Vacinas</th>
-                            <th>Observações / Saúde</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-pets-body"></tbody>
-                </table>
-            </div>
         </div>
 
-        <div class="sub-view" id="subview-funcionarios">
-            <div class="action-header">
-                <h3>Equipe de Funcionários e Permissões (RBAC)</h3>
-                <button class="btn-primary" onclick="openModal('modal-funcionario')">➕ Novo Funcionário</button>
-            </div>
-            <div class="glass-panel table-panel">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Perfil de Acesso</th>
-                            <th>Cargo</th>
-                            <th>E-mail</th>
-                            <th>Módulos Ativos</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-funcionarios-body"></tbody>
-                </table>
-            </div>
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Tutores Cadastrados</h3>
+        <div class="glass-panel table-panel" style="margin-bottom: 2rem;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>E-mail</th>
+                        <th>Endereço</th>
+                        <th>Pets Vinculados</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="table-clientes-body"></tbody>
+            </table>
         </div>
 
-        <div class="sub-view" id="subview-produtos-crud">
-            <div class="action-header">
-                <h3>Catálogo de Produtos & Gestão de Estoque FEFO</h3>
-                <button class="btn-primary" onclick="openModal('modal-produto')">➕ Novo Produto</button>
-            </div>
-            <div class="glass-panel table-panel">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Categoria</th>
-                            <th>Código de Barras</th>
-                            <th>Preço de Venda</th>
-                            <th>Estoque Total</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-produtos-body"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="sub-view" id="subview-assinaturas">
-            <div class="action-header">
-                <h3>Planos de Assinatura Recorrente & Pacotes Banhos</h3>
-                <button class="btn-primary" onclick="openModal('modal-plano')">➕ Criar Novo Plano</button>
-            </div>
-            <div class="grid-container" id="planos-cards-container"></div>
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Fichas de Pets Cadastrados</h3>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Espécie</th>
+                        <th>Raça / Porte</th>
+                        <th>Temperamento</th>
+                        <th>Tutor</th>
+                        <th>Vacinas</th>
+                        <th>Observações de Saúde</th>
+                    </tr>
+                </thead>
+                <tbody id="table-pets-body"></tbody>
+            </table>
         </div>
     </section>
 
-    <!-- 3. CAIXA / POS SECTION -->
+    <!-- 3. CADASTRO DE PRODUTOS & PREÇOS SECTION -->
+    <section class="view-section" id="section-produtos">
+        <div class="action-header">
+            <h2 style="font-weight: 600;">Catálogo de Produtos & Preços</h2>
+            <button class="btn-primary" onclick="openModal('modal-produto')">➕ Cadastrar Novo Produto</button>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            Cadastre rações, shampoos, petiscos a granel e acessórios com suporte a foto e foto de balcão.
+        </p>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Código de Barras</th>
+                        <th>Preço de Venda</th>
+                        <th>Estoque Atual</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="table-produtos-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 4. GESTÃO DE ESTOQUE SECTION -->
+    <section class="view-section" id="section-estoque">
+        <div class="action-header">
+            <h2 style="font-weight: 600;">Gestão de Estoque & Inventário por Lotes</h2>
+            <button class="btn-primary" onclick="openModal('modal-produto')">➕ Dar Entrada de Estoque</button>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            O estoque de rações e produtos perecíveis possui controle automático de validade e baixa por lote.
+        </p>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Código / Lote</th>
+                        <th>Quantidade em Estoque</th>
+                        <th>Data de Vencimento</th>
+                        <th>Status da Validade</th>
+                    </tr>
+                </thead>
+                <tbody id="table-estoque-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 5. ASSINATURAS & PACOTES SECTION -->
+    <section class="view-section" id="section-assinaturas">
+        <div class="action-header">
+            <h2 style="font-weight: 600;">Planos de Assinatura Recorrente & Pacotes de Banhos</h2>
+            <button class="btn-primary" onclick="openModal('modal-plano')">➕ Criar Novo Plano</button>
+        </div>
+        <div class="grid-container" id="planos-cards-container"></div>
+    </section>
+
+    <!-- 6. CAIXA / POS SECTION -->
     <section class="view-section" id="section-caixa">
         <div class="pos-container">
             <div>
-                <h2 style="margin-bottom: 1rem; font-weight: 600;">Catálogo de Balcão (Produtos com Foto)</h2>
+                <h2 style="margin-bottom: 1rem; font-weight: 600;">Frente de Caixa (Produtos com Foto)</h2>
                 <div class="pos-catalog" id="pos-catalog"></div>
             </div>
 
@@ -273,31 +275,12 @@
                         <span id="cart-grandtotal">R$ 0,00</span>
                     </div>
                 </div>
-                <button class="btn-mobile-primary" style="width: 100%;" onclick="checkoutPOS()">💰 Concluir Venda (FEFO)</button>
+                <button class="btn-mobile-primary" style="width: 100%;" onclick="checkoutPOS()">💰 Finalizar Venda</button>
             </div>
         </div>
     </section>
 
-    <!-- 4. STOCK FEFO SECTION -->
-    <section class="view-section" id="section-estoque">
-        <h2 style="margin-bottom: 1rem; font-weight: 600;">Inventário de Lotes (Regra FEFO Ativa)</h2>
-        <div class="glass-panel table-panel">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Lote</th>
-                        <th>Quantidade</th>
-                        <th>Vencimento</th>
-                        <th>Status Validade</th>
-                    </tr>
-                </thead>
-                <tbody id="table-estoque-body"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- 5. TAXI DOG DRIVER SECTION -->
+    <!-- 7. TAXI DOG DRIVER SECTION -->
     <section class="view-section" id="section-taxi">
         <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">Painel Móvel do Entregador (Táxi Dog)</h2>
         <div class="mobile-view">
@@ -309,9 +292,31 @@
         </div>
     </section>
 
-    <!-- 6. ANALYTICS SECTION -->
+    <!-- 8. EQUIPE & RBAC SECTION -->
+    <section class="view-section" id="section-equipe">
+        <div class="action-header">
+            <h2 style="font-weight: 600;">Gestão de Equipe & Permissões (RBAC)</h2>
+            <button class="btn-primary" onclick="openModal('modal-funcionario')">➕ Novo Funcionário</button>
+        </div>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Perfil de Acesso</th>
+                        <th>Cargo Exibido</th>
+                        <th>E-mail</th>
+                        <th>Módulos Ativos</th>
+                    </tr>
+                </thead>
+                <tbody id="table-funcionarios-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 9. ANALYTICS SECTION -->
     <section class="view-section" id="section-analytics">
-        <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dashboard de Governança (Pandas Simulado)</h2>
+        <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dashboard de Governança & Analytics</h2>
         <div class="kpi-row">
             <div class="glass-panel kpi-card">
                 <div class="kpi-icon">💰</div>
@@ -362,7 +367,7 @@
         </div>
     </section>
 
-    <!-- 7. MASTER SAAS & GOVERNANCE SECTION -->
+    <!-- 10. MASTER SAAS & GOVERNANCE SECTION -->
     <section class="view-section" id="section-master-saas">
         <div class="action-header">
             <h2 style="font-weight: 600; color: #fbbf24;">👑 Painel Master Super-Admin (PataForma B2B SaaS)</h2>
@@ -416,16 +421,13 @@
             <form onsubmit="loginMasterSubmit(event)">
                 <div class="form-group">
                     <label>Usuário Master:</label>
-                    <input type="text" id="input-master-user" placeholder="pataforma" required>
+                    <input type="text" id="input-master-user" placeholder="Digite o usuário Master" required>
                 </div>
                 <div class="form-group">
                     <label>Senha Master:</label>
-                    <input type="password" id="input-master-pass" placeholder="abc@123" required>
+                    <input type="password" id="input-master-pass" placeholder="Digite a senha Master" required>
                 </div>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    💡 Dica: Usuário padrão <code>pataforma</code> e senha <code>abc@123</code>.
-                </p>
-                <button type="submit" class="btn-master" style="width: 100%;">Entrar como Master</button>
+                <button type="submit" class="btn-master" style="width: 100%; margin-top: 0.5rem;">Entrar como Master</button>
             </form>
         </div>
     </div>
@@ -686,7 +688,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Data de Vencimento do Lote FEFO:</label>
+                    <label>Data de Vencimento do Lote:</label>
                     <input type="date" id="input-prod-vencimento" required>
                 </div>
                 <div class="form-group">
