@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PataForma — Gestão Inteligente de Pet Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header & Controls -->
+    <header class="glass-panel">
+        <div class="logo-area">
+            <span class="logo-icon">🐾</span>
+            <div class="logo-text">
+                <h1>PataForma</h1>
+                <p>Operação do banho ao caixa</p>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <!-- Connection Status -->
+            <div class="status-indicator" id="online-status">
+                <span class="status-dot"></span>
+                <span>PWA Online</span>
+            </div>
+
+            <!-- Role Selector (RBAC simulation) -->
+            <div class="role-selector">
+                <label for="current-profile-select" style="font-size: 0.8rem; color: var(--text-secondary); margin-right: 0.25rem;">Perfil:</label>
+                <select id="current-profile-select">
+                    <option value="Admin">Admin (Ver Tudo)</option>
+                    <option value="Supervisor">Supervisor de Estética</option>
+                    <option value="Recepcao">Recepção / Atendente</option>
+                    <option value="Banhista">Banhista / Tosador</option>
+                    <option value="Entregador">Entregador (Táxi Dog)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="main-nav">
+        <button class="nav-btn active" id="nav-kanban" onclick="switchTab('kanban')">📋 Kanban Operacional</button>
+        <button class="nav-btn" id="nav-caixa" onclick="switchTab('caixa')">🛒 Caixa / POS</button>
+        <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Estoque FEFO</button>
+        <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
+        <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
+    </nav>
+
+    <!-- 1. KANBAN SECTION -->
+    <section class="view-section active" id="section-kanban">
+        <div class="kanban-board">
+            <!-- Column 1: Agendado -->
+            <div class="kanban-column col-agendado" id="col-agendado">
+                <div class="column-header">
+                    <h3>📅 Agendado</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 2: Em Rota de Busca -->
+            <div class="kanban-column col-em-rota" id="col-rota">
+                <div class="column-header">
+                    <h3>🚚 Busca</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 3: Aguardando Banho -->
+            <div class="kanban-column col-agendado" id="col-aguardando">
+                <div class="column-header">
+                    <h3>🛁 Triagem / Fila</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 4: No Banho -->
+            <div class="kanban-column col-no-banho" id="col-banho">
+                <div class="column-header">
+                    <h3>🧼 Banho</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 5: Em Tosa -->
+            <div class="kanban-column col-em-tosa" id="col-tosa">
+                <div class="column-header">
+                    <h3>✂️ Tosa</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 6: Inspeção QC -->
+            <div class="kanban-column col-qc" id="col-qc">
+                <div class="column-header">
+                    <h3>🔍 Inspeção QC</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 7: Pronto -->
+            <div class="kanban-column col-pronto" id="col-pronto">
+                <div class="column-header">
+                    <h3>✨ Pronto</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+
+            <!-- Column 8: Entregue -->
+            <div class="kanban-column col-entregue" id="col-entregue">
+                <div class="column-header">
+                    <h3>🏡 Entregue</h3>
+                    <span class="column-badge">0</span>
+                </div>
+                <div class="kanban-column-cards"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. CAIXA / POS SECTION -->
+    <section class="view-section" id="section-caixa">
+        <div class="pos-container">
+            <!-- Products Catalog Grid -->
+            <div>
+                <h2 style="margin-bottom: 1rem; font-weight: 600;">Catálogo de Balcão (Produtos com Foto)</h2>
+                <div class="pos-catalog" id="pos-catalog"></div>
+            </div>
+
+            <!-- Cart / Receipt Panel -->
+            <div class="glass-panel cart-panel">
+                <div class="cart-title">
+                    <span>🛒 Carrinho de Vendas</span>
+                    <button class="card-btn" onclick="State.cart = []; renderCart();">Limpar</button>
+                </div>
+                <div class="cart-items" id="cart-items">
+                    <!-- Cart rows loaded by JS -->
+                </div>
+                <div class="cart-total-row">
+                    <div class="cart-total-item">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="cart-total-item grand-total">
+                        <span>Total:</span>
+                        <span id="cart-grandtotal">R$ 0,00</span>
+                    </div>
+                </div>
+                <button class="btn-mobile-primary" style="width: 100%;" onclick="checkoutPOS()">💰 Concluir Venda (FEFO)</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. STOCK FEFO SECTION -->
+    <section class="view-section" id="section-estoque">
+        <h2 style="margin-bottom: 1rem; font-weight: 600;">Inventário de Lotes (Regra FEFO Ativa)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            O estoque de rações e itens perecíveis realiza baixa automática priorizando os lotes com vencimento mais próximo (First-Expired, First-Out).
+        </p>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Lote</th>
+                        <th>Quantidade</th>
+                        <th>Vencimento</th>
+                        <th>Status Validade</th>
+                    </tr>
+                </thead>
+                <tbody id="table-estoque-body">
+                    <!-- Loaded dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 4. TAXI DOG DRIVER SECTION -->
+    <section class="view-section" id="section-taxi">
+        <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">Painel Móvel do Entregador (Táxi Dog)</h2>
+        <div class="mobile-view">
+            <div class="mobile-header">
+                <h3 style="font-weight: 600; color: #818cf8;">PataForma Motorista</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Serviço de Logística Pet</p>
+            </div>
+            <div class="mobile-body" id="taxi-job-list">
+                <!-- Driver task cards loaded by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ANALYTICS SECTION -->
+    <section class="view-section" id="section-analytics">
+        <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dashboard de Governança (Pandas Simulado)</h2>
+        
+        <!-- KPI Cards -->
+        <div class="kpi-row">
+            <div class="glass-panel kpi-card">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-info">
+                    <h4>Faturamento Bruto</h4>
+                    <p id="stat-faturamento">R$ 0,00</p>
+                </div>
+            </div>
+            
+            <div class="glass-panel kpi-card">
+                <div class="kpi-icon">📈</div>
+                <div class="kpi-info">
+                    <h4>Ticket Médio</h4>
+                    <p id="stat-ticket">R$ 0,00</p>
+                </div>
+            </div>
+
+            <div class="glass-panel kpi-card">
+                <div class="kpi-icon">🐕</div>
+                <div class="kpi-info">
+                    <h4>Serviços Concluídos</h4>
+                    <p id="stat-concluidos">0 pets</p>
+                </div>
+            </div>
+
+            <div class="glass-panel kpi-card">
+                <div class="kpi-icon">⚠️</div>
+                <div class="kpi-info">
+                    <h4>Validades Críticas</h4>
+                    <p id="stat-criticos">0 lotes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Ledger list -->
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Últimas Transações Financeiras (Caixa Geral)</h3>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Origem</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody id="table-receitas-body">
+                    <!-- Financial events logs -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Toast popup alerts container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
