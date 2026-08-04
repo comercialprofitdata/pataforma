@@ -221,11 +221,156 @@ header {
     display: block;
 }
 
+/* Sub-nav Tabs inside Cadastros */
+.sub-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.sub-nav-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.sub-nav-btn:hover {
+    color: var(--text-primary);
+}
+
+.sub-nav-btn.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    font-weight: 600;
+}
+
+/* Sub View Sections */
+.sub-view {
+    display: none;
+}
+
+.sub-view.active {
+    display: block;
+}
+
+/* Section Header Action Bar */
+.action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
 /* Grid Layouts */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
+}
+
+/* Subscription Plan Cards */
+.plan-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+
+.plan-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.4);
+}
+
+.plan-frequency-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.plan-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.plan-price {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #10b981;
+    margin-bottom: 1rem;
+}
+
+.plan-price span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.plan-features li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.plan-features li::before {
+    content: "✓";
+    color: #10b981;
+    font-weight: bold;
 }
 
 /* ================= KANBAN BOARD ================= */
@@ -842,8 +987,10 @@ header {
 
 .modal-content {
     width: 90%;
-    max-width: 500px;
+    max-width: 550px;
     padding: 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
     transform: translateY(20px);
     transition: var(--transition-smooth);
 }
@@ -865,12 +1012,18 @@ header {
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
 .form-group {
     margin-bottom: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
 .form-group label {
@@ -970,5 +1123,8 @@ header {
     }
     .view-section {
         padding: 0 1rem 1rem 1rem;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }
