@@ -1,4 +1,4 @@
-// 🐾 PataForma Database & App Engine (Local Storage Sim) - Professional ERP & Benchmark Supremacy
+// 🐾 PataForma Database & App Engine (Local Storage Sim) - Professional ERP & Staff Authentication
 
 // 1. DATA INITIALIZATION & LOCALSTORAGE MANAGER
 const DB = {
@@ -46,7 +46,7 @@ const DB = {
             DB.set('usuarios', [
                 { id: 1, empresa_id: 1, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral", comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 120.00 },
                 { id: 2, empresa_id: 1, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética", comissao_banho: 15, comissao_tosa: 30, comissao_acumulada: 340.50 },
-                { id: 3, empresa_id: 1, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente", comissao_banho: 5, comissao_tosa: 5, comissao_acumulada: 45.00 },
+                { id: 3, empresa_id: 1, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente do Caixa", comissao_banho: 5, comissao_tosa: 5, comissao_acumulada: 45.00 },
                 { id: 4, empresa_id: 1, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior", comissao_banho: 20, comissao_tosa: 20, comissao_acumulada: 280.00 },
                 { id: 5, empresa_id: 1, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 150.00 }
             ]);
@@ -100,9 +100,10 @@ const DB = {
 
         if (!DB.get('produtos')) {
             DB.set('produtos', [
-                { id: 1, empresa_id: 1, nome: "Ração Premier Cães Adultos 15kg", marca: "Premier Pet", codigo_barras: "78910001", preco_custo: 120.00, margem_lucro: 58.25, preco: 189.90, estoque_minimo: 5, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
-                { id: 2, empresa_id: 1, nome: "Shampoo Hipoalergênico 500ml", marca: "Pet Clean", codigo_barras: "78910002", preco_custo: 22.50, margem_lucro: 100.0, preco: 45.00, estoque_minimo: 8, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23c084fc'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
-                { id: 3, empresa_id: 1, nome: "Petisco Biscoito Canino 100g", marca: "DogPet", codigo_barras: null, preco_custo: 5.00, margem_lucro: 150.0, preco: 12.50, estoque_minimo: 10, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" }
+                { id: 1, empresa_id: 1, nome: "Ração Premier Cães Adultos 15kg", marca: "Premier Pet", codigo_barras: "78910001", preco_custo: 120.00, margem_lucro: 58.25, preco: 189.90, estoque_minimo: 5, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30' fill='%23818cf8'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
+                { id: 2, empresa_id: 1, nome: "Shampoo Hipoalergênico 500ml", marca: "Pet Clean", codigo_barras: "78910002", preco_custo: 22.50, margem_lucro: 100.0, preco: 45.00, estoque_minimo: 8, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5' fill='%23c084fc'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
+                { id: 3, empresa_id: 1, nome: "Petisco Biscoito Canino 100g", marca: "DogPet", codigo_barras: null, preco_custo: 5.00, margem_lucro: 150.0, preco: 12.50, estoque_minimo: 10, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z' fill='%23fbbf24'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" },
+                { id: 4, empresa_id: 1, nome: "Lacinhos Artesanais (Kit 4 un)", marca: "Pet Style", codigo_barras: null, preco_custo: 2.50, margem_lucro: 220.0, preco: 8.00, estoque_minimo: 15, categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='25' fill='%23ec4899'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>LACE</text></svg>" }
             ]);
         }
 
@@ -114,7 +115,9 @@ const DB = {
             DB.set('lotes_estoque', [
                 { id: 1, empresa_id: 1, produto_id: 1, lote: "L-RAC01", quantidade: 3, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
                 { id: 2, empresa_id: 1, produto_id: 1, lote: "L-RAC02", quantidade: 10, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 3, empresa_id: 1, produto_id: 2, lote: "L-SH01", quantidade: 6, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
+                { id: 3, empresa_id: 1, produto_id: 2, lote: "L-SH01", quantidade: 6, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 4, empresa_id: 1, produto_id: 3, lote: "L-PT01", quantidade: 20, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 5, empresa_id: 1, produto_id: 4, lote: "L-AC01", quantidade: 50, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
             ]);
         }
 
@@ -159,14 +162,16 @@ const DB = {
 // Start DB
 DB.init();
 
-// 2. STATE ENGINE & URL ROUTER
+// 2. STATE ENGINE & STAFF SESSION MANAGER
 const State = {
     currentEmpresaId: 1,
     isMasterSuperAdmin: false,
     currentProfile: 'Admin',
+    currentUser: null,
     cart: [],
     gpsWatcher: null,
     cameraStream: null,
+    posFilterQuery: '',
     
     showToast: (message, type = 'info') => {
         const container = document.getElementById('toast-container');
@@ -182,46 +187,64 @@ const State = {
     }
 };
 
-// Handle Deep Links via URL Search Parameters (?view=driver, ?view=caixa, ?view=banhista, ?view=master)
-function handleUrlDeepLinks() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewParam = urlParams.get('view') || urlParams.get('perfil');
+// Populate Staff User Login Modal
+function populateStaffUserLoginSelect() {
+    const usuarios = DB.get('usuarios') || [];
+    const select = document.getElementById('select-staff-user-login');
+    if (!select) return;
+    select.innerHTML = '';
+    
+    usuarios.forEach(u => {
+        select.innerHTML += `<option value="${u.id}">${u.nome} (${u.cargo || u.perfil}) - ${u.email}</option>`;
+    });
+}
 
-    if (!viewParam) return;
+function loginFuncionarioSubmit(e) {
+    e.preventDefault();
+    const userId = parseInt(document.getElementById('select-staff-user-login').value);
+    const usuarios = DB.get('usuarios');
+    const user = usuarios.find(u => u.id === userId);
 
-    const banner = document.getElementById('role-focused-banner');
-    const bannerText = document.getElementById('role-focused-text');
-    const mainNav = document.getElementById('main-nav-bar');
-    const roleSelect = document.getElementById('header-role-selector');
-    const masterBtn = document.getElementById('btn-master-login');
+    if (user) {
+        State.currentUser = user;
+        State.currentProfile = user.perfil;
+        State.currentEmpresaId = user.empresa_id;
 
-    if (viewParam.toLowerCase() === 'driver' || viewParam.toLowerCase() === 'entregador') {
-        State.currentProfile = 'Entregador';
-        banner.style.display = 'flex';
-        bannerText.innerText = '📌 Modo Focado: Motorista Táxi Dog (Visão Exclusiva de Logística GPS & Câmera)';
-        mainNav.style.display = 'none';
-        roleSelect.style.display = 'none';
-        masterBtn.style.display = 'none';
-        switchTab('taxi');
-    } else if (viewParam.toLowerCase() === 'caixa' || viewParam.toLowerCase() === 'pos' || viewParam.toLowerCase() === 'recepcao') {
-        State.currentProfile = 'Recepcao';
-        banner.style.display = 'flex';
-        bannerText.innerText = '📌 Modo Focado: Frente de Caixa & Balcão (POS)';
-        mainNav.style.display = 'none';
-        roleSelect.style.display = 'none';
-        switchTab('caixa');
-    } else if (viewParam.toLowerCase() === 'banhista' || viewParam.toLowerCase() === 'tosador') {
-        State.currentProfile = 'Banhista';
-        banner.style.display = 'flex';
-        bannerText.innerText = '📌 Modo Focado: Banho & Tosa (Kanban Operacional com Checklists)';
-        mainNav.style.display = 'none';
-        roleSelect.style.display = 'none';
-        switchTab('kanban');
-    } else if (viewParam.toLowerCase() === 'master') {
-        openModal('modal-login-master');
+        const sessionContainer = document.getElementById('user-session-container');
+        if (sessionContainer) {
+            sessionContainer.innerHTML = `
+                <div class="user-session-widget">
+                    <span>👤 <strong>${user.nome}</strong> (${user.cargo || user.perfil})</span>
+                    <button onclick="logoutFuncionario()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.15rem 0.4rem; border-radius:4px; cursor:pointer; font-size:0.7rem;">Sair</button>
+                </div>
+            `;
+        }
+
+        closeModal('modal-login-usuario');
+        applyRBAC(user.perfil);
+
+        DB.logAudit(State.currentEmpresaId, user.nome, 'Login da Equipe', `Usuário ${user.nome} logou como ${user.perfil}`);
+        State.showToast(`👋 Bem-vindo(a), ${user.nome}! Acessos carregados para ${user.cargo || user.perfil}.`, 'success');
+
+        // Auto-switch to authorized primary view
+        if (user.perfil === 'Entregador') switchTab('taxi');
+        else if (user.perfil === 'Banhista') switchTab('kanban');
+        else if (user.perfil === 'Recepcao') switchTab('caixa');
+        else switchTab('kanban');
     }
 }
 
+function logoutFuncionario() {
+    State.currentUser = null;
+    State.currentProfile = 'Admin';
+    const sessionContainer = document.getElementById('user-session-container');
+    if (sessionContainer) {
+        sessionContainer.innerHTML = `<button class="btn-staff-login" onclick="openModal('modal-login-usuario')">🔐 Entrar na Equipe</button>`;
+    }
+    applyRBAC('Admin');
+    switchTab('kanban');
+    State.showToast("Sessão da equipe encerrada.", "info");
+}
 
 // 3. MASTER AUTHENTICATION & MULTI-TENANT SWITCHER
 function loginMasterSubmit(e) {
@@ -269,12 +292,12 @@ function trocarEmpresaAtiva(empresaId) {
     const emp = DB.get('empresas').find(e => e.id === State.currentEmpresaId);
     
     const companyHeader = document.getElementById('current-company-name');
-    if (companyHeader) companyHeader.innerText = emp ? emp.nome : 'PataForma';
+    if (companyHeader) companyHeader.innerHTML = emp ? `🏢 ${emp.nome}` : '🏢 PataForma Matriz';
 
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Troca de Tenant', `Contexto alterado para ${emp.nome}`);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Troca de Tenant', `Contexto alterado para ${emp ? emp.nome : 'Empresa'}`);
     
     applyRBAC(State.currentProfile);
-    State.showToast(`Contexto alterado para a empresa: ${emp.nome}`, 'info');
+    State.showToast(`Contexto alterado para: ${emp ? emp.nome : 'Empresa'}`, 'info');
 }
 
 
@@ -285,6 +308,9 @@ function applyRBAC(profileName) {
     const userDef = users.find(u => u.perfil === profileName) || users[0] || { kanban: true, caixa: true, taxi_dog: true, qc: true };
     
     const empresa = DB.get('empresas').find(e => e.id === State.currentEmpresaId) || { modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true } };
+
+    const companyHeader = document.getElementById('current-company-name');
+    if (companyHeader) companyHeader.innerHTML = `🏢 ${empresa.nome}`;
 
     const navKanban = document.getElementById('nav-kanban');
     const navBaias = document.getElementById('nav-baias');
@@ -297,16 +323,53 @@ function applyRBAC(profileName) {
     const navEquipe = document.getElementById('nav-equipe');
     const navAssinaturas = document.getElementById('nav-assinaturas');
 
-    if (navKanban) navKanban.style.display = (empresa.modulos.kanban && userDef.kanban) ? 'flex' : 'none';
-    if (navBaias) navBaias.style.display = (empresa.modulos.kanban) ? 'flex' : 'none';
-    if (navCaixa) navCaixa.style.display = (empresa.modulos.caixa && userDef.caixa) ? 'flex' : 'none';
-    if (navEstoque) navEstoque.style.display = (empresa.modulos.estoque && (profileName === 'Admin' || profileName === 'Supervisor')) ? 'flex' : 'none';
-    if (navAnalytics) navAnalytics.style.display = (empresa.modulos.analytics && profileName === 'Admin') ? 'flex' : 'none';
-    if (navTaxi) navTaxi.style.display = (empresa.modulos.taxi_dog && userDef.taxi_dog) ? 'flex' : 'none';
-    if (navClientes) navClientes.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
-    if (navProdutos) navProdutos.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
-    if (navEquipe) navEquipe.style.display = profileName === 'Admin' ? 'flex' : 'none';
-    if (navAssinaturas) navAssinaturas.style.display = (empresa.modulos.assinaturas && (profileName === 'Admin' || profileName === 'Recepcao')) ? 'flex' : 'none';
+    // Strict role locking
+    if (profileName === 'Entregador') {
+        if (navKanban) navKanban.style.display = 'none';
+        if (navBaias) navBaias.style.display = 'none';
+        if (navCaixa) navCaixa.style.display = 'none';
+        if (navEstoque) navEstoque.style.display = 'none';
+        if (navAnalytics) navAnalytics.style.display = 'none';
+        if (navTaxi) navTaxi.style.display = 'flex';
+        if (navClientes) navClientes.style.display = 'none';
+        if (navProdutos) navProdutos.style.display = 'none';
+        if (navEquipe) navEquipe.style.display = 'none';
+        if (navAssinaturas) navAssinaturas.style.display = 'none';
+    } else if (profileName === 'Banhista') {
+        if (navKanban) navKanban.style.display = 'flex';
+        if (navBaias) navBaias.style.display = 'flex';
+        if (navCaixa) navCaixa.style.display = 'none';
+        if (navEstoque) navEstoque.style.display = 'none';
+        if (navAnalytics) navAnalytics.style.display = 'none';
+        if (navTaxi) navTaxi.style.display = 'none';
+        if (navClientes) navClientes.style.display = 'none';
+        if (navProdutos) navProdutos.style.display = 'none';
+        if (navEquipe) navEquipe.style.display = 'none';
+        if (navAssinaturas) navAssinaturas.style.display = 'none';
+    } else if (profileName === 'Recepcao') {
+        if (navKanban) navKanban.style.display = 'flex';
+        if (navBaias) navBaias.style.display = 'flex';
+        if (navCaixa) navCaixa.style.display = 'flex';
+        if (navEstoque) navEstoque.style.display = 'none';
+        if (navAnalytics) navAnalytics.style.display = 'none';
+        if (navTaxi) navTaxi.style.display = 'none';
+        if (navClientes) navClientes.style.display = 'flex';
+        if (navProdutos) navProdutos.style.display = 'flex';
+        if (navEquipe) navEquipe.style.display = 'none';
+        if (navAssinaturas) navAssinaturas.style.display = 'flex';
+    } else {
+        // Admin / Supervisor -> Full Access
+        if (navKanban) navKanban.style.display = (empresa.modulos.kanban && userDef.kanban) ? 'flex' : 'none';
+        if (navBaias) navBaias.style.display = (empresa.modulos.kanban) ? 'flex' : 'none';
+        if (navCaixa) navCaixa.style.display = (empresa.modulos.caixa && userDef.caixa) ? 'flex' : 'none';
+        if (navEstoque) navEstoque.style.display = (empresa.modulos.estoque) ? 'flex' : 'none';
+        if (navAnalytics) navAnalytics.style.display = (empresa.modulos.analytics) ? 'flex' : 'none';
+        if (navTaxi) navTaxi.style.display = (empresa.modulos.taxi_dog && userDef.taxi_dog) ? 'flex' : 'none';
+        if (navClientes) navClientes.style.display = 'flex';
+        if (navProdutos) navProdutos.style.display = 'flex';
+        if (navEquipe) navEquipe.style.display = 'flex';
+        if (navAssinaturas) navAssinaturas.style.display = (empresa.modulos.assinaturas) ? 'flex' : 'none';
+    }
 
     renderEmpresasSelector();
 }
@@ -366,9 +429,6 @@ function renderKanban() {
         if (!pet.vacinas_em_dia) {
             alertHTML += `<span class="alert-badge danger">💉 Vacinas Atrasadas</span>`;
         }
-        if (item.possui_ectoparasitas) {
-            alertHTML += `<span class="alert-badge danger">🪰 Pulga/Carrapato</span>`;
-        }
 
         const especieIcon = pet.especie === 'Gato' ? '🐱' : '🐶';
         const chk = item.checklist || { rasqueamento: false, ouvidos: false, unhas: false, adereco: false, perfume: false };
@@ -381,7 +441,6 @@ function renderKanban() {
             </div>
             <div class="card-subtitle">${pet.raca} | ${servico.nome} ${baia ? `| 🏠 ${baia.numero}` : ''}</div>
             
-            <!-- Checklist Operacional no Card -->
             <div class="kanban-checklist">
                 <label class="checklist-item ${chk.rasqueamento ? 'done' : ''}">
                     <input type="checkbox" ${chk.rasqueamento ? 'checked' : ''} onchange="toggleChecklistKanban(${item.id}, 'rasqueamento', this.checked)">
@@ -482,7 +541,6 @@ function handleStatusTransition(cardId, newStatus) {
     item.status = newStatus;
     
     if ((newStatus === 'Pronto' || newStatus === 'Entregue') && !(oldStatus === 'Pronto' || oldStatus === 'Entregue')) {
-        // Commission calculation for Banhista / Tosador
         const usuarios = DB.get('usuarios').filter(u => u.empresa_id === State.currentEmpresaId);
         const tosador = usuarios.find(u => u.perfil === 'Banhista' || u.perfil === 'Supervisor') || usuarios[0];
         const servico = DB.get('servicos').find(s => s.id === item.servico_id);
@@ -495,7 +553,6 @@ function handleStatusTransition(cardId, newStatus) {
             State.showToast(`✂️ Comissão de R$ ${comissaoGerada.toFixed(2)} (${percComissao}%) creditada para ${tosador.nome}!`, 'success');
         }
 
-        // Finance & Package deduction
         const cliente = DB.get('clientes').find(c => c.id === pet.cliente_id);
         const pacote = DB.get('pacotes_ativos').find(p => p.empresa_id === State.currentEmpresaId && p.cliente_id === cliente.id && p.quantidade_banhos > 0);
 
@@ -576,7 +633,7 @@ function salvarZootieBoletim(e) {
 
     closeModal('modal-zootie');
     
-    const msg = `🐾 *BOLETIM DO PET - PATAFORMA* 🐾%0A%0AHlá ${cliente.nome}! Segue o boletim do *${pet.nome}* no banho hoje:%0A%0A⭐ Avaliação: ${'⭐'.repeat(parseInt(estrelas))}%0A💨 Secador: ${secador}%0A✂️ Unhas/Ouvidos: ${unhas}%0A💬 Recadinho: ${obs || 'Ficou super cheiroso e lindo!'}`;
+    const msg = `🐾 *BOLETIM DO PET - PATAFORMA* 🐾%0A%0AHolá ${cliente.nome}! Segue o boletim do *${pet.nome}* no banho hoje:%0A%0A⭐ Avaliação: ${'⭐'.repeat(parseInt(estrelas))}%0A💨 Secador: ${secador}%0A✂️ Unhas/Ouvidos: ${unhas}%0A💬 Recadinho: ${obs || 'Ficou super cheiroso e lindo!'}`;
     
     State.showToast(`🐶 Boletim do Pet ${pet.nome} gerado! Enviar no WhatsApp do Tutor.`, 'success');
     window.open(`https://api.whatsapp.com/send?phone=55${cliente.telefone.replace(/\D/g, '')}&text=${msg}`, '_blank');
@@ -608,13 +665,19 @@ function calcularPrecoPorVenda() {
 }
 
 function renderProdutosCrudTable() {
-    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    let produtos = DB.get('produtos') || [];
+    if (produtos.length === 0) {
+        DB.init();
+        produtos = DB.get('produtos') || [];
+    }
     const lotes = DB.get('lotes_estoque') || [];
     const tbody = document.getElementById('table-produtos-body');
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    produtos.forEach(p => {
+    const companyProds = produtos.filter(p => p.empresa_id === State.currentEmpresaId || p.empresa_id === 1);
+
+    companyProds.forEach(p => {
         const totalEstoque = lotes.filter(l => l.produto_id === p.id && l.status === 'Disponivel').reduce((acc, curr) => acc + curr.quantidade, 0);
         const custo = p.preco_custo || (p.preco * 0.6);
         const margem = p.margem_lucro || 66.6;
@@ -659,11 +722,11 @@ function salvarProduto(e) {
     const qtdInicial = parseInt(document.getElementById('input-prod-qtd').value) || 10;
     const vencimento = document.getElementById('input-prod-vencimento').value;
 
-    const produtos = DB.get('produtos');
-    const lotes = DB.get('lotes_estoque');
+    const produtos = DB.get('produtos') || [];
+    const lotes = DB.get('lotes_estoque') || [];
     
     const newProdId = produtos.length > 0 ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
-    const foto = fotoUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>PROD</text></svg>";
+    const foto = fotoUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30' fill='%23818cf8'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>PROD</text></svg>";
 
     produtos.push({ id: newProdId, empresa_id: State.currentEmpresaId, nome, marca, categoria, codigo_barras, estoque_minimo, preco_custo, margem_lucro, preco, foto });
     
@@ -685,6 +748,7 @@ function salvarProduto(e) {
 
     closeModal('modal-produto');
     renderProdutosCrudTable();
+    renderCaixa();
     State.showToast(`Produto ERP ${nome} cadastrado com sucesso!`, 'success');
 }
 
@@ -709,17 +773,14 @@ function atualizarOrcamentoDinâmicoAgendamento() {
     let precoFinal = servico.preco;
     let tempoEstimado = servico.duracao;
 
-    // Multiplicadores por Porte
     if (pet.porte === 'Médio') { precoFinal += 10.00; tempoEstimado += 15; }
     if (pet.porte === 'Grande') { precoFinal += 25.00; tempoEstimado += 30; }
     if (pet.porte === 'Gigante') { precoFinal += 45.00; tempoEstimado += 45; }
 
-    // Multiplicadores por Pelagem
     const pelagem = pelagemSelect ? pelagemSelect.value : 'Curta';
     if (pelagem === 'Longa') { precoFinal += 15.00; tempoEstimado += 15; }
     if (pelagem === 'Com Nós') { precoFinal += 35.00; tempoEstimado += 30; }
 
-    // Táxi Dog
     const precisaTaxi = checkTaxi && checkTaxi.checked;
     if (precisaTaxi) precoFinal += 20.00;
 
@@ -862,6 +923,7 @@ function populateSelectOptions() {
         });
     }
 
+    populateStaffUserLoginSelect();
     atualizarOrcamentoDinâmicoAgendamento();
 }
 
@@ -928,6 +990,7 @@ function salvarFuncionario(e) {
 
     closeModal('modal-funcionario');
     renderFuncionariosTable();
+    populateStaffUserLoginSelect();
     State.showToast(`Funcionário ${nome} cadastrado com sucesso!`, 'success');
 }
 
@@ -978,14 +1041,27 @@ function criarAgendamento(e) {
 }
 
 
-// 11. POS CAIXA WITH LOYALTY POINTS
+// 11. POS CAIXA & ITEM AVULSO
 function renderCaixa() {
-    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    let produtos = DB.get('produtos') || [];
+    if (produtos.length === 0) {
+        DB.init();
+        produtos = DB.get('produtos') || [];
+    }
+
     const catalogContainer = document.getElementById('pos-catalog');
     if (!catalogContainer) return;
     catalogContainer.innerHTML = '';
 
-    produtos.forEach(p => {
+    const companyProds = produtos.filter(p => p.empresa_id === State.currentEmpresaId || p.empresa_id === 1);
+    
+    let filteredProds = companyProds;
+    if (State.posFilterQuery) {
+        const q = State.posFilterQuery.toLowerCase();
+        filteredProds = companyProds.filter(p => p.nome.toLowerCase().includes(q) || p.categoria.toLowerCase().includes(q) || (p.codigo_barras && p.codigo_barras.includes(q)));
+    }
+
+    filteredProds.forEach(p => {
         const lotes = DB.get('lotes_estoque').filter(l => l.produto_id === p.id && l.status === 'Disponivel');
         const totalEstoque = lotes.reduce((acc, curr) => acc + curr.quantidade, 0);
 
@@ -1010,8 +1086,31 @@ function renderCaixa() {
     renderCart();
 }
 
+function filtrarProdutosPOS(query) {
+    State.posFilterQuery = query;
+    renderCaixa();
+}
+
+function adicionarItemAvulsoPOS(e) {
+    e.preventDefault();
+    const nome = document.getElementById('input-avulso-nome').value;
+    const preco = parseFloat(document.getElementById('input-avulso-preco').value);
+
+    const tempId = Date.now();
+    State.cart.push({
+        id: tempId,
+        nome: `[Avulso] ${nome}`,
+        preco: preco,
+        qty: 1
+    });
+
+    closeModal('modal-item-avulso');
+    renderCart();
+    State.showToast(`Item avulso "${nome}" adicionado ao carrinho!`, 'success');
+}
+
 function addToCart(productId) {
-    const produtos = DB.get('produtos');
+    const produtos = DB.get('produtos') || [];
     const p = produtos.find(item => item.id === productId);
     if (!p) return;
 
@@ -1021,7 +1120,7 @@ function addToCart(productId) {
     const cartItem = State.cart.find(c => c.id === productId);
     const cartQty = cartItem ? cartItem.qty : 0;
 
-    if (cartQty >= totalEstoque) {
+    if (cartQty >= totalEstoque && totalEstoque > 0) {
         State.showToast(`Estoque insuficiente do produto ${p.nome}!`, 'error');
         return;
     }
@@ -1087,28 +1186,29 @@ function checkoutPOS() {
     const clientes = DB.get('clientes');
     
     State.cart.forEach(item => {
-        let qtyToDeduct = item.qty;
-        const productLots = lotes
-            .filter(l => l.produto_id === item.id && l.status === 'Disponivel')
-            .sort((a, b) => new Date(a.data_vencimento) - new Date(b.data_vencimento));
+        if (typeof item.id === 'number' && item.id < 1000000) {
+            let qtyToDeduct = item.qty;
+            const productLots = lotes
+                .filter(l => l.produto_id === item.id && l.status === 'Disponivel')
+                .sort((a, b) => new Date(a.data_vencimento) - new Date(b.data_vencimento));
 
-        for (let lot of productLots) {
-            if (qtyToDeduct <= 0) break;
-            if (lot.quantidade >= qtyToDeduct) {
-                lot.quantidade -= qtyToDeduct;
-                qtyToDeduct = 0;
-            } else {
-                qtyToDeduct -= lot.quantidade;
-                lot.quantidade = 0;
+            for (let lot of productLots) {
+                if (qtyToDeduct <= 0) break;
+                if (lot.quantidade >= qtyToDeduct) {
+                    lot.quantidade -= qtyToDeduct;
+                    qtyToDeduct = 0;
+                } else {
+                    qtyToDeduct -= lot.quantidade;
+                    lot.quantidade = 0;
+                }
+                if (lot.quantidade === 0) lot.status = 'Esgotado';
             }
-            if (lot.quantidade === 0) lot.status = 'Esgotado';
         }
     });
 
     const totalCheckout = State.cart.reduce((acc, c) => acc + (c.preco * c.qty), 0);
     const pontosGanhos = Math.floor(totalCheckout);
 
-    // Add points to default client
     if (clientes && clientes.length > 0) {
         clientes[0].pontos_fidelidade = (clientes[0].pontos_fidelidade || 0) + pontosGanhos;
         DB.set('clientes', clientes);
@@ -1359,56 +1459,6 @@ function finalizarEntregaTaxi(jobId, currentStatus) {
     renderTaxiDog();
 }
 
-function renderMasterPanel() {
-    renderEmpresasTable();
-    renderAuditoriaTable();
-}
-
-function renderEmpresasTable() {
-    const empresas = DB.get('empresas') || [];
-    const tbody = document.getElementById('table-empresas-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    empresas.forEach(emp => {
-        const modulosBadge = Object.keys(emp.modulos).filter(m => emp.modulos[m]).join(', ');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><strong>${emp.nome}</strong></td>
-            <td><code>${emp.cnpj}</code></td>
-            <td>${emp.responsavel}</td>
-            <td><span class="validade-badge em-dia">${emp.plano}</span></td>
-            <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
-            <td style="font-size:0.75rem; color:var(--text-secondary);">${modulosBadge}</td>
-            <td>
-                <button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function renderAuditoriaTable() {
-    const logs = DB.get('logs_auditoria') || [];
-    const empresas = DB.get('empresas') || [];
-    const tbody = document.getElementById('table-auditoria-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    logs.slice().reverse().forEach(log => {
-        const emp = empresas.find(e => e.id === log.empresa_id);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${new Date(log.timestamp).toLocaleString('pt-BR')}</td>
-            <td><strong>${emp ? emp.nome : 'Global'}</strong></td>
-            <td><span class="validade-badge em-dia">${log.usuario}</span></td>
-            <td><strong>${log.acao}</strong></td>
-            <td style="font-size:0.8rem; color:var(--text-secondary);">${log.detalhe}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.classList.add('active');
@@ -1450,6 +1500,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     renderEmpresasSelector();
+    populateStaffUserLoginSelect();
     applyRBAC('Admin');
-    handleUrlDeepLinks();
+
+    // Auto-render initial tab
+    switchTab('kanban');
 });
