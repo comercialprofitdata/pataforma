@@ -1,4 +1,4 @@
-// 🐾 PataForma Database & App Engine (Local Storage Sim) - B2B Multi-Tenant & Master SaaS
+// 🐾 PataForma Database & App Engine (Local Storage Sim) - Professional ERP & Benchmark Supremacy
 
 // 1. DATA INITIALIZATION & LOCALSTORAGE MANAGER
 const DB = {
@@ -38,114 +38,113 @@ const DB = {
                     plano: "Pro",
                     status: "Ativo",
                     modulos: { kanban: true, taxi_dog: false, caixa: true, estoque: true, assinaturas: true, analytics: false }
-                },
-                {
-                    id: 3,
-                    nome: "Estética Canina & Felina Jardins",
-                    cnpj: "55.444.333/0001-88",
-                    responsavel: "Beatriz Santos",
-                    plano: "Basic",
-                    status: "Ativo",
-                    modulos: { kanban: true, taxi_dog: true, caixa: false, estoque: false, assinaturas: false, analytics: false }
                 }
             ]);
         }
 
         if (!DB.get('usuarios')) {
             DB.set('usuarios', [
-                { id: 1, empresa_id: 1, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral" },
-                { id: 2, empresa_id: 1, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética" },
-                { id: 3, empresa_id: 1, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente" },
-                { id: 4, empresa_id: 1, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior" },
-                { id: 5, empresa_id: 1, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog" },
-                { id: 6, empresa_id: 2, nome: "Fernando Moema", perfil: "Admin", email: "fernando@moema.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Proprietário" }
+                { id: 1, empresa_id: 1, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral", comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 120.00 },
+                { id: 2, empresa_id: 1, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética", comissao_banho: 15, comissao_tosa: 30, comissao_acumulada: 340.50 },
+                { id: 3, empresa_id: 1, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente", comissao_banho: 5, comissao_tosa: 5, comissao_acumulada: 45.00 },
+                { id: 4, empresa_id: 1, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior", comissao_banho: 20, comissao_tosa: 20, comissao_acumulada: 280.00 },
+                { id: 5, empresa_id: 1, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 150.00 }
             ]);
         }
 
         if (!DB.get('clientes')) {
             DB.set('clientes', [
-                { id: 1, empresa_id: 1, nome: "Carlos Souza", telefone: "(11) 98888-7777", email: "carlos@gmail.com", endereco: "Av. Paulista, 1000 - Ap 42", lat_lng: "-23.5614,-46.6558", ultima_visita: "2026-07-28" },
-                { id: 2, empresa_id: 1, nome: "Mariana Lima", telefone: "(11) 97777-6666", email: "mariana@gmail.com", endereco: "Rua Augusta, 450", lat_lng: "-23.5512,-46.6521", ultima_visita: "2026-08-01" },
-                { id: 3, empresa_id: 1, nome: "Roberto Alves", telefone: "(11) 96666-5555", email: "roberto@gmail.com", endereco: "Alameda Lorena, 89", lat_lng: "-23.5678,-46.6610", ultima_visita: "2026-08-03" },
-                { id: 4, empresa_id: 2, nome: "Patricia Moema", telefone: "(11) 95555-4444", email: "patricia@gmail.com", endereco: "Alameda dos Maracatins, 300", lat_lng: "-23.6012,-46.6601", ultima_visita: "2026-08-02" }
+                { id: 1, empresa_id: 1, nome: "Carlos Souza", telefone: "(11) 98888-7777", email: "carlos@gmail.com", endereco: "Av. Paulista, 1000 - Ap 42", lat_lng: "-23.5614,-46.6558", pontos_fidelidade: 189, ultima_visita: "2026-07-28" },
+                { id: 2, empresa_id: 1, nome: "Mariana Lima", telefone: "(11) 97777-6666", email: "mariana@gmail.com", endereco: "Rua Augusta, 450", lat_lng: "-23.5512,-46.6521", pontos_fidelidade: 320, ultima_visita: "2026-08-01" },
+                { id: 3, empresa_id: 1, nome: "Roberto Alves", telefone: "(11) 96666-5555", email: "roberto@gmail.com", endereco: "Alameda Lorena, 89", lat_lng: "-23.5678,-46.6610", pontos_fidelidade: 45, ultima_visita: "2026-08-03" }
             ]);
         }
 
         if (!DB.get('pets')) {
             DB.set('pets', [
-                { id: 1, empresa_id: 1, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco." },
-                { id: 2, empresa_id: 1, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Muito sensível no ouvido esquerdo." },
-                { id: 3, empresa_id: 1, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira." },
-                { id: 4, empresa_id: 1, cliente_id: 2, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa pelagem longa. Secagem em temperatura amena." },
-                { id: 5, empresa_id: 2, cliente_id: 4, nome: "Bob", especie: "Cachorro", raca: "Pug", porte: "Pequeno", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Pug com focinho curto. Monitorar secagem." }
+                { id: 1, empresa_id: 1, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco." },
+                { id: 2, empresa_id: 1, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", pelagem: "Longa", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Muito sensível no ouvido esquerdo." },
+                { id: 3, empresa_id: 1, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", pelagem: "Curta", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira." },
+                { id: 4, empresa_id: 1, cliente_id: 2, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa pelagem longa." }
             ]);
+        }
+
+        if (!DB.get('baias')) {
+            const baias = [];
+            for (let i = 1; i <= 12; i++) {
+                baias.push({
+                    id: i,
+                    empresa_id: 1,
+                    numero: `Baia ${i < 10 ? '0' + i : i}`,
+                    status: i === 1 ? 'Ocupada' : (i === 3 ? 'Ocupada' : 'Livre'),
+                    pet_id: i === 1 ? 1 : (i === 3 ? 2 : null)
+                });
+            }
+            DB.set('baias', baias);
         }
 
         if (!DB.get('planos_assinatura')) {
             DB.set('planos_assinatura', [
-                { id: 1, empresa_id: 1, nome: "Plano Mensal Gold (4 Banhos + Tosa)", descricao: "4 banhos mensais + 1 tosa completa com banho antipulgas incluso.", preco: 240.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
-                { id: 2, empresa_id: 1, nome: "Plano VIP Semanal", descricao: "1 banho por semana com secagem rápida e perfume importado.", preco: 65.00, periodicidade: "Semanal", quantidade_banhos: 1, inclui_tosa: false },
-                { id: 3, empresa_id: 1, nome: "Assinatura Felina Premium", descricao: "2 banhos mensais higiênicos + escovação de pelagem para gatos.", preco: 150.00, periodicidade: "Mensal", quantidade_banhos: 2, inclui_tosa: false },
-                { id: 4, empresa_id: 1, nome: "Plano Anual Pet Care VIP", descricao: "Assinatura anual ilimitada de higiene, hidratação e prioridade no Táxi Dog.", preco: 2150.00, periodicidade: "Anual", quantidade_banhos: 48, inclui_tosa: true }
+                { id: 1, empresa_id: 1, nome: "Plano Mensal Gold (4 Banhos + Tosa)", descricao: "4 banhos mensais + 1 tosa completa.", preco: 240.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
+                { id: 2, empresa_id: 1, nome: "Plano VIP Semanal", descricao: "1 banho por semana com secagem rápida.", preco: 65.00, periodicidade: "Semanal", quantidade_banhos: 1, inclui_tosa: false }
             ]);
         }
 
         if (!DB.get('servicos')) {
             DB.set('servicos', [
-                { id: 1, empresa_id: 1, nome: "Banho & Secagem", descricao: "Banho completo, secagem, corte de unhas e limpeza de ouvidos.", preco: 70.00, duracao: 45 },
-                { id: 2, empresa_id: 1, nome: "Tosa Completa", descricao: "Banho completo + Tosa com máquina e tesoura na pelagem inteira.", preco: 120.00, duracao: 90 },
-                { id: 3, empresa_id: 1, nome: "Banho Antipulgas", descricao: "Banho com shampoo ectoparasiticida especial.", preco: 95.00, duracao: 60 },
-                { id: 4, empresa_id: 1, nome: "Banho & Escovação Felina", descricao: "Banho especial para gatos com secagem silenciosa sem estresse.", preco: 85.00, duracao: 50 },
-                { id: 5, empresa_id: 2, nome: "Banho Moema Premium", descricao: "Banho especial PetCare Moema.", preco: 80.00, duracao: 45 }
+                { id: 1, empresa_id: 1, nome: "Banho & Secagem", descricao: "Banho completo, secagem, corte de unhas.", preco: 70.00, duracao: 45 },
+                { id: 2, empresa_id: 1, nome: "Tosa Completa", descricao: "Banho completo + Tosa com máquina e tesoura.", preco: 120.00, duracao: 90 },
+                { id: 3, empresa_id: 1, nome: "Banho Antipulgas", descricao: "Banho com shampoo ectoparasiticida.", preco: 95.00, duracao: 60 }
             ]);
         }
 
         if (!DB.get('produtos')) {
             DB.set('produtos', [
-                { id: 1, empresa_id: 1, nome: "Ração Premium Cães Adultos 10kg", codigo_barras: "78910001", preco: 189.90, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
-                { id: 2, empresa_id: 1, nome: "Shampoo Hipoalergênico 500ml", codigo_barras: "78910002", preco: 45.00, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23c084fc'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
-                { id: 3, empresa_id: 1, nome: "Petisco a Granel (Biscoito Canino 100g)", codigo_barras: null, preco: 12.50, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" },
-                { id: 4, empresa_id: 1, nome: "Lacinhos Artesanais (Kit 4 un)", codigo_barras: null, preco: 8.00, categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23ec4899'><rect width='100' height='100' fill='%231e293b'/><polygon points='20,30 80,30 50,60'/><polygon points='20,70 80,70 50,40'/><circle cx='50' cy='50' r='10'/></svg>" }
+                { id: 1, empresa_id: 1, nome: "Ração Premier Cães Adultos 15kg", marca: "Premier Pet", codigo_barras: "78910001", preco_custo: 120.00, margem_lucro: 58.25, preco: 189.90, estoque_minimo: 5, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
+                { id: 2, empresa_id: 1, nome: "Shampoo Hipoalergênico 500ml", marca: "Pet Clean", codigo_barras: "78910002", preco_custo: 22.50, margem_lucro: 100.0, preco: 45.00, estoque_minimo: 8, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23c084fc'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
+                { id: 3, empresa_id: 1, nome: "Petisco Biscoito Canino 100g", marca: "DogPet", codigo_barras: null, preco_custo: 5.00, margem_lucro: 150.0, preco: 12.50, estoque_minimo: 10, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" }
             ]);
         }
 
         if (!DB.get('lotes_estoque')) {
             const hoje = new Date();
             const vencendo = new Date(hoje); vencendo.setDate(hoje.getDate() + 5);
-            const vencido = new Date(hoje); vencido.setDate(hoje.getDate() - 10);
             const emDia = new Date(hoje); emDia.setDate(hoje.getDate() + 120);
 
             DB.set('lotes_estoque', [
                 { id: 1, empresa_id: 1, produto_id: 1, lote: "L-RAC01", quantidade: 3, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
                 { id: 2, empresa_id: 1, produto_id: 1, lote: "L-RAC02", quantidade: 10, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 3, empresa_id: 1, produto_id: 2, lote: "L-SH01", quantidade: 5, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 4, empresa_id: 1, produto_id: 3, lote: "L-PT01", quantidade: 2, data_vencimento: vencido.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 5, empresa_id: 1, produto_id: 3, lote: "L-PT02", quantidade: 15, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
+                { id: 3, empresa_id: 1, produto_id: 2, lote: "L-SH01", quantidade: 6, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
             ]);
         }
 
         if (!DB.get('pacotes_ativos')) {
             DB.set('pacotes_ativos', [
-                { id: 1, empresa_id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" },
-                { id: 2, empresa_id: 1, cliente_id: 2, plano_id: 2, quantidade_banhos: 0, data_aquisicao: "2026-07-15", status: "Renovação Pendente" }
+                { id: 1, empresa_id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" }
             ]);
         }
 
         if (!DB.get('agendamentos_kanban')) {
             DB.set('agendamentos_kanban', [
-                { id: 1, empresa_id: 1, pet_id: 1, servico_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 2, empresa_id: 1, pet_id: 2, servico_id: 2, status: "Aguardando Banho", data_agendamento: "2026-08-04T11:30:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 3, empresa_id: 1, pet_id: 3, servico_id: 1, status: "Em Rota de Busca", data_agendamento: "2026-08-04T09:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 4, empresa_id: 1, pet_id: 4, servico_id: 4, status: "Agendado", data_agendamento: "2026-08-04T14:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 5, empresa_id: 2, pet_id: 5, servico_id: 5, status: "Agendado", data_agendamento: "2026-08-04T15:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null }
+                {
+                    id: 1, empresa_id: 1, pet_id: 1, servico_id: 1, baia_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00",
+                    possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
+                    checklist: { rasqueamento: false, ouvidos: true, unhas: false, adereco: false, perfume: false },
+                    boletim_zootie: null
+                },
+                {
+                    id: 2, empresa_id: 1, pet_id: 2, servico_id: 2, baia_id: 3, status: "Aguardando Banho", data_agendamento: "2026-08-04T11:30:00",
+                    possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
+                    checklist: { rasqueamento: true, ouvidos: true, unhas: true, adereco: false, perfume: false },
+                    boletim_zootie: null
+                }
             ]);
         }
 
         if (!DB.get('contas_receber')) DB.set('contas_receber', []);
         if (!DB.get('movimentacoes_caixa')) {
             DB.set('movimentacoes_caixa', [
-                { id: 1, empresa_id: 1, tipo: "ENTRADA", categoria: "Venda Balcão", descricao: "Venda Ração Carlos", valor: 189.90, data: "2026-08-04T14:30:00" },
-                { id: 2, empresa_id: 1, tipo: "SAIDA", categoria: "Estoque", descricao: "Compra Fornecedor Shampoo", valor: 150.00, data: "2026-08-04T10:00:00" }
+                { id: 1, empresa_id: 1, tipo: "ENTRADA", categoria: "Venda Balcão", descricao: "Venda Ração Carlos", valor: 189.90, data: "2026-08-04T14:30:00" }
             ]);
         }
 
@@ -160,7 +159,7 @@ const DB = {
 // Start DB
 DB.init();
 
-// 2. STATE ENGINE
+// 2. STATE ENGINE & URL ROUTER
 const State = {
     currentEmpresaId: 1,
     isMasterSuperAdmin: false,
@@ -182,6 +181,47 @@ const State = {
         }, 4000);
     }
 };
+
+// Handle Deep Links via URL Search Parameters (?view=driver, ?view=caixa, ?view=banhista, ?view=master)
+function handleUrlDeepLinks() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view') || urlParams.get('perfil');
+
+    if (!viewParam) return;
+
+    const banner = document.getElementById('role-focused-banner');
+    const bannerText = document.getElementById('role-focused-text');
+    const mainNav = document.getElementById('main-nav-bar');
+    const roleSelect = document.getElementById('header-role-selector');
+    const masterBtn = document.getElementById('btn-master-login');
+
+    if (viewParam.toLowerCase() === 'driver' || viewParam.toLowerCase() === 'entregador') {
+        State.currentProfile = 'Entregador';
+        banner.style.display = 'flex';
+        bannerText.innerText = '📌 Modo Focado: Motorista Táxi Dog (Visão Exclusiva de Logística GPS & Câmera)';
+        mainNav.style.display = 'none';
+        roleSelect.style.display = 'none';
+        masterBtn.style.display = 'none';
+        switchTab('taxi');
+    } else if (viewParam.toLowerCase() === 'caixa' || viewParam.toLowerCase() === 'pos' || viewParam.toLowerCase() === 'recepcao') {
+        State.currentProfile = 'Recepcao';
+        banner.style.display = 'flex';
+        bannerText.innerText = '📌 Modo Focado: Frente de Caixa & Balcão (POS)';
+        mainNav.style.display = 'none';
+        roleSelect.style.display = 'none';
+        switchTab('caixa');
+    } else if (viewParam.toLowerCase() === 'banhista' || viewParam.toLowerCase() === 'tosador') {
+        State.currentProfile = 'Banhista';
+        banner.style.display = 'flex';
+        bannerText.innerText = '📌 Modo Focado: Banho & Tosa (Kanban Operacional com Checklists)';
+        mainNav.style.display = 'none';
+        roleSelect.style.display = 'none';
+        switchTab('kanban');
+    } else if (viewParam.toLowerCase() === 'master') {
+        openModal('modal-login-master');
+    }
+}
+
 
 // 3. MASTER AUTHENTICATION & MULTI-TENANT SWITCHER
 function loginMasterSubmit(e) {
@@ -247,6 +287,7 @@ function applyRBAC(profileName) {
     const empresa = DB.get('empresas').find(e => e.id === State.currentEmpresaId) || { modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true } };
 
     const navKanban = document.getElementById('nav-kanban');
+    const navBaias = document.getElementById('nav-baias');
     const navCaixa = document.getElementById('nav-caixa');
     const navEstoque = document.getElementById('nav-estoque');
     const navAnalytics = document.getElementById('nav-analytics');
@@ -256,15 +297,16 @@ function applyRBAC(profileName) {
     const navEquipe = document.getElementById('nav-equipe');
     const navAssinaturas = document.getElementById('nav-assinaturas');
 
-    navKanban.style.display = (empresa.modulos.kanban && userDef.kanban) ? 'flex' : 'none';
-    navCaixa.style.display = (empresa.modulos.caixa && userDef.caixa) ? 'flex' : 'none';
-    navEstoque.style.display = (empresa.modulos.estoque && (profileName === 'Admin' || profileName === 'Supervisor')) ? 'flex' : 'none';
-    navAnalytics.style.display = (empresa.modulos.analytics && profileName === 'Admin') ? 'flex' : 'none';
-    navTaxi.style.display = (empresa.modulos.taxi_dog && userDef.taxi_dog) ? 'flex' : 'none';
-    navClientes.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
-    navProdutos.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
-    navEquipe.style.display = profileName === 'Admin' ? 'flex' : 'none';
-    navAssinaturas.style.display = (empresa.modulos.assinaturas && (profileName === 'Admin' || profileName === 'Recepcao')) ? 'flex' : 'none';
+    if (navKanban) navKanban.style.display = (empresa.modulos.kanban && userDef.kanban) ? 'flex' : 'none';
+    if (navBaias) navBaias.style.display = (empresa.modulos.kanban) ? 'flex' : 'none';
+    if (navCaixa) navCaixa.style.display = (empresa.modulos.caixa && userDef.caixa) ? 'flex' : 'none';
+    if (navEstoque) navEstoque.style.display = (empresa.modulos.estoque && (profileName === 'Admin' || profileName === 'Supervisor')) ? 'flex' : 'none';
+    if (navAnalytics) navAnalytics.style.display = (empresa.modulos.analytics && profileName === 'Admin') ? 'flex' : 'none';
+    if (navTaxi) navTaxi.style.display = (empresa.modulos.taxi_dog && userDef.taxi_dog) ? 'flex' : 'none';
+    if (navClientes) navClientes.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
+    if (navProdutos) navProdutos.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
+    if (navEquipe) navEquipe.style.display = profileName === 'Admin' ? 'flex' : 'none';
+    if (navAssinaturas) navAssinaturas.style.display = (empresa.modulos.assinaturas && (profileName === 'Admin' || profileName === 'Recepcao')) ? 'flex' : 'none';
 
     renderEmpresasSelector();
 }
@@ -280,6 +322,7 @@ function switchTab(tabId) {
     if (activeBtn) activeBtn.classList.add('active');
 
     if (tabId === 'kanban') renderKanban();
+    if (tabId === 'baias') renderBaiasGrid();
     if (tabId === 'caixa') renderCaixa();
     if (tabId === 'estoque') renderEstoque();
     if (tabId === 'analytics') renderAnalytics();
@@ -292,19 +335,21 @@ function switchTab(tabId) {
 }
 
 
-// 5. KANBAN ENGINE
+// 5. KANBAN ENGINE & TASK CHECKLISTS
 const STATUS_LIST = ['Agendado', 'Em Rota de Busca', 'Aguardando Banho', 'No Banho', 'Em Tosa', 'Inspecao QC', 'Pronto', 'Entregue'];
 
 function renderKanban() {
     const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
     const servicos = DB.get('servicos') || [];
+    const baias = DB.get('baias') || [];
     
     document.querySelectorAll('.kanban-column-cards').forEach(col => col.innerHTML = '');
     
     kanbanData.forEach(item => {
         const pet = pets.find(p => p.id === item.pet_id);
         const servico = servicos.find(s => s.id === item.servico_id);
+        const baia = baias.find(b => b.id === item.baia_id);
         if (!pet || !servico) return;
 
         const card = document.createElement('div');
@@ -326,6 +371,7 @@ function renderKanban() {
         }
 
         const especieIcon = pet.especie === 'Gato' ? '🐱' : '🐶';
+        const chk = item.checklist || { rasqueamento: false, ouvidos: false, unhas: false, adereco: false, perfume: false };
 
         card.innerHTML = `
             <div class="card-alerts">${alertHTML}</div>
@@ -333,15 +379,31 @@ function renderKanban() {
                 <span>${especieIcon} ${pet.nome}</span>
                 <span style="font-size:0.75rem; color:#818cf8;">#${item.id}</span>
             </div>
-            <div class="card-subtitle">${pet.raca} | ${servico.nome}</div>
+            <div class="card-subtitle">${pet.raca} | ${servico.nome} ${baia ? `| 🏠 ${baia.numero}` : ''}</div>
             
-            <div class="card-meta">
-                <span class="pet-tag">👤 Tutor: ${DB.get('clientes').find(c => c.id === pet.cliente_id)?.nome || 'Tutor'}</span>
+            <!-- Checklist Operacional no Card -->
+            <div class="kanban-checklist">
+                <label class="checklist-item ${chk.rasqueamento ? 'done' : ''}">
+                    <input type="checkbox" ${chk.rasqueamento ? 'checked' : ''} onchange="toggleChecklistKanban(${item.id}, 'rasqueamento', this.checked)">
+                    <span>Rasqueamento de Nós</span>
+                </label>
+                <label class="checklist-item ${chk.ouvidos ? 'done' : ''}">
+                    <input type="checkbox" ${chk.ouvidos ? 'checked' : ''} onchange="toggleChecklistKanban(${item.id}, 'ouvidos', this.checked)">
+                    <span>Limpeza de Ouvidos</span>
+                </label>
+                <label class="checklist-item ${chk.unhas ? 'done' : ''}">
+                    <input type="checkbox" ${chk.unhas ? 'checked' : ''} onchange="toggleChecklistKanban(${item.id}, 'unhas', this.checked)">
+                    <span>Corte de Unhas</span>
+                </label>
+                <label class="checklist-item ${chk.adereco ? 'done' : ''}">
+                    <input type="checkbox" ${chk.adereco ? 'checked' : ''} onchange="toggleChecklistKanban(${item.id}, 'adereco', this.checked)">
+                    <span>Lacinho / Gravata</span>
+                </label>
             </div>
-            
+
             <div class="card-actions">
                 ${item.status === 'Inspecao QC' ? `<button class="card-btn" onclick="inspeccionarQC(${item.id})">🔍 Aprovar QC</button>` : ''}
-                ${item.status === 'Aguardando Banho' && !item.possui_ectoparasitas ? `<button class="card-btn" onclick="relatarPulga(${item.id})">🪰 Relatar Pulga</button>` : ''}
+                ${item.status === 'Pronto' || item.status === 'Entregue' ? `<button class="card-btn" style="color:#818cf8;" onclick="abrirZootieModal(${item.id})">🐶 Boletim do Pet</button>` : ''}
                 <button class="card-btn" onclick="verDetalhesKanban(${item.id})">ℹ️ Info</button>
             </div>
         `;
@@ -361,6 +423,17 @@ function renderKanban() {
     });
 
     updateColumnCounts();
+}
+
+function toggleChecklistKanban(jobId, key, checked) {
+    const kanbanData = DB.get('agendamentos_kanban');
+    const item = kanbanData.find(k => k.id === jobId);
+    if (!item) return;
+
+    if (!item.checklist) item.checklist = {};
+    item.checklist[key] = checked;
+    DB.set('agendamentos_kanban', kanbanData);
+    renderKanban();
 }
 
 function getColumnIdByStatus(status) {
@@ -394,41 +467,6 @@ function updateColumnCounts() {
     });
 }
 
-document.querySelectorAll('.kanban-column').forEach(column => {
-    column.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        column.classList.add('drag-over');
-    });
-
-    column.addEventListener('dragleave', () => {
-        column.classList.remove('drag-over');
-    });
-
-    column.addEventListener('drop', (e) => {
-        column.classList.remove('drag-over');
-        const cardId = parseInt(e.dataTransfer.getData('text/plain'));
-        const targetStatus = getStatusByColumnId(column.id.replace('col-', ''));
-        
-        if (cardId && targetStatus) {
-            handleStatusTransition(cardId, targetStatus);
-        }
-    });
-});
-
-function getStatusByColumnId(colId) {
-    const map = {
-        'agendado': 'Agendado',
-        'rota': 'Em Rota de Busca',
-        'aguardando': 'Aguardando Banho',
-        'banho': 'No Banho',
-        'tosa': 'Em Tosa',
-        'qc': 'Inspecao QC',
-        'pronto': 'Pronto',
-        'entregue': 'Entregue'
-    };
-    return map[colId];
-}
-
 function handleStatusTransition(cardId, newStatus) {
     const kanbanData = DB.get('agendamentos_kanban');
     const item = kanbanData.find(k => k.id === cardId);
@@ -439,48 +477,34 @@ function handleStatusTransition(cardId, newStatus) {
     if (newStatus === 'No Banho' && pet.temperamento === 'Agressivo') {
         State.showToast(`🚨 ATENÇÃO: O pet ${pet.nome} é Agressivo. Exige focinheira antes de colocá-lo na banheira!`, 'error');
     }
-    
-    if (newStatus === 'No Banho' && item.possui_ectoparasitas) {
-        State.showToast(`⛔ BLOQUEIO: Este pet foi triado com Pulga/Carrapato. Ele DEVE passar pelo "Banho Antipulgas" e o orçamento extra deve ser aprovado.`, 'error');
-        return;
-    }
-
-    if (newStatus === 'Pronto' && !item.qc_aprovado && State.currentProfile !== 'Admin' && State.currentProfile !== 'Supervisor') {
-        State.showToast(`🛡️ APROVAÇÃO QC EXIGIDA: O supervisor precisa aprovar a inspeção de qualidade antes de liberar o pet como Pronto.`, 'error');
-        return;
-    }
 
     const oldStatus = item.status;
     item.status = newStatus;
     
-    let financeLog = '';
-    
     if ((newStatus === 'Pronto' || newStatus === 'Entregue') && !(oldStatus === 'Pronto' || oldStatus === 'Entregue')) {
+        // Commission calculation for Banhista / Tosador
+        const usuarios = DB.get('usuarios').filter(u => u.empresa_id === State.currentEmpresaId);
+        const tosador = usuarios.find(u => u.perfil === 'Banhista' || u.perfil === 'Supervisor') || usuarios[0];
         const servico = DB.get('servicos').find(s => s.id === item.servico_id);
+
+        if (tosador && servico) {
+            const percComissao = servico.nome.toLowerCase().includes('tosa') ? (tosador.comissao_tosa || 25) : (tosador.comissao_banho || 10);
+            const comissaoGerada = (servico.preco * percComissao) / 100;
+            tosador.comissao_acumulada = (tosador.comissao_acumulada || 0) + comissaoGerada;
+            DB.set('usuarios', DB.get('usuarios'));
+            State.showToast(`✂️ Comissão de R$ ${comissaoGerada.toFixed(2)} (${percComissao}%) creditada para ${tosador.nome}!`, 'success');
+        }
+
+        // Finance & Package deduction
         const cliente = DB.get('clientes').find(c => c.id === pet.cliente_id);
         const pacote = DB.get('pacotes_ativos').find(p => p.empresa_id === State.currentEmpresaId && p.cliente_id === cliente.id && p.quantidade_banhos > 0);
 
         if (pacote) {
             pacote.quantidade_banhos--;
             DB.set('pacotes_ativos', DB.get('pacotes_ativos'));
-            financeLog = `🎯 Baixado 1 banho do Pacote Ativo do cliente ${cliente.nome}. Restam: ${pacote.quantidade_banhos}.`;
-            State.showToast(financeLog, 'success');
+            State.showToast(`🎯 Baixado 1 banho do Pacote Ativo do cliente ${cliente.nome}. Restam: ${pacote.quantidade_banhos}.`, 'success');
         } else {
             const valorTotal = servico.preco + item.adicional_desembolo;
-            
-            const contas = DB.get('contas_receber') || [];
-            contas.push({
-                id: contas.length + 1,
-                empresa_id: State.currentEmpresaId,
-                cliente_id: cliente.id,
-                descricao: `${servico.nome} - Pet: ${pet.nome}`,
-                valor: valorTotal,
-                status: 'Pago',
-                origem: 'SERVICO_KANBAN',
-                data: new Date().toISOString()
-            });
-            DB.set('contas_receber', contas);
-
             const caixa = DB.get('movimentacoes_caixa') || [];
             caixa.push({
                 id: caixa.length + 1,
@@ -492,9 +516,6 @@ function handleStatusTransition(cardId, newStatus) {
                 data: new Date().toISOString()
             });
             DB.set('movimentacoes_caixa', caixa);
-            
-            financeLog = `💸 Receita de R$ ${valorTotal.toFixed(2)} gravada no caixa nativo. Webhook enviado para LOVI 10 (STATUS: SUCESSO).`;
-            State.showToast(financeLog, 'success');
         }
     }
 
@@ -505,140 +526,210 @@ function handleStatusTransition(cardId, newStatus) {
     State.showToast(`Pet ${pet.nome} movido para ${newStatus}.`, 'info');
 }
 
-function relatarPulga(id) {
-    const kanbanData = DB.get('agendamentos_kanban');
-    const item = kanbanData.find(k => k.id === id);
-    if (!item) return;
 
-    item.possui_ectoparasitas = true;
-    item.adicional_desembolo += 25.00;
-    item.servico_id = 3;
-    DB.set('agendamentos_kanban', kanbanData);
-    
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Triagem Exceção', `Relatado Ectoparasita no agendamento #${id}`);
-    renderKanban();
-    State.showToast(`🚨 Triagem: Ectoparasitas relatados! Orçamento de R$ 25,00 adicionais gerado e enviado ao tutor via WhatsApp.`, 'warning');
+// 6. VISUAL CAGE / BAIA GRID MODULE
+function renderBaiasGrid() {
+    const baias = (DB.get('baias') || []).filter(b => b.empresa_id === State.currentEmpresaId);
+    const pets = DB.get('pets') || [];
+    const container = document.getElementById('baia-grid-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    baias.forEach(b => {
+        const pet = pets.find(p => p.id === b.pet_id);
+        const card = document.createElement('div');
+        card.className = `baia-card ${b.status === 'Livre' ? 'livre' : 'ocupada'}`;
+        
+        card.innerHTML = `
+            <div class="baia-number">🏠 ${b.numero}</div>
+            <div class="baia-status">${b.status === 'Livre' ? '🟢 Livre' : '🔴 Ocupada'}</div>
+            <div class="baia-pet">${pet ? `${pet.especie === 'Gato' ? '🐱' : '🐶'} ${pet.nome}` : '-'}</div>
+        `;
+        container.appendChild(card);
+    });
 }
 
-function inspeccionarQC(id) {
-    const kanbanData = DB.get('agendamentos_kanban');
-    const item = kanbanData.find(k => k.id === id);
-    if (!item) return;
 
-    item.qc_aprovado = true;
-    DB.set('agendamentos_kanban', kanbanData);
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Aprovação QC', `Inspeção de Qualidade aprovada para agendamento #${id}`);
-    
-    State.showToast(`✅ QC Aprovado pelo Supervisor! O pet já pode ser marcado como Pronto.`, 'success');
-    handleStatusTransition(id, 'Pronto');
+// 7. ZOOTIE BEHAVIOR RATING MODAL & WHATSAPP GENERATOR
+function abrirZootieModal(jobId) {
+    document.getElementById('input-zootie-jobid').value = jobId;
+    openModal('modal-zootie');
 }
 
-function verDetalhesKanban(id) {
-    const item = DB.get('agendamentos_kanban').find(k => k.id === id);
+function salvarZootieBoletim(e) {
+    e.preventDefault();
+    const jobId = parseInt(document.getElementById('input-zootie-jobid').value);
+    const estrelas = document.getElementById('select-zootie-estrelas').value;
+    const secador = document.getElementById('select-zootie-secador').value;
+    const unhas = document.getElementById('select-zootie-unhas').value;
+    const obs = document.getElementById('input-zootie-obs').value;
+
+    const kanbanData = DB.get('agendamentos_kanban');
+    const item = kanbanData.find(k => k.id === jobId);
+    if (!item) return;
+
+    item.boletim_zootie = { estrelas, secador, unhas, obs };
+    DB.set('agendamentos_kanban', kanbanData);
+
     const pet = DB.get('pets').find(p => p.id === item.pet_id);
     const cliente = DB.get('clientes').find(c => c.id === pet.cliente_id);
-    const servico = DB.get('servicos').find(s => s.id === item.servico_id);
 
-    alert(`📋 Ficha Operacional PataForma #${id}
------------------------------------------
-Pet: ${pet.nome} (${pet.especie} - ${pet.raca})
-Temperamento: ${pet.temperamento}
-Tutor: ${cliente ? cliente.nome : 'Sem tutor'} (${cliente ? cliente.telefone : ''})
-Endereço: ${cliente ? cliente.endereco : ''}
-
-Serviço: ${servico.nome}
-Preço Base: R$ ${servico.preco.toFixed(2)}
-Adicionais: R$ ${item.adicional_desembolo.toFixed(2)}
-QC Aprovado: ${item.qc_aprovado ? 'Sim' : 'Não'}
-Status Atual: ${item.status}
-GPS de Entrega: ${item.latitude_entrega ? `${item.latitude_entrega}, ${item.longitude_entrega}` : 'Não registrado'}`);
+    closeModal('modal-zootie');
+    
+    const msg = `🐾 *BOLETIM DO PET - PATAFORMA* 🐾%0A%0AHlá ${cliente.nome}! Segue o boletim do *${pet.nome}* no banho hoje:%0A%0A⭐ Avaliação: ${'⭐'.repeat(parseInt(estrelas))}%0A💨 Secador: ${secador}%0A✂️ Unhas/Ouvidos: ${unhas}%0A💬 Recadinho: ${obs || 'Ficou super cheiroso e lindo!'}`;
+    
+    State.showToast(`🐶 Boletim do Pet ${pet.nome} gerado! Enviar no WhatsApp do Tutor.`, 'success');
+    window.open(`https://api.whatsapp.com/send?phone=55${cliente.telefone.replace(/\D/g, '')}&text=${msg}`, '_blank');
 }
 
 
-// 6. MASTER SAAS PANEL & AUDIT RENDERERS
-function renderMasterPanel() {
-    renderEmpresasTable();
-    renderAuditoriaTable();
+// 8. ERP PRODUCT MARGIN CALCULATOR & CRUD
+function calcularMargemProduto() {
+    const custo = parseFloat(document.getElementById('input-prod-custo').value) || 0;
+    const margem = parseFloat(document.getElementById('input-prod-margem').value) || 0;
+    
+    const precoVenda = custo * (1 + (margem / 100));
+    document.getElementById('input-prod-preco').value = precoVenda.toFixed(2);
+    
+    const lucro = precoVenda - custo;
+    document.getElementById('text-lucro-bruto').innerText = `R$ ${lucro.toFixed(2)}`;
 }
 
-function renderEmpresasTable() {
-    const empresas = DB.get('empresas') || [];
-    const tbody = document.getElementById('table-empresas-body');
+function calcularPrecoPorVenda() {
+    const custo = parseFloat(document.getElementById('input-prod-custo').value) || 0;
+    const precoVenda = parseFloat(document.getElementById('input-prod-preco').value) || 0;
+    
+    if (custo > 0) {
+        const margem = ((precoVenda - custo) / custo) * 100;
+        document.getElementById('input-prod-margem').value = margem.toFixed(1);
+    }
+    const lucro = precoVenda - custo;
+    document.getElementById('text-lucro-bruto').innerText = `R$ ${lucro.toFixed(2)}`;
+}
+
+function renderProdutosCrudTable() {
+    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    const lotes = DB.get('lotes_estoque') || [];
+    const tbody = document.getElementById('table-produtos-body');
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    empresas.forEach(emp => {
-        const modulosBadge = Object.keys(emp.modulos).filter(m => emp.modulos[m]).join(', ');
+    produtos.forEach(p => {
+        const totalEstoque = lotes.filter(l => l.produto_id === p.id && l.status === 'Disponivel').reduce((acc, curr) => acc + curr.quantidade, 0);
+        const custo = p.preco_custo || (p.preco * 0.6);
+        const margem = p.margem_lucro || 66.6;
+        const lucro = p.preco - custo;
+
+        const alertaMinimo = totalEstoque <= (p.estoque_minimo || 5) ? `<span class="alert-badge danger">⚠️ Baixo Estoque</span>` : '';
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><strong>${emp.nome}</strong></td>
-            <td><code>${emp.cnpj}</code></td>
-            <td>${emp.responsavel}</td>
-            <td><span class="validade-badge em-dia">${emp.plano}</span></td>
-            <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
-            <td style="font-size:0.75rem; color:var(--text-secondary);">${modulosBadge}</td>
             <td>
-                <button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button>
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <img src="${p.foto}" style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
+                    <div>
+                        <strong>${p.nome}</strong>
+                        <div style="font-size:0.7rem; color:var(--text-secondary);">${p.marca || 'PataForma'}</div>
+                    </div>
+                </div>
             </td>
+            <td><span class="product-category">${p.categoria}</span></td>
+            <td>R$ ${custo.toFixed(2)}</td>
+            <td><span class="validade-badge em-dia">${margem.toFixed(1)}%</span></td>
+            <td style="color:#10b981; font-weight:700;">R$ ${p.preco.toFixed(2)}</td>
+            <td style="color:#38bdf8; font-weight:700;">R$ ${lucro.toFixed(2)}</td>
+            <td>${totalEstoque} un ${alertaMinimo}</td>
+            <td><button class="card-btn" onclick="openModal('modal-produto')">+ Lote FEFO</button></td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-function renderAuditoriaTable() {
-    const logs = DB.get('logs_auditoria') || [];
-    const empresas = DB.get('empresas') || [];
-    const tbody = document.getElementById('table-auditoria-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    logs.slice().reverse().forEach(log => {
-        const emp = empresas.find(e => e.id === log.empresa_id);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${new Date(log.timestamp).toLocaleString('pt-BR')}</td>
-            <td><strong>${emp ? emp.nome : 'Global'}</strong></td>
-            <td><span class="validade-badge em-dia">${log.usuario}</span></td>
-            <td><strong>${log.acao}</strong></td>
-            <td style="font-size:0.8rem; color:var(--text-secondary);">${log.detalhe}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function salvarEmpresa(e) {
+function salvarProduto(e) {
     e.preventDefault();
-    const nome = document.getElementById('input-emp-nome').value;
-    const cnpj = document.getElementById('input-emp-cnpj').value;
-    const responsavel = document.getElementById('input-emp-responsavel').value;
-    const plano = document.getElementById('select-emp-plano').value;
-    const status = document.getElementById('select-emp-status').value;
+    const nome = document.getElementById('input-prod-nome').value;
+    const marca = document.getElementById('input-prod-marca').value;
+    const categoria = document.getElementById('input-prod-categoria').value;
+    const codigo_barras = document.getElementById('input-prod-codigo').value || null;
+    const estoque_minimo = parseInt(document.getElementById('input-prod-minimo').value) || 5;
+    const preco_custo = parseFloat(document.getElementById('input-prod-custo').value);
+    const margem_lucro = parseFloat(document.getElementById('input-prod-margem').value);
+    const preco = parseFloat(document.getElementById('input-prod-preco').value);
+    const fotoUrl = document.getElementById('input-prod-foto').value;
+    const qtdInicial = parseInt(document.getElementById('input-prod-qtd').value) || 10;
+    const vencimento = document.getElementById('input-prod-vencimento').value;
 
-    const modulos = {
-        kanban: document.getElementById('check-emp-kanban').checked,
-        taxi_dog: document.getElementById('check-emp-taxi').checked,
-        caixa: document.getElementById('check-emp-caixa').checked,
-        estoque: document.getElementById('check-emp-estoque').checked,
-        assinaturas: document.getElementById('check-emp-assinaturas').checked,
-        analytics: document.getElementById('check-emp-analytics').checked
-    };
+    const produtos = DB.get('produtos');
+    const lotes = DB.get('lotes_estoque');
+    
+    const newProdId = produtos.length > 0 ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
+    const foto = fotoUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>PROD</text></svg>";
 
-    const empresas = DB.get('empresas');
-    const newId = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
+    produtos.push({ id: newProdId, empresa_id: State.currentEmpresaId, nome, marca, categoria, codigo_barras, estoque_minimo, preco_custo, margem_lucro, preco, foto });
+    
+    const newLoteId = lotes.length > 0 ? Math.max(...lotes.map(l => l.id)) + 1 : 1;
+    lotes.push({
+        id: newLoteId,
+        empresa_id: State.currentEmpresaId,
+        produto_id: newProdId,
+        lote: `L-${newProdId}01`,
+        quantidade: qtdInicial,
+        data_vencimento: vencimento,
+        status: "Disponivel"
+    });
 
-    empresas.push({ id: newId, nome, cnpj, responsavel, plano, status, modulos });
-    DB.set('empresas', empresas);
+    DB.set('produtos', produtos);
+    DB.set('lotes_estoque', lotes);
 
-    DB.logAudit(newId, 'Master Super-Admin', 'Criação de Tenant', `Nova empresa cadastrada: ${nome} (Plano ${plano})`);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Produto ERP', `Produto ${nome} cadastrado com margem de ${margem_lucro}%`);
 
-    closeModal('modal-empresa');
-    renderMasterPanel();
-    renderEmpresasSelector();
-    State.showToast(`🏢 Empresa ${nome} cadastrada com sucesso no SaaS Master!`, 'success');
+    closeModal('modal-produto');
+    renderProdutosCrudTable();
+    State.showToast(`Produto ERP ${nome} cadastrado com sucesso!`, 'success');
 }
 
 
-// 7. CRUD REGISTRATION MODULES (FILTERED BY TENANT)
+// 9. DYNAMIC APPOINTMENT DURATION & PRICING CALCULATOR
+function atualizarOrcamentoDinâmicoAgendamento() {
+    const petSelect = document.getElementById('select-agendar-pet');
+    const servicoSelect = document.getElementById('select-agendar-servico');
+    const pelagemSelect = document.getElementById('select-agendar-pelagem');
+    const checkTaxi = document.getElementById('check-agendar-taxi');
+
+    if (!petSelect || !servicoSelect) return;
+
+    const petId = parseInt(petSelect.value);
+    const servicoId = parseInt(servicoSelect.value);
+    
+    const pet = DB.get('pets').find(p => p.id === petId);
+    const servico = DB.get('servicos').find(s => s.id === servicoId);
+
+    if (!pet || !servico) return;
+
+    let precoFinal = servico.preco;
+    let tempoEstimado = servico.duracao;
+
+    // Multiplicadores por Porte
+    if (pet.porte === 'Médio') { precoFinal += 10.00; tempoEstimado += 15; }
+    if (pet.porte === 'Grande') { precoFinal += 25.00; tempoEstimado += 30; }
+    if (pet.porte === 'Gigante') { precoFinal += 45.00; tempoEstimado += 45; }
+
+    // Multiplicadores por Pelagem
+    const pelagem = pelagemSelect ? pelagemSelect.value : 'Curta';
+    if (pelagem === 'Longa') { precoFinal += 15.00; tempoEstimado += 15; }
+    if (pelagem === 'Com Nós') { precoFinal += 35.00; tempoEstimado += 30; }
+
+    // Táxi Dog
+    const precisaTaxi = checkTaxi && checkTaxi.checked;
+    if (precisaTaxi) precoFinal += 20.00;
+
+    document.getElementById('calc-agendar-preco').innerText = `R$ ${precoFinal.toFixed(2)}`;
+    document.getElementById('calc-agendar-tempo').innerText = `${tempoEstimado} min`;
+    document.getElementById('calc-agendar-taxi').innerText = precisaTaxi ? 'Sim (+R$20)' : 'Não';
+}
+
+
+// 10. CLIENTS, PETS, STAFF & COMMISSIONS TABLES
 function renderClientesTable() {
     const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
@@ -653,7 +744,7 @@ function renderClientesTable() {
             <td><strong>${c.nome}</strong></td>
             <td>${c.telefone}</td>
             <td>${c.email || '-'}</td>
-            <td>${c.endereco}</td>
+            <td><span class="validade-badge em-dia">🎁 ${c.pontos_fidelidade || 0} pts</span></td>
             <td>${clientePets}</td>
             <td><button class="card-btn" onclick="abrirModalPetParaCliente(${c.id})">+ Add Pet</button></td>
         `;
@@ -675,7 +766,7 @@ function renderPetsTable() {
         tr.innerHTML = `
             <td><strong>${icon} ${p.nome}</strong></td>
             <td><span class="validade-badge em-dia">${p.especie}</span></td>
-            <td>${p.raca} (${p.porte || 'Médio'})</td>
+            <td>${p.raca} (${p.porte || 'Médio'} / ${p.pelagem || 'Curta'})</td>
             <td>${p.temperamento}</td>
             <td>${cliente ? cliente.nome : 'Sem tutor'}</td>
             <td>${p.vacinas_em_dia ? '✅ Em dia' : '❌ Pendente'}</td>
@@ -697,35 +788,9 @@ function renderFuncionariosTable() {
             <td><strong>${u.nome}</strong></td>
             <td><span class="validade-badge em-dia">${u.perfil}</span></td>
             <td>${u.cargo || u.perfil}</td>
-            <td>${u.email}</td>
-            <td>${u.kanban ? '📋 Kanban ' : ''}${u.caixa ? '🛒 Caixa ' : ''}${u.taxi_dog ? '🚕 Táxi ' : ''}${u.qc ? '🔍 QC' : ''}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function renderProdutosCrudTable() {
-    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
-    const lotes = DB.get('lotes_estoque') || [];
-    const tbody = document.getElementById('table-produtos-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    produtos.forEach(p => {
-        const totalEstoque = lotes.filter(l => l.produto_id === p.id && l.status === 'Disponivel').reduce((acc, curr) => acc + curr.quantidade, 0);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>
-                <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <img src="${p.foto}" style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
-                    <strong>${p.nome}</strong>
-                </div>
-            </td>
-            <td><span class="product-category">${p.categoria}</span></td>
-            <td><code>${p.codigo_barras || 'Sem código'}</code></td>
-            <td style="color:#10b981; font-weight:700;">R$ ${p.preco.toFixed(2)}</td>
-            <td>${totalEstoque} un</td>
-            <td><button class="card-btn" onclick="openModal('modal-produto')">+ Lote FEFO</button></td>
+            <td>${u.comissao_banho || 10}%</td>
+            <td>${u.comissao_tosa || 25}%</td>
+            <td style="color:#10b981; font-weight:700;">R$ ${(u.comissao_acumulada || 0).toFixed(2)}</td>
         `;
         tbody.appendChild(tr);
     });
@@ -762,6 +827,7 @@ function populateSelectOptions() {
     const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
     const pets = (DB.get('pets') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const servicos = (DB.get('servicos') || []).filter(s => s.empresa_id === State.currentEmpresaId);
+    const baias = (DB.get('baias') || []).filter(b => b.empresa_id === State.currentEmpresaId && b.status === 'Livre');
 
     const petSelect = document.getElementById('select-agendar-pet');
     if (petSelect) {
@@ -780,6 +846,14 @@ function populateSelectOptions() {
         });
     }
 
+    const baiaSelect = document.getElementById('select-agendar-baia');
+    if (baiaSelect) {
+        baiaSelect.innerHTML = '<option value="">Sem Baia Inicial</option>';
+        baias.forEach(b => {
+            baiaSelect.innerHTML += `<option value="${b.id}">🏠 ${b.numero} (Livre)</option>`;
+        });
+    }
+
     const clienteSubSelect = document.getElementById('select-assinar-cliente');
     if (clienteSubSelect) {
         clienteSubSelect.innerHTML = '';
@@ -787,10 +861,10 @@ function populateSelectOptions() {
             clienteSubSelect.innerHTML += `<option value="${c.id}">${c.nome} (${c.telefone})</option>`;
         });
     }
+
+    atualizarOrcamentoDinâmicoAgendamento();
 }
 
-
-// Save Handlers
 function salvarCliente(e) {
     e.preventDefault();
     const nome = document.getElementById('input-cliente-nome').value;
@@ -801,7 +875,7 @@ function salvarCliente(e) {
     const clientes = DB.get('clientes');
     const newId = clientes.length > 0 ? Math.max(...clientes.map(c => c.id)) + 1 : 1;
 
-    clientes.push({ id: newId, empresa_id: State.currentEmpresaId, nome, telefone, email, endereco, lat_lng: "-23.5505,-46.6333", ultima_visita: new Date().toISOString().split('T')[0] });
+    clientes.push({ id: newId, empresa_id: State.currentEmpresaId, nome, telefone, email, endereco, lat_lng: "-23.5505,-46.6333", pontos_fidelidade: 0, ultima_visita: new Date().toISOString().split('T')[0] });
     DB.set('clientes', clientes);
 
     DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Cliente', `Cliente ${nome} cadastrado`);
@@ -825,7 +899,7 @@ function salvarPet(e) {
     const pets = DB.get('pets');
     const newId = pets.length > 0 ? Math.max(...pets.map(p => p.id)) + 1 : 1;
 
-    pets.push({ id: newId, empresa_id: State.currentEmpresaId, cliente_id, nome, especie, raca, porte, temperamento, vacinas_em_dia, observacoes });
+    pets.push({ id: newId, empresa_id: State.currentEmpresaId, cliente_id, nome, especie, raca, porte, pelagem: 'Curta', temperamento, vacinas_em_dia, observacoes });
     DB.set('pets', pets);
 
     DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Pet', `Pet ${nome} (${especie}) cadastrado`);
@@ -841,142 +915,48 @@ function salvarFuncionario(e) {
     const email = document.getElementById('input-func-email').value;
     const cargo = document.getElementById('input-func-cargo').value;
     const perfil = document.getElementById('select-func-perfil').value;
-    
-    const kanban = document.getElementById('check-func-kanban').checked;
-    const caixa = document.getElementById('check-func-caixa').checked;
-    const taxi_dog = document.getElementById('check-func-taxi').checked;
-    const qc = document.getElementById('check-func-qc').checked;
+    const comissao_banho = parseFloat(document.getElementById('input-func-comissao-banho').value) || 10;
+    const comissao_tosa = parseFloat(document.getElementById('input-func-comissao-tosa').value) || 25;
 
     const usuarios = DB.get('usuarios');
     const newId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
 
-    usuarios.push({ id: newId, empresa_id: State.currentEmpresaId, nome, email, cargo, perfil, kanban, caixa, taxi_dog, qc });
+    usuarios.push({ id: newId, empresa_id: State.currentEmpresaId, nome, email, cargo, perfil, comissao_banho, comissao_tosa, comissao_acumulada: 0, kanban: true, caixa: true, taxi_dog: true, qc: true });
     DB.set('usuarios', usuarios);
 
     DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Funcionario', `Funcionário ${nome} (${perfil}) cadastrado`);
 
     closeModal('modal-funcionario');
     renderFuncionariosTable();
-    State.showToast(`Funcionário ${nome} (${perfil}) cadastrado com sucesso!`, 'success');
-}
-
-function salvarProduto(e) {
-    e.preventDefault();
-    const nome = document.getElementById('input-prod-nome').value;
-    const categoria = document.getElementById('input-prod-categoria').value;
-    const codigo_barras = document.getElementById('input-prod-codigo').value || null;
-    const preco = parseFloat(document.getElementById('input-prod-preco').value);
-    const fotoUrl = document.getElementById('input-prod-foto').value;
-    const qtdInicial = parseInt(document.getElementById('input-prod-qtd').value) || 10;
-    const vencimento = document.getElementById('input-prod-vencimento').value;
-
-    const produtos = DB.get('produtos');
-    const lotes = DB.get('lotes_estoque');
-    
-    const newProdId = produtos.length > 0 ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
-    const foto = fotoUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>PROD</text></svg>";
-
-    produtos.push({ id: newProdId, empresa_id: State.currentEmpresaId, nome, categoria, codigo_barras, preco, foto });
-    
-    const newLoteId = lotes.length > 0 ? Math.max(...lotes.map(l => l.id)) + 1 : 1;
-    lotes.push({
-        id: newLoteId,
-        empresa_id: State.currentEmpresaId,
-        produto_id: newProdId,
-        lote: `L-${newProdId}01`,
-        quantidade: qtdInicial,
-        data_vencimento: vencimento,
-        status: "Disponivel"
-    });
-
-    DB.set('produtos', produtos);
-    DB.set('lotes_estoque', lotes);
-
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Produto', `Produto ${nome} cadastrado com lote de estoque`);
-
-    closeModal('modal-produto');
-    renderProdutosCrudTable();
-    State.showToast(`Produto ${nome} cadastrado com lote inicial de estoque!`, 'success');
-}
-
-function salvarPlanoAssinatura(e) {
-    e.preventDefault();
-    const nome = document.getElementById('input-plano-nome').value;
-    const preco = parseFloat(document.getElementById('input-plano-preco').value);
-    const periodicidade = document.getElementById('select-plano-periodicidade').value;
-    const quantidade_banhos = parseInt(document.getElementById('input-plano-banhos').value);
-    const inclui_tosa = document.getElementById('check-plano-tosa').checked;
-    const descricao = document.getElementById('input-plano-desc').value;
-
-    const planos = DB.get('planos_assinatura');
-    const newId = planos.length > 0 ? Math.max(...planos.map(p => p.id)) + 1 : 1;
-
-    planos.push({ id: newId, empresa_id: State.currentEmpresaId, nome, preco, periodicidade, quantidade_banhos, inclui_tosa, descricao });
-    DB.set('planos_assinatura', planos);
-
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Criação Plano Assinatura', `Plano ${nome} (${periodicidade}) criado`);
-
-    closeModal('modal-plano');
-    renderAssinaturasCards();
-    State.showToast(`Plano de Assinatura ${nome} (${periodicidade}) criado!`, 'success');
-}
-
-function assinarPlanoConfirmar(e) {
-    e.preventDefault();
-    const clienteId = parseInt(document.getElementById('select-assinar-cliente').value);
-    const planoId = parseInt(document.getElementById('input-assinar-planoid').value);
-    
-    const planos = DB.get('planos_assinatura');
-    const plano = planos.find(p => p.id === planoId);
-    const cliente = DB.get('clientes').find(c => c.id === clienteId);
-    
-    const pacotes = DB.get('pacotes_ativos');
-    const newId = pacotes.length > 0 ? Math.max(...pacotes.map(p => p.id)) + 1 : 1;
-
-    pacotes.push({
-        id: newId,
-        empresa_id: State.currentEmpresaId,
-        cliente_id: clienteId,
-        plano_id: planoId,
-        quantidade_banhos: plano.quantidade_banhos,
-        data_aquisicao: new Date().toISOString().split('T')[0],
-        status: "Ativo"
-    });
-
-    const movimentacoes = DB.get('movimentacoes_caixa');
-    movimentacoes.push({
-        id: movimentacoes.length + 1,
-        empresa_id: State.currentEmpresaId,
-        tipo: 'ENTRADA',
-        categoria: 'Assinatura Recorrente',
-        descricao: `Venda de Assinatura ${plano.nome} (${plano.periodicidade}) para ${cliente.nome}`,
-        valor: plano.preco,
-        data: new Date().toISOString()
-    });
-
-    DB.set('pacotes_ativos', pacotes);
-    DB.set('movimentacoes_caixa', movimentacoes);
-
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Ativação Assinatura', `Cliente ${cliente.nome} assinou ${plano.nome}`);
-
-    closeModal('modal-assinar');
-    State.showToast(`🎉 Assinatura ${plano.nome} ativada para o cliente ${cliente.nome}! Saldo: ${plano.quantidade_banhos} banhos.`, 'success');
+    State.showToast(`Funcionário ${nome} cadastrado com sucesso!`, 'success');
 }
 
 function criarAgendamento(e) {
     e.preventDefault();
     const petId = parseInt(document.getElementById('select-agendar-pet').value);
     const servicoId = parseInt(document.getElementById('select-agendar-servico').value);
+    const baiaId = document.getElementById('select-agendar-baia').value ? parseInt(document.getElementById('select-agendar-baia').value) : null;
     const taxiDog = document.getElementById('check-agendar-taxi').checked;
 
     const kanbanData = DB.get('agendamentos_kanban');
     const newId = kanbanData.length > 0 ? Math.max(...kanbanData.map(k => k.id)) + 1 : 1;
+
+    if (baiaId) {
+        const baias = DB.get('baias');
+        const baia = baias.find(b => b.id === baiaId);
+        if (baia) {
+            baia.status = 'Ocupada';
+            baia.pet_id = petId;
+            DB.set('baias', baias);
+        }
+    }
 
     kanbanData.push({
         id: newId,
         empresa_id: State.currentEmpresaId,
         pet_id: petId,
         servico_id: servicoId,
+        baia_id: baiaId,
         status: taxiDog ? "Em Rota de Busca" : "Agendado",
         data_agendamento: new Date().toISOString(),
         possui_ectoparasitas: false,
@@ -984,7 +964,9 @@ function criarAgendamento(e) {
         qc_aprovado: false,
         latitude_entrega: null,
         longitude_entrega: null,
-        foto_comprovante_url: null
+        foto_comprovante_url: null,
+        checklist: { rasqueamento: false, ouvidos: false, unhas: false, adereco: false, perfume: false },
+        boletim_zootie: null
     });
 
     DB.set('agendamentos_kanban', kanbanData);
@@ -995,40 +977,8 @@ function criarAgendamento(e) {
     State.showToast(`Agendamento #${newId} criado com sucesso no Kanban!`, 'success');
 }
 
-// Modal Helpers
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) modal.classList.add('active');
-}
 
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) modal.classList.remove('active');
-}
-
-function abrirModalPetParaCliente(clienteId) {
-    openModal('modal-pet');
-    const tutorSelect = document.getElementById('select-pet-tutor');
-    if (tutorSelect) tutorSelect.value = clienteId;
-}
-
-function abrirModalAssinarPlano(planoId) {
-    openModal('modal-assinar');
-    const inputPlanoId = document.getElementById('input-assinar-planoid');
-    if (inputPlanoId) inputPlanoId.value = planoId;
-}
-
-function abrirModalNovoPet() {
-    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
-    const select = document.getElementById('select-pet-tutor');
-    if (!select) return;
-    select.innerHTML = '';
-    clientes.forEach(c => select.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
-    openModal('modal-pet');
-}
-
-
-// 8. POS / CAIXA SCREEN
+// 11. POS CAIXA WITH LOYALTY POINTS
 function renderCaixa() {
     const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const catalogContainer = document.getElementById('pos-catalog');
@@ -1089,14 +1039,6 @@ function updateCartQty(productId, delta) {
     const cartItem = State.cart.find(c => c.id === productId);
     if (!cartItem) return;
 
-    const lotes = DB.get('lotes_estoque').filter(l => l.produto_id === productId && l.status === 'Disponivel');
-    const totalEstoque = lotes.reduce((acc, curr) => acc + curr.quantidade, 0);
-
-    if (delta > 0 && cartItem.qty >= totalEstoque) {
-        State.showToast(`Estoque total atingido!`, 'error');
-        return;
-    }
-
     cartItem.qty += delta;
     if (cartItem.qty <= 0) {
         State.cart = State.cart.filter(c => c.id !== productId);
@@ -1142,18 +1084,16 @@ function checkoutPOS() {
 
     const lotes = DB.get('lotes_estoque');
     const movimentacoes = DB.get('movimentacoes_caixa');
-    const contas = DB.get('contas_receber');
+    const clientes = DB.get('clientes');
     
     State.cart.forEach(item => {
         let qtyToDeduct = item.qty;
-        
         const productLots = lotes
             .filter(l => l.produto_id === item.id && l.status === 'Disponivel')
             .sort((a, b) => new Date(a.data_vencimento) - new Date(b.data_vencimento));
 
         for (let lot of productLots) {
             if (qtyToDeduct <= 0) break;
-
             if (lot.quantidade >= qtyToDeduct) {
                 lot.quantidade -= qtyToDeduct;
                 qtyToDeduct = 0;
@@ -1161,48 +1101,41 @@ function checkoutPOS() {
                 qtyToDeduct -= lot.quantidade;
                 lot.quantidade = 0;
             }
-
-            if (lot.quantidade === 0) {
-                lot.status = 'Esgotado';
-            }
+            if (lot.quantidade === 0) lot.status = 'Esgotado';
         }
     });
 
     const totalCheckout = State.cart.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+    const pontosGanhos = Math.floor(totalCheckout);
+
+    // Add points to default client
+    if (clientes && clientes.length > 0) {
+        clientes[0].pontos_fidelidade = (clientes[0].pontos_fidelidade || 0) + pontosGanhos;
+        DB.set('clientes', clientes);
+    }
     
     movimentacoes.push({
         id: movimentacoes.length + 1,
         empresa_id: State.currentEmpresaId,
         tipo: 'ENTRADA',
         categoria: 'Venda Balcão',
-        descricao: `Venda de Produtos (${State.cart.map(c => `${c.qty}x ${c.nome}`).join(', ')})`,
+        descricao: `Venda POS (${State.cart.map(c => `${c.qty}x ${c.nome}`).join(', ')})`,
         valor: totalCheckout,
-        data: new Date().toISOString()
-    });
-
-    contas.push({
-        id: contas.length + 1,
-        empresa_id: State.currentEmpresaId,
-        cliente_id: 1,
-        descricao: `Venda de Balcão: Itens diversos`,
-        valor: totalCheckout,
-        status: 'Pago',
-        origem: 'VENDA_BALCAO',
         data: new Date().toISOString()
     });
 
     DB.set('lotes_estoque', lotes);
     DB.set('movimentacoes_caixa', movimentacoes);
-    DB.set('contas_receber', contas);
 
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Venda POS', `Venda de balcão concluída no valor de R$ ${totalCheckout.toFixed(2)}`);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Venda POS', `Venda de balcão concluída no valor de R$ ${totalCheckout.toFixed(2)} (+${pontosGanhos} pts fidelidade)`);
 
-    State.showToast(`💸 Venda concluída! Total R$ ${totalCheckout.toFixed(2)}.`, 'success');
+    State.showToast(`💸 Venda concluída! Total R$ ${totalCheckout.toFixed(2)}. (+${pontosGanhos} Pontos de Fidelidade gerados!)`, 'success');
     State.cart = [];
     renderCaixa();
 }
 
-// 9. ESTOQUE FEFO VISUALIZATION
+
+// 12. ESTOQUE FEFO & ANALYTICS
 function renderEstoque() {
     const lotes = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
     const produtos = DB.get('produtos') || [];
@@ -1218,16 +1151,7 @@ function renderEstoque() {
         const hoje = new Date();
         const diffDays = Math.ceil((expDate - hoje) / (1000 * 60 * 60 * 24));
 
-        let badgeHTML = '';
-        if (l.status === 'Esgotado') {
-            badgeHTML = `<span class="validade-badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted);">Esgotado</span>`;
-        } else if (diffDays < 0) {
-            badgeHTML = `<span class="validade-badge vencido">Vencido (${Math.abs(diffDays)} dias atrás)</span>`;
-        } else if (diffDays <= 15) {
-            badgeHTML = `<span class="validade-badge vencendo">Crítico (Vence em ${diffDays} dias)</span>`;
-        } else {
-            badgeHTML = `<span class="validade-badge em-dia">Em dia (${diffDays} dias)</span>`;
-        }
+        let badgeHTML = l.status === 'Esgotado' ? `<span class="validade-badge">Esgotado</span>` : (diffDays <= 15 ? `<span class="validade-badge vencendo">Crítico (${diffDays}d)</span>` : `<span class="validade-badge em-dia">Em dia</span>`);
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -1241,7 +1165,36 @@ function renderEstoque() {
     });
 }
 
-// 10. TAXI DOG DRIVER MOBILE VIEW
+function renderAnalytics() {
+    const movimentacoes = (DB.get('movimentacoes_caixa') || []).filter(m => m.empresa_id === State.currentEmpresaId);
+    const usuarios = (DB.get('usuarios') || []).filter(u => u.empresa_id === State.currentEmpresaId);
+
+    const faturamentoBruto = movimentacoes.filter(m => m.tipo === 'ENTRADA').reduce((acc, curr) => acc + curr.valor, 0);
+    const totalComissoes = usuarios.reduce((acc, curr) => acc + (curr.comissao_acumulada || 0), 0);
+    const ticketMedio = movimentacoes.length > 0 ? (faturamentoBruto / movimentacoes.length) : 0;
+
+    if (document.getElementById('stat-faturamento')) document.getElementById('stat-faturamento').innerText = `R$ ${faturamentoBruto.toFixed(2)}`;
+    if (document.getElementById('stat-ticket')) document.getElementById('stat-ticket').innerText = `R$ ${ticketMedio.toFixed(2)}`;
+    if (document.getElementById('stat-comissoes')) document.getElementById('stat-comissoes').innerText = `R$ ${totalComissoes.toFixed(2)}`;
+
+    const tableBody = document.getElementById('table-receitas-body');
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+    
+    movimentacoes.slice().reverse().forEach(m => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${new Date(m.data).toLocaleDateString('pt-BR')}</td>
+            <td>${m.descricao}</td>
+            <td><span class="validade-badge em-dia">${m.categoria}</span></td>
+            <td style="color:#10b981; font-weight:700;">+ R$ ${m.valor.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+}
+
+
+// 13. TAXI DOG DRIVER MOBILE VIEW
 function renderTaxiDog() {
     const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
@@ -1264,9 +1217,7 @@ function renderTaxiDog() {
 
         const card = document.createElement('div');
         card.className = 'driver-card';
-        
         let headerLabel = job.status === 'Em Rota de Busca' ? '📌 Coleta no Tutor' : '🚚 Devolução ao Tutor';
-        let actionLabel = job.status === 'Em Rota de Busca' ? 'Confirmar Chegada na Loja' : 'Confirmar Entrega GPS';
 
         card.innerHTML = `
             <div style="font-weight:700; color:#818cf8; margin-bottom:0.5rem;">${headerLabel}</div>
@@ -1294,7 +1245,7 @@ function renderTaxiDog() {
             </div>
             
             <button class="btn-mobile-primary" style="width:100%; margin-top:0.75rem;" onclick="finalizarEntregaTaxi(${job.id}, '${job.status}')">
-                ✅ ${actionLabel}
+                ✅ Confirmar Operação
             </button>
         `;
         container.appendChild(card);
@@ -1307,8 +1258,6 @@ function capturarLocalizacao(jobId) {
         display.innerHTML = `<span>❌ GPS não suportado</span>`;
         return;
     }
-
-    display.innerHTML = `<span>⏳ Obtendo coordenadas...</span>`;
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -1323,14 +1272,12 @@ function capturarLocalizacao(jobId) {
                 item.longitude_entrega = lng;
                 DB.set('agendamentos_kanban', kanbanData);
             }
-            State.showToast("Coordenadas GPS registradas com sucesso!", "success");
+            State.showToast("GPS gravado no servidor!", "success");
         },
         (error) => {
-            console.error(error);
             const mockLat = "-23.56" + Math.floor(Math.random() * 900 + 100);
             const mockLng = "-46.65" + Math.floor(Math.random() * 900 + 100);
             display.innerHTML = `<span>⚠️ Mock GPS: Lat ${mockLat}, Lng ${mockLng}</span>`;
-            
             const kanbanData = DB.get('agendamentos_kanban');
             const item = kanbanData.find(k => k.id === jobId);
             if (item) {
@@ -1338,7 +1285,7 @@ function capturarLocalizacao(jobId) {
                 item.longitude_entrega = mockLng;
                 DB.set('agendamentos_kanban', kanbanData);
             }
-            State.showToast("GPS Permitido como MOCK", "warning");
+            State.showToast("GPS MOCK Registrado", "warning");
         }
     );
 }
@@ -1350,8 +1297,7 @@ function capturarFoto(jobId) {
 
     if (State.cameraStream) {
         const canvas = document.createElement('canvas');
-        canvas.width = 640;
-        canvas.height = 480;
+        canvas.width = 640; canvas.height = 480;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         
@@ -1369,8 +1315,7 @@ function capturarFoto(jobId) {
             item.foto_comprovante_url = photoData;
             DB.set('agendamentos_kanban', kanbanData);
         }
-        
-        State.showToast("Foto do Pet salva!", "success");
+        State.showToast("Foto salva com sucesso!", "success");
     } else {
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
             .then(stream => {
@@ -1378,10 +1323,8 @@ function capturarFoto(jobId) {
                 video.srcObject = stream;
                 video.style.display = 'block';
                 placeholder.style.display = 'none';
-                imgPreview.style.display = 'none';
             })
             .catch(err => {
-                console.error(err);
                 const fallbackImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='20' fill='%2310b981'/><text x='50' y='55' font-size='8' fill='white' text-anchor='middle'>PET_OK</text></svg>";
                 imgPreview.src = fallbackImg;
                 imgPreview.style.display = 'block';
@@ -1393,7 +1336,7 @@ function capturarFoto(jobId) {
                     item.foto_comprovante_url = fallbackImg;
                     DB.set('agendamentos_kanban', kanbanData);
                 }
-                State.showToast("Câmera emulada (Sem permissão de hardware)", "warning");
+                State.showToast("Foto emulada com sucesso", "warning");
             });
     }
 }
@@ -1413,66 +1356,100 @@ function finalizarEntregaTaxi(jobId, currentStatus) {
     } else {
         handleStatusTransition(jobId, 'Entregue');
     }
-    
     renderTaxiDog();
 }
 
-// 11. DASHBOARD ANALYTICS
-function renderAnalytics() {
-    const contas = (DB.get('contas_receber') || []).filter(c => c.empresa_id === State.currentEmpresaId);
-    const kanban = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
-    const lotes = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
+function renderMasterPanel() {
+    renderEmpresasTable();
+    renderAuditoriaTable();
+}
 
-    const faturamentoBruto = contas
-        .filter(c => c.status === 'Pago')
-        .reduce((acc, curr) => acc + curr.valor, 0);
+function renderEmpresasTable() {
+    const empresas = DB.get('empresas') || [];
+    const tbody = document.getElementById('table-empresas-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
 
-    const ticketMedio = contas.length > 0 ? (faturamentoBruto / contas.length) : 0;
-
-    const hoje = new Date();
-    const lotesCriticos = lotes.filter(l => {
-        if (l.status === 'Esgotado') return false;
-        const diffDays = Math.ceil((new Date(l.data_vencimento) - hoje) / (1000 * 60 * 60 * 24));
-        return diffDays <= 15;
-    }).length;
-
-    const servicosConcluidos = kanban.filter(k => k.status === 'Pronto' || k.status === 'Entregue').length;
-
-    const elemFaturamento = document.getElementById('stat-faturamento');
-    if (elemFaturamento) elemFaturamento.innerText = `R$ ${faturamentoBruto.toFixed(2)}`;
-
-    const elemTicket = document.getElementById('stat-ticket');
-    if (elemTicket) elemTicket.innerText = `R$ ${ticketMedio.toFixed(2)}`;
-
-    const elemConcluidos = document.getElementById('stat-concluidos');
-    if (elemConcluidos) elemConcluidos.innerText = `${servicosConcluidos} pets`;
-
-    const elemCriticos = document.getElementById('stat-criticos');
-    if (elemCriticos) elemCriticos.innerText = `${lotesCriticos} lotes`;
-
-    const tableBody = document.getElementById('table-receitas-body');
-    if (!tableBody) return;
-    tableBody.innerHTML = '';
-    
-    contas.slice().reverse().forEach(c => {
+    empresas.forEach(emp => {
+        const modulosBadge = Object.keys(emp.modulos).filter(m => emp.modulos[m]).join(', ');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${new Date(c.data).toLocaleDateString('pt-BR')}</td>
-            <td>${c.descricao}</td>
-            <td><span class="validade-badge em-dia">${c.origem}</span></td>
-            <td style="color:#10b981; font-weight:700;">+ R$ ${c.valor.toFixed(2)}</td>
+            <td><strong>${emp.nome}</strong></td>
+            <td><code>${emp.cnpj}</code></td>
+            <td>${emp.responsavel}</td>
+            <td><span class="validade-badge em-dia">${emp.plano}</span></td>
+            <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
+            <td style="font-size:0.75rem; color:var(--text-secondary);">${modulosBadge}</td>
+            <td>
+                <button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button>
+            </td>
         `;
-        tableBody.appendChild(tr);
+        tbody.appendChild(tr);
     });
 }
 
-// 12. EVENT BINDING FOR INITIAL LOAD
+function renderAuditoriaTable() {
+    const logs = DB.get('logs_auditoria') || [];
+    const empresas = DB.get('empresas') || [];
+    const tbody = document.getElementById('table-auditoria-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    logs.slice().reverse().forEach(log => {
+        const emp = empresas.find(e => e.id === log.empresa_id);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${new Date(log.timestamp).toLocaleString('pt-BR')}</td>
+            <td><strong>${emp ? emp.nome : 'Global'}</strong></td>
+            <td><span class="validade-badge em-dia">${log.usuario}</span></td>
+            <td><strong>${log.acao}</strong></td>
+            <td style="font-size:0.8rem; color:var(--text-secondary);">${log.detalhe}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add('active');
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.remove('active');
+}
+
+function abrirModalPetParaCliente(clienteId) {
+    openModal('modal-pet');
+    const tutorSelect = document.getElementById('select-pet-tutor');
+    if (tutorSelect) tutorSelect.value = clienteId;
+}
+
+function abrirModalAssinarPlano(planoId) {
+    openModal('modal-assinar');
+    const inputPlanoId = document.getElementById('input-assinar-planoid');
+    if (inputPlanoId) inputPlanoId.value = planoId;
+}
+
+function abrirModalNovoPet() {
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const select = document.getElementById('select-pet-tutor');
+    if (!select) return;
+    select.innerHTML = '';
+    clientes.forEach(c => select.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
+    openModal('modal-pet');
+}
+
+// 14. EVENT BINDING FOR INITIAL LOAD & DEEP LINKS
 window.addEventListener('DOMContentLoaded', () => {
     const profileSelector = document.getElementById('current-profile-select');
-    profileSelector.addEventListener('change', (e) => {
-        applyRBAC(e.target.value);
-    });
+    if (profileSelector) {
+        profileSelector.addEventListener('change', (e) => {
+            applyRBAC(e.target.value);
+        });
+    }
 
     renderEmpresasSelector();
     applyRBAC('Admin');
+    handleUrlDeepLinks();
 });
