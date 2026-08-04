@@ -3,18 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PataForma — Gestão Inteligente de Pet Shop</title>
+    <title>PataForma — Gestão Inteligente de Pet Shop (B2B SaaS Multi-Tenant)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Top Bar for Master Super-Admin -->
+    <div class="master-bar" id="master-top-bar" style="display: none;">
+        <div>
+            <span class="master-badge">👑 Master Super-Admin SaaS</span>
+            <span style="margin-left: 0.5rem; color: #fef08a;">PataForma Governance Control</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span>Empresa Ativa no SaaS:</span>
+            <select id="select-empresa-ativa" onchange="trocarEmpresaAtiva(this.value)" style="background:#0f172a; color:#fbbf24; border:1px solid rgba(245,158,11,0.4); border-radius:6px; padding:0.2rem 0.5rem; font-weight:600; cursor:pointer;">
+                <!-- Empresas loaded dynamically -->
+            </select>
+            <button onclick="logoutMaster()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem; font-weight:600;">Sair Master</button>
+        </div>
+    </div>
 
     <!-- Header & Controls -->
     <header class="glass-panel">
         <div class="logo-area">
             <span class="logo-icon">🐾</span>
             <div class="logo-text">
-                <h1>PataForma</h1>
-                <p>Operação do banho ao caixa</p>
+                <h1 id="current-company-name">PataForma</h1>
+                <p>Operação do banho ao caixa — B2B SaaS</p>
             </div>
         </div>
 
@@ -22,14 +37,17 @@
             <!-- Connection Status -->
             <div class="status-indicator" id="online-status">
                 <span class="status-dot"></span>
-                <span>PWA Online</span>
+                <span>PWA Multi-Tenant</span>
             </div>
+
+            <!-- Master Login Trigger -->
+            <button class="btn-master" onclick="openModal('modal-login-master')">👑 Master Login</button>
 
             <!-- Role Selector (RBAC simulation) -->
             <div class="role-selector">
                 <label for="current-profile-select" style="font-size: 0.8rem; color: var(--text-secondary); margin-right: 0.25rem;">Perfil:</label>
                 <select id="current-profile-select">
-                    <option value="Admin">Admin (Ver Tudo)</option>
+                    <option value="Admin">Admin da Loja</option>
                     <option value="Supervisor">Supervisor de Estética</option>
                     <option value="Recepcao">Recepção / Atendente</option>
                     <option value="Banhista">Banhista / Tosador</option>
@@ -47,6 +65,7 @@
         <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Estoque FEFO</button>
         <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
         <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
+        <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #fbbf24;">👑 Master SaaS & Governança</button>
     </nav>
 
     <!-- 1. KANBAN SECTION -->
@@ -57,7 +76,6 @@
         </div>
 
         <div class="kanban-board">
-            <!-- Column 1: Agendado -->
             <div class="kanban-column col-agendado" id="col-agendado">
                 <div class="column-header">
                     <h3>📅 Agendado</h3>
@@ -66,7 +84,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 2: Em Rota de Busca -->
             <div class="kanban-column col-em-rota" id="col-rota">
                 <div class="column-header">
                     <h3>🚚 Busca</h3>
@@ -75,7 +92,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 3: Aguardando Banho -->
             <div class="kanban-column col-agendado" id="col-aguardando">
                 <div class="column-header">
                     <h3>🛁 Triagem / Fila</h3>
@@ -84,7 +100,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 4: No Banho -->
             <div class="kanban-column col-no-banho" id="col-banho">
                 <div class="column-header">
                     <h3>🧼 Banho</h3>
@@ -93,7 +108,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 5: Em Tosa -->
             <div class="kanban-column col-em-tosa" id="col-tosa">
                 <div class="column-header">
                     <h3>✂️ Tosa</h3>
@@ -102,7 +116,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 6: Inspeção QC -->
             <div class="kanban-column col-qc" id="col-qc">
                 <div class="column-header">
                     <h3>🔍 Inspeção QC</h3>
@@ -111,7 +124,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 7: Pronto -->
             <div class="kanban-column col-pronto" id="col-pronto">
                 <div class="column-header">
                     <h3>✨ Pronto</h3>
@@ -120,7 +132,6 @@
                 <div class="kanban-column-cards"></div>
             </div>
 
-            <!-- Column 8: Entregue -->
             <div class="kanban-column col-entregue" id="col-entregue">
                 <div class="column-header">
                     <h3>🏡 Entregue</h3>
@@ -133,7 +144,6 @@
 
     <!-- 2. CADASTROS & ASSINATURAS SECTION -->
     <section class="view-section" id="section-cadastros">
-        <!-- Sub Navigation for Management Modules -->
         <div class="sub-nav">
             <button class="sub-nav-btn active" id="subnav-clientes" onclick="switchSubTab('clientes')">👤 Clientes (Tutores)</button>
             <button class="sub-nav-btn" id="subnav-pets" onclick="switchSubTab('pets')">🐾 Pets (Cães & Gatos)</button>
@@ -142,7 +152,6 @@
             <button class="sub-nav-btn" id="subnav-assinaturas" onclick="switchSubTab('assinaturas')">💳 Assinaturas & Pacotes</button>
         </div>
 
-        <!-- SubView: Clientes -->
         <div class="sub-view active" id="subview-clientes">
             <div class="action-header">
                 <h3>Gestão de Tutores / Clientes</h3>
@@ -165,7 +174,6 @@
             </div>
         </div>
 
-        <!-- SubView: Pets -->
         <div class="sub-view" id="subview-pets">
             <div class="action-header">
                 <h3>Gestão de Pets (Cães & Gatos)</h3>
@@ -189,7 +197,6 @@
             </div>
         </div>
 
-        <!-- SubView: Funcionários -->
         <div class="sub-view" id="subview-funcionarios">
             <div class="action-header">
                 <h3>Equipe de Funcionários e Permissões (RBAC)</h3>
@@ -211,7 +218,6 @@
             </div>
         </div>
 
-        <!-- SubView: Catálogo Produtos -->
         <div class="sub-view" id="subview-produtos-crud">
             <div class="action-header">
                 <h3>Catálogo de Produtos & Gestão de Estoque FEFO</h3>
@@ -234,15 +240,12 @@
             </div>
         </div>
 
-        <!-- SubView: Assinaturas & Pacotes -->
         <div class="sub-view" id="subview-assinaturas">
             <div class="action-header">
                 <h3>Planos de Assinatura Recorrente & Pacotes Banhos</h3>
                 <button class="btn-primary" onclick="openModal('modal-plano')">➕ Criar Novo Plano</button>
             </div>
-            <div class="grid-container" id="planos-cards-container">
-                <!-- Subscription plan cards dynamically rendered -->
-            </div>
+            <div class="grid-container" id="planos-cards-container"></div>
         </div>
     </section>
 
@@ -278,9 +281,6 @@
     <!-- 4. STOCK FEFO SECTION -->
     <section class="view-section" id="section-estoque">
         <h2 style="margin-bottom: 1rem; font-weight: 600;">Inventário de Lotes (Regra FEFO Ativa)</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
-            O estoque de rações e itens perecíveis realiza baixa automática priorizando os lotes com vencimento mais próximo (First-Expired, First-Out).
-        </p>
         <div class="glass-panel table-panel">
             <table class="data-table">
                 <thead>
@@ -362,7 +362,129 @@
         </div>
     </section>
 
-    <!-- ================= MODAIS DE CADASTRO ================= -->
+    <!-- 7. MASTER SAAS & GOVERNANCE SECTION -->
+    <section class="view-section" id="section-master-saas">
+        <div class="action-header">
+            <h2 style="font-weight: 600; color: #fbbf24;">👑 Painel Master Super-Admin (PataForma B2B SaaS)</h2>
+            <button class="btn-master" onclick="openModal('modal-empresa')">🏢 Cadastrar Nova Empresa</button>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Empresas Contratantes do SaaS (Pet Shops)</h3>
+        <div class="glass-panel table-panel" style="margin-bottom: 2rem;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Razão Social / Fantasia</th>
+                        <th>CNPJ</th>
+                        <th>Responsável</th>
+                        <th>Plano SaaS</th>
+                        <th>Status Contrato</th>
+                        <th>Módulos Liberados</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="table-empresas-body"></tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; font-weight: 600; color: #38bdf8;">🛡️ Trilha de Auditoria & Governança de Dados (Audit Logs)</h3>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data / Hora</th>
+                        <th>Empresa (Tenant)</th>
+                        <th>Usuário</th>
+                        <th>Ação Realizada</th>
+                        <th>Detalhes da Operação</th>
+                    </tr>
+                </thead>
+                <tbody id="table-auditoria-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ================= MODAIS ================= -->
+
+    <!-- Modal Login Master Super-Admin -->
+    <div class="modal-overlay" id="modal-login-master">
+        <div class="glass-panel modal-content" style="border-color: rgba(245, 158, 11, 0.4);">
+            <div class="modal-header">
+                <h3 style="color: #fbbf24;">👑 Autenticação Master Super-Admin</h3>
+                <button class="modal-close" onclick="closeModal('modal-login-master')">&times;</button>
+            </div>
+            <form onsubmit="loginMasterSubmit(event)">
+                <div class="form-group">
+                    <label>Usuário Master:</label>
+                    <input type="text" id="input-master-user" placeholder="pataforma" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha Master:</label>
+                    <input type="password" id="input-master-pass" placeholder="abc@123" required>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    💡 Dica: Usuário padrão <code>pataforma</code> e senha <code>abc@123</code>.
+                </p>
+                <button type="submit" class="btn-master" style="width: 100%;">Entrar como Master</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Cadastrar Empresa SaaS -->
+    <div class="modal-overlay" id="modal-empresa">
+        <div class="glass-panel modal-content">
+            <div class="modal-header">
+                <h3 style="color: #fbbf24;">🏢 Cadastrar Empresa Contratante (SaaS)</h3>
+                <button class="modal-close" onclick="closeModal('modal-empresa')">&times;</button>
+            </div>
+            <form onsubmit="salvarEmpresa(event)">
+                <div class="form-group">
+                    <label>Nome Fantasia do Pet Shop:</label>
+                    <input type="text" id="input-emp-nome" placeholder="ex: PetCare Moema" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CNPJ / CPF Responsável:</label>
+                        <input type="text" id="input-emp-cnpj" placeholder="00.000.000/0001-00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome do Responsável:</label>
+                        <input type="text" id="input-emp-responsavel" placeholder="ex: Roberto Silva" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Plano SaaS Contratado:</label>
+                        <select id="select-emp-plano">
+                            <option value="Basic">Basic (Só Kanban)</option>
+                            <option value="Pro" selected>Pro (Kanban, Caixa, Estoque)</option>
+                            <option value="Enterprise VIP">Enterprise VIP (Tudo Liberado)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status da Conta:</label>
+                        <select id="select-emp-status">
+                            <option value="Ativo">Ativo</option>
+                            <option value="Testes">Período de Testes (14 dias)</option>
+                            <option value="Suspenso">Suspenso por Inadimplência</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Módulos Liberados para esta Loja (Toggles):</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem;">
+                        <label><input type="checkbox" id="check-emp-kanban" checked> Kanban Operacional</label>
+                        <label><input type="checkbox" id="check-emp-taxi" checked> Módulo Táxi Dog</label>
+                        <label><input type="checkbox" id="check-emp-caixa" checked> Caixa / POS Nativo</label>
+                        <label><input type="checkbox" id="check-emp-estoque" checked> Estoque FEFO</label>
+                        <label><input type="checkbox" id="check-emp-assinaturas" checked> Assinaturas Recorrentes</label>
+                        <label><input type="checkbox" id="check-emp-analytics" checked> Dashboard Analytics</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%;">Salvar Empresa</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Modal Novo Agendamento -->
     <div class="modal-overlay" id="modal-agendamento">

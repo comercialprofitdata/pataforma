@@ -22,6 +22,7 @@
     --color-entregue: #047857;
     --color-erro: #ef4444;
     --color-info: #06b6d4;
+    --color-master: #f59e0b;
 
     /* Glows */
     --glow-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -46,6 +47,30 @@ body {
         radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
     background-attachment: fixed;
+}
+
+/* Master SaaS Top Banner */
+.master-bar {
+    background: linear-gradient(90deg, #1e1b4b 0%, #311b92 50%, #4c1d95 100%);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 0.4rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fbbf24;
+}
+
+.master-badge {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    color: #fef08a;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
 }
 
 /* Scrollbar Style */
@@ -120,7 +145,8 @@ header {
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .status-indicator {
@@ -160,9 +186,9 @@ header {
     background: var(--bg-card);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
     outline: none;
@@ -210,17 +236,6 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* View Sections */
-.view-section {
-    display: none;
-    padding: 0 2rem 2rem 2rem;
-    animation: fadeIn 0.4s ease-out;
-}
-
-.view-section.active {
-    display: block;
-}
-
 /* Sub-nav Tabs inside Cadastros */
 .sub-nav {
     display: flex;
@@ -228,6 +243,7 @@ header {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
+    overflow-x: auto;
 }
 
 .sub-nav-btn {
@@ -240,6 +256,7 @@ header {
     font-size: 0.9rem;
     font-weight: 500;
     transition: var(--transition-smooth);
+    white-space: nowrap;
 }
 
 .sub-nav-btn:hover {
@@ -258,6 +275,17 @@ header {
 }
 
 .sub-view.active {
+    display: block;
+}
+
+/* View Sections */
+.view-section {
+    display: none;
+    padding: 0 2rem 2rem 2rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.view-section.active {
     display: block;
 }
 
@@ -292,6 +320,27 @@ header {
 
 .btn-primary:active {
     transform: translateY(0);
+}
+
+.btn-master {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.btn-master:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.5);
 }
 
 /* Grid Layouts */
@@ -587,7 +636,6 @@ header {
     margin-top: 1rem;
 }
 
-/* Otimizado para dedão (Thumb Zone) */
 .btn-mobile-primary {
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     color: white;
@@ -601,7 +649,7 @@ header {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    min-height: 48px; /* Mínimo 48px */
+    min-height: 48px;
     transition: var(--transition-smooth);
     box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
@@ -623,7 +671,7 @@ header {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    min-height: 48px; /* Mínimo 48px */
+    min-height: 48px;
     transition: var(--transition-smooth);
 }
 

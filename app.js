@@ -1,71 +1,123 @@
-// 🐾 PataForma Database & App Engine (Local Storage Sim) - Full Management Suite
+// 🐾 PataForma Database & App Engine (Local Storage Sim) - B2B Multi-Tenant & Master SaaS
 
 // 1. DATA INITIALIZATION & LOCALSTORAGE MANAGER
 const DB = {
     get: (key) => JSON.parse(localStorage.getItem(`pataforma_${key}`)),
     set: (key, data) => localStorage.setItem(`pataforma_${key}`, JSON.stringify(data)),
+    
+    // Audit log helper
+    logAudit: (empresaId, usuario, acao, detalhe) => {
+        const logs = DB.get('logs_auditoria') || [];
+        logs.push({
+            id: logs.length + 1,
+            empresa_id: empresaId,
+            usuario: usuario || 'Sistema',
+            acao: acao,
+            detalhe: detalhe,
+            timestamp: new Date().toISOString()
+        });
+        DB.set('logs_auditoria', logs);
+    },
+
     init: () => {
-        // Init Users (Staff & RBAC)
+        // 1. Init Master SaaS Companies (Empresas Contratantes)
+        if (!DB.get('empresas')) {
+            DB.set('empresas', [
+                {
+                    id: 1,
+                    nome: "Pet Shop PataForma Matriz",
+                    cnpj: "12.345.678/0001-95",
+                    responsavel: "Carlos Vitorio",
+                    plano: "Enterprise VIP",
+                    status: "Ativo",
+                    modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true }
+                },
+                {
+                    id: 2,
+                    nome: "PetCare & Grooming Moema",
+                    cnpj: "98.765.432/0001-10",
+                    responsavel: "Fernando Lima",
+                    plano: "Pro",
+                    status: "Ativo",
+                    modulos: { kanban: true, taxi_dog: false, caixa: true, estoque: true, assinaturas: true, analytics: false }
+                },
+                {
+                    id: 3,
+                    nome: "Estética Canina & Felina Jardins",
+                    cnpj: "55.444.333/0001-88",
+                    responsavel: "Beatriz Santos",
+                    plano: "Basic",
+                    status: "Ativo",
+                    modulos: { kanban: true, taxi_dog: true, caixa: false, estoque: false, assinaturas: false, analytics: false }
+                }
+            ]);
+        }
+
+        // 2. Init Users (Staff & Master Super-Admin)
         if (!DB.get('usuarios')) {
             DB.set('usuarios', [
-                { id: 1, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral" },
-                { id: 2, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética" },
-                { id: 3, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente" },
-                { id: 4, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior" },
-                { id: 5, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog" }
+                { id: 1, empresa_id: 1, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral" },
+                { id: 2, empresa_id: 1, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética" },
+                { id: 3, empresa_id: 1, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente" },
+                { id: 4, empresa_id: 1, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior" },
+                { id: 5, empresa_id: 1, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog" },
+                { id: 6, empresa_id: 2, nome: "Fernando Moema", perfil: "Admin", email: "fernando@moema.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Proprietário" }
             ]);
         }
 
-        // Init Clientes (Tutores)
+        // 3. Init Clientes (Tutores por empresa)
         if (!DB.get('clientes')) {
             DB.set('clientes', [
-                { id: 1, nome: "Carlos Souza", telefone: "(11) 98888-7777", email: "carlos@gmail.com", endereco: "Av. Paulista, 1000 - Ap 42", lat_lng: "-23.5614,-46.6558", ultima_visita: "2026-07-28" },
-                { id: 2, nome: "Mariana Lima", telefone: "(11) 97777-6666", email: "mariana@gmail.com", endereco: "Rua Augusta, 450", lat_lng: "-23.5512,-46.6521", ultima_visita: "2026-08-01" },
-                { id: 3, nome: "Roberto Alves", telefone: "(11) 96666-5555", email: "roberto@gmail.com", endereco: "Alameda Lorena, 89", lat_lng: "-23.5678,-46.6610", ultima_visita: "2026-08-03" }
+                { id: 1, empresa_id: 1, nome: "Carlos Souza", telefone: "(11) 98888-7777", email: "carlos@gmail.com", endereco: "Av. Paulista, 1000 - Ap 42", lat_lng: "-23.5614,-46.6558", ultima_visita: "2026-07-28" },
+                { id: 2, empresa_id: 1, nome: "Mariana Lima", telefone: "(11) 97777-6666", email: "mariana@gmail.com", endereco: "Rua Augusta, 450", lat_lng: "-23.5512,-46.6521", ultima_visita: "2026-08-01" },
+                { id: 3, empresa_id: 1, nome: "Roberto Alves", telefone: "(11) 96666-5555", email: "roberto@gmail.com", endereco: "Alameda Lorena, 89", lat_lng: "-23.5678,-46.6610", ultima_visita: "2026-08-03" },
+                { id: 4, empresa_id: 2, nome: "Patricia Moema", telefone: "(11) 95555-4444", email: "patricia@gmail.com", endereco: "Alameda dos Maracatins, 300", lat_lng: "-23.6012,-46.6601", ultima_visita: "2026-08-02" }
             ]);
         }
 
-        // Init Pets (Cães e Gatos)
+        // 4. Init Pets (Cães e Gatos por empresa)
         if (!DB.get('pets')) {
             DB.set('pets', [
-                { id: 1, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco." },
-                { id: 2, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Muito sensível no ouvido esquerdo." },
-                { id: 3, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira." },
-                { id: 4, cliente_id: 2, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa pelagem longa. Secagem em temperatura amena." }
+                { id: 1, empresa_id: 1, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco." },
+                { id: 2, empresa_id: 1, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Muito sensível no ouvido esquerdo." },
+                { id: 3, empresa_id: 1, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira." },
+                { id: 4, empresa_id: 1, cliente_id: 2, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa pelagem longa. Secagem em temperatura amena." },
+                { id: 5, empresa_id: 2, cliente_id: 4, nome: "Bob", especie: "Cachorro", raca: "Pug", porte: "Pequeno", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Pug com focinho curto. Monitorar secagem." }
             ]);
         }
 
-        // Init Planos de Assinatura Recorrentes
+        // 5. Init Planos de Assinatura Recorrentes por empresa
         if (!DB.get('planos_assinatura')) {
             DB.set('planos_assinatura', [
-                { id: 1, nome: "Plano Mensal Gold (4 Banhos + Tosa)", descricao: "4 banhos mensais + 1 tosa completa com banho antipulgas incluso.", preco: 240.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
-                { id: 2, nome: "Plano VIP Semanal", descricao: "1 banho por semana com secagem rápida e perfume importado.", preco: 65.00, periodicidade: "Semanal", quantidade_banhos: 1, inclui_tosa: false },
-                { id: 3, nome: "Assinatura Felina Premium", descricao: "2 banhos mensais higiênicos + escovação de pelagem para gatos.", preco: 150.00, periodicidade: "Mensal", quantidade_banhos: 2, inclui_tosa: false },
-                { id: 4, nome: "Plano Anual Pet Care VIP", descricao: "Assinatura anual ilimitada de higiene, hidratação e prioridade no Táxi Dog.", preco: 2150.00, periodicidade: "Anual", quantidade_banhos: 48, inclui_tosa: true }
+                { id: 1, empresa_id: 1, nome: "Plano Mensal Gold (4 Banhos + Tosa)", descricao: "4 banhos mensais + 1 tosa completa com banho antipulgas incluso.", preco: 240.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
+                { id: 2, empresa_id: 1, nome: "Plano VIP Semanal", descricao: "1 banho por semana com secagem rápida e perfume importado.", preco: 65.00, periodicidade: "Semanal", quantidade_banhos: 1, inclui_tosa: false },
+                { id: 3, empresa_id: 1, nome: "Assinatura Felina Premium", descricao: "2 banhos mensais higiênicos + escovação de pelagem para gatos.", preco: 150.00, periodicidade: "Mensal", quantidade_banhos: 2, inclui_tosa: false },
+                { id: 4, empresa_id: 1, nome: "Plano Anual Pet Care VIP", descricao: "Assinatura anual ilimitada de higiene, hidratação e prioridade no Táxi Dog.", preco: 2150.00, periodicidade: "Anual", quantidade_banhos: 48, inclui_tosa: true }
             ]);
         }
 
-        // Init Serviços
+        // 6. Init Serviços por empresa
         if (!DB.get('servicos')) {
             DB.set('servicos', [
-                { id: 1, nome: "Banho & Secagem", descricao: "Banho completo, secagem, corte de unhas e limpeza de ouvidos.", preco: 70.00, duracao: 45 },
-                { id: 2, nome: "Tosa Completa", descricao: "Banho completo + Tosa com máquina e tesoura na pelagem inteira.", preco: 120.00, duracao: 90 },
-                { id: 3, nome: "Banho Antipulgas", descricao: "Banho com shampoo ectoparasiticida especial.", preco: 95.00, duracao: 60 },
-                { id: 4, nome: "Banho & Escovação Felina", descricao: "Banho especial para gatos com secagem silenciosa sem estresse.", preco: 85.00, duracao: 50 }
+                { id: 1, empresa_id: 1, nome: "Banho & Secagem", descricao: "Banho completo, secagem, corte de unhas e limpeza de ouvidos.", preco: 70.00, duracao: 45 },
+                { id: 2, empresa_id: 1, nome: "Tosa Completa", descricao: "Banho completo + Tosa com máquina e tesoura na pelagem inteira.", preco: 120.00, duracao: 90 },
+                { id: 3, empresa_id: 1, nome: "Banho Antipulgas", descricao: "Banho com shampoo ectoparasiticida especial.", preco: 95.00, duracao: 60 },
+                { id: 4, empresa_id: 1, nome: "Banho & Escovação Felina", descricao: "Banho especial para gatos com secagem silenciosa sem estresse.", preco: 85.00, duracao: 50 },
+                { id: 5, empresa_id: 2, nome: "Banho Moema Premium", descricao: "Banho especial PetCare Moema.", preco: 80.00, duracao: 45 }
             ]);
         }
 
-        // Init Produtos
+        // 7. Init Produtos por empresa
         if (!DB.get('produtos')) {
             DB.set('produtos', [
-                { id: 1, nome: "Ração Premium Cães Adultos 10kg", codigo_barras: "78910001", preco: 189.90, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
-                { id: 2, nome: "Shampoo Hipoalergênico 500ml", codigo_barras: "78910002", preco: 45.00, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23c084fc'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
-                { id: 3, nome: "Petisco a Granel (Biscoito Canino 100g)", codigo_barras: null, preco: 12.50, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" },
-                { id: 4, nome: "Lacinhos Artesanais (Kit 4 un)", codigo_barras: null, preco: 8.00, categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23ec4899'><rect width='100' height='100' fill='%231e293b'/><polygon points='20,30 80,30 50,60'/><polygon points='20,70 80,70 50,40'/><circle cx='50' cy='50' r='10'/></svg>" }
+                { id: 1, empresa_id: 1, nome: "Ração Premium Cães Adultos 10kg", codigo_barras: "78910001", preco: 189.90, categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
+                { id: 2, empresa_id: 1, nome: "Shampoo Hipoalergênico 500ml", codigo_barras: "78910002", preco: 45.00, categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23c084fc'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
+                { id: 3, empresa_id: 1, nome: "Petisco a Granel (Biscoito Canino 100g)", codigo_barras: null, preco: 12.50, categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" },
+                { id: 4, empresa_id: 1, nome: "Lacinhos Artesanais (Kit 4 un)", codigo_barras: null, preco: 8.00, categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23ec4899'><rect width='100' height='100' fill='%231e293b'/><polygon points='20,30 80,30 50,60'/><polygon points='20,70 80,70 50,40'/><circle cx='50' cy='50' r='10'/></svg>" }
             ]);
         }
 
-        // Init Lotes Estoque (FEFO)
+        // 8. Init Lotes Estoque (FEFO) por empresa
         if (!DB.get('lotes_estoque')) {
             const hoje = new Date();
             const vencendo = new Date(hoje); vencendo.setDate(hoje.getDate() + 5);
@@ -73,37 +125,45 @@ const DB = {
             const emDia = new Date(hoje); emDia.setDate(hoje.getDate() + 120);
 
             DB.set('lotes_estoque', [
-                { id: 1, produto_id: 1, lote: "L-RAC01", quantidade: 3, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 2, produto_id: 1, lote: "L-RAC02", quantidade: 10, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 3, produto_id: 2, lote: "L-SH01", quantidade: 5, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 4, produto_id: 3, lote: "L-PT01", quantidade: 2, data_vencimento: vencido.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 5, produto_id: 3, lote: "L-PT02", quantidade: 15, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
+                { id: 1, empresa_id: 1, produto_id: 1, lote: "L-RAC01", quantidade: 3, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 2, empresa_id: 1, produto_id: 1, lote: "L-RAC02", quantidade: 10, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 3, empresa_id: 1, produto_id: 2, lote: "L-SH01", quantidade: 5, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 4, empresa_id: 1, produto_id: 3, lote: "L-PT01", quantidade: 2, data_vencimento: vencido.toISOString().split('T')[0], status: "Disponivel" },
+                { id: 5, empresa_id: 1, produto_id: 3, lote: "L-PT02", quantidade: 15, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
             ]);
         }
 
-        // Init Pacotes Ativos
+        // 9. Init Pacotes Ativos por empresa
         if (!DB.get('pacotes_ativos')) {
             DB.set('pacotes_ativos', [
-                { id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" },
-                { id: 2, cliente_id: 2, plano_id: 2, quantidade_banhos: 0, data_aquisicao: "2026-07-15", status: "Renovação Pendente" }
+                { id: 1, empresa_id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" },
+                { id: 2, empresa_id: 1, cliente_id: 2, plano_id: 2, quantidade_banhos: 0, data_aquisicao: "2026-07-15", status: "Renovação Pendente" }
             ]);
         }
 
-        // Init Kanban
+        // 10. Init Kanban por empresa
         if (!DB.get('agendamentos_kanban')) {
             DB.set('agendamentos_kanban', [
-                { id: 1, pet_id: 1, servico_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 2, pet_id: 2, servico_id: 2, status: "Aguardando Banho", data_agendamento: "2026-08-04T11:30:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 3, pet_id: 3, servico_id: 1, status: "Em Rota de Busca", data_agendamento: "2026-08-04T09:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
-                { id: 4, pet_id: 4, servico_id: 4, status: "Agendado", data_agendamento: "2026-08-04T14:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null }
+                { id: 1, empresa_id: 1, pet_id: 1, servico_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
+                { id: 2, empresa_id: 1, pet_id: 2, servico_id: 2, status: "Aguardando Banho", data_agendamento: "2026-08-04T11:30:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
+                { id: 3, empresa_id: 1, pet_id: 3, servico_id: 1, status: "Em Rota de Busca", data_agendamento: "2026-08-04T09:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
+                { id: 4, empresa_id: 1, pet_id: 4, servico_id: 4, status: "Agendado", data_agendamento: "2026-08-04T14:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null },
+                { id: 5, empresa_id: 2, pet_id: 5, servico_id: 5, status: "Agendado", data_agendamento: "2026-08-04T15:00:00", possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null }
             ]);
         }
 
         if (!DB.get('contas_receber')) DB.set('contas_receber', []);
         if (!DB.get('movimentacoes_caixa')) {
             DB.set('movimentacoes_caixa', [
-                { id: 1, tipo: "ENTRADA", categoria: "Venda Balcão", descricao: "Venda Ração Carlos", valor: 189.90, data: "2026-08-04T14:30:00" },
-                { id: 2, tipo: "SAIDA", categoria: "Estoque", descricao: "Compra Fornecedor Shampoo", valor: 150.00, data: "2026-08-04T10:00:00" }
+                { id: 1, empresa_id: 1, tipo: "ENTRADA", categoria: "Venda Balcão", descricao: "Venda Ração Carlos", valor: 189.90, data: "2026-08-04T14:30:00" },
+                { id: 2, empresa_id: 1, tipo: "SAIDA", categoria: "Estoque", descricao: "Compra Fornecedor Shampoo", valor: 150.00, data: "2026-08-04T10:00:00" }
+            ]);
+        }
+
+        // 11. Init Audit Logs
+        if (!DB.get('logs_auditoria')) {
+            DB.set('logs_auditoria', [
+                { id: 1, empresa_id: 1, usuario: "Sistema Master", acao: "Inicialização SaaS", detalhe: "Plataforma B2B Multi-Tenant inicializada com sucesso", timestamp: new Date().toISOString() }
             ]);
         }
     }
@@ -112,8 +172,10 @@ const DB = {
 // Start DB
 DB.init();
 
-// 2. STATE ENGINE
+// 2. STATE ENGINE & MULTI-TENANT CONTEXT
 const State = {
+    currentEmpresaId: 1,
+    isMasterSuperAdmin: false,
     currentProfile: 'Admin',
     cart: [],
     gpsWatcher: null,
@@ -133,12 +195,71 @@ const State = {
     }
 };
 
-// 3. RBAC & PROFILE VISIBILITY CONTROL
+// 3. MASTER AUTHENTICATION & MULTI-TENANT SWITCHER
+function loginMasterSubmit(e) {
+    e.preventDefault();
+    const user = document.getElementById('input-master-user').value.trim();
+    const pass = document.getElementById('input-master-pass').value.trim();
+
+    if (user === 'pataforma' && pass === 'abc@123') {
+        State.isMasterSuperAdmin = true;
+        document.getElementById('master-top-bar').style.display = 'flex';
+        document.getElementById('nav-master-saas').style.display = 'flex';
+        closeModal('modal-login-master');
+        
+        DB.logAudit(State.currentEmpresaId, 'Master Super-Admin', 'Autenticação Master', 'Login realizado com credenciais pataforma / abc@123');
+        State.showToast("👑 Autenticado como Master Super-Admin PataForma!", "success");
+        
+        renderEmpresasSelector();
+        switchTab('master-saas');
+    } else {
+        State.showToast("❌ Credenciais Master incorretas! Tente pataforma / abc@123", "error");
+    }
+}
+
+function logoutMaster() {
+    State.isMasterSuperAdmin = false;
+    document.getElementById('master-top-bar').style.display = 'none';
+    document.getElementById('nav-master-saas').style.display = 'none';
+    switchTab('kanban');
+    State.showToast("Sessão Master encerrada.", "info");
+}
+
+function renderEmpresasSelector() {
+    const empresas = DB.get('empresas') || [];
+    const selector = document.getElementById('select-empresa-ativa');
+    if (!selector) return;
+
+    selector.innerHTML = '';
+    empresas.forEach(emp => {
+        selector.innerHTML += `<option value="${emp.id}" ${emp.id === State.currentEmpresaId ? 'selected' : ''}>🏢 ${emp.nome} (${emp.plano})</option>`;
+    });
+}
+
+function trocarEmpresaAtiva(empresaId) {
+    State.currentEmpresaId = parseInt(empresaId);
+    const emp = DB.get('empresas').find(e => e.id === State.currentEmpresaId);
+    
+    // Update company header name
+    const companyHeader = document.getElementById('current-company-name');
+    if (companyHeader) companyHeader.innerText = emp ? emp.nome : 'PataForma';
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Troca de Tenant', `Contexto alterado para ${emp.nome}`);
+    
+    // Apply RBAC & Refresh Views
+    applyRBAC(State.currentProfile);
+    State.showToast(`Contexto alterado para a empresa: ${emp.nome}`, 'info');
+}
+
+
+// 4. RBAC & TENANT MODULE VISIBILITY CONTROL
 function applyRBAC(profileName) {
     State.currentProfile = profileName;
-    const users = DB.get('usuarios');
-    const userDef = users.find(u => u.perfil === profileName) || users[0];
+    const users = DB.get('usuarios').filter(u => u.empresa_id === State.currentEmpresaId);
+    const userDef = users.find(u => u.perfil === profileName) || users[0] || { kanban: true, caixa: true, taxi_dog: true, qc: true };
     
+    const empresa = DB.get('empresas').find(e => e.id === State.currentEmpresaId) || { modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true } };
+
     const navKanban = document.getElementById('nav-kanban');
     const navCaixa = document.getElementById('nav-caixa');
     const navEstoque = document.getElementById('nav-estoque');
@@ -146,21 +267,17 @@ function applyRBAC(profileName) {
     const navTaxi = document.getElementById('nav-taxi');
     const navCadastros = document.getElementById('nav-cadastros');
 
-    navKanban.style.display = userDef.kanban ? 'flex' : 'none';
-    navCaixa.style.display = userDef.caixa ? 'flex' : 'none';
-    navEstoque.style.display = (profileName === 'Admin' || profileName === 'Supervisor') ? 'flex' : 'none';
-    navAnalytics.style.display = profileName === 'Admin' ? 'flex' : 'none';
-    navTaxi.style.display = userDef.taxi_dog ? 'flex' : 'none';
+    // Tenant level module toggles + RBAC
+    navKanban.style.display = (empresa.modulos.kanban && userDef.kanban) ? 'flex' : 'none';
+    navCaixa.style.display = (empresa.modulos.caixa && userDef.caixa) ? 'flex' : 'none';
+    navEstoque.style.display = (empresa.modulos.estoque && (profileName === 'Admin' || profileName === 'Supervisor')) ? 'flex' : 'none';
+    navAnalytics.style.display = (empresa.modulos.analytics && profileName === 'Admin') ? 'flex' : 'none';
+    navTaxi.style.display = (empresa.modulos.taxi_dog && userDef.taxi_dog) ? 'flex' : 'none';
     navCadastros.style.display = (profileName === 'Admin' || profileName === 'Recepcao' || profileName === 'Supervisor') ? 'flex' : 'none';
 
-    if (userDef.kanban) switchTab('kanban');
-    else if (userDef.taxi_dog) switchTab('taxi');
-    else if (userDef.caixa) switchTab('caixa');
-
-    State.showToast(`Perfil alterado para: ${userDef.nome} (${profileName})`, 'info');
+    renderEmpresasSelector();
 }
 
-// Tab switcher
 function switchTab(tabId) {
     document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -177,9 +294,9 @@ function switchTab(tabId) {
     if (tabId === 'analytics') renderAnalytics();
     if (tabId === 'taxi') renderTaxiDog();
     if (tabId === 'cadastros') switchSubTab('clientes');
+    if (tabId === 'master-saas') renderMasterPanel();
 }
 
-// SubTab switcher (inside Cadastros)
 function switchSubTab(subTabId) {
     document.querySelectorAll('.sub-view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -197,11 +314,12 @@ function switchSubTab(subTabId) {
     if (subTabId === 'assinaturas') renderAssinaturasCards();
 }
 
-// 4. KANBAN ENGINE
+
+// 5. KANBAN ENGINE (FILTERED BY TENANT)
 const STATUS_LIST = ['Agendado', 'Em Rota de Busca', 'Aguardando Banho', 'No Banho', 'Em Tosa', 'Inspecao QC', 'Pronto', 'Entregue'];
 
 function renderKanban() {
-    const kanbanData = DB.get('agendamentos_kanban') || [];
+    const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
     const servicos = DB.get('servicos') || [];
     
@@ -241,7 +359,7 @@ function renderKanban() {
             <div class="card-subtitle">${pet.raca} | ${servico.nome}</div>
             
             <div class="card-meta">
-                <span class="pet-tag">👤 Tutor: ${DB.get('clientes').find(c => c.id === pet.cliente_id).nome}</span>
+                <span class="pet-tag">👤 Tutor: ${DB.get('clientes').find(c => c.id === pet.cliente_id)?.nome || 'Tutor'}</span>
             </div>
             
             <div class="card-actions">
@@ -283,7 +401,7 @@ function getColumnIdByStatus(status) {
 }
 
 function updateColumnCounts() {
-    const kanbanData = DB.get('agendamentos_kanban') || [];
+    const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const counts = {};
     
     STATUS_LIST.forEach(status => counts[getColumnIdByStatus(status)] = 0);
@@ -363,7 +481,7 @@ function handleStatusTransition(cardId, newStatus) {
     if ((newStatus === 'Pronto' || newStatus === 'Entregue') && !(oldStatus === 'Pronto' || oldStatus === 'Entregue')) {
         const servico = DB.get('servicos').find(s => s.id === item.servico_id);
         const cliente = DB.get('clientes').find(c => c.id === pet.cliente_id);
-        const pacote = DB.get('pacotes_ativos').find(p => p.cliente_id === cliente.id && p.quantidade_banhos > 0);
+        const pacote = DB.get('pacotes_ativos').find(p => p.empresa_id === State.currentEmpresaId && p.cliente_id === cliente.id && p.quantidade_banhos > 0);
 
         if (pacote) {
             pacote.quantidade_banhos--;
@@ -376,6 +494,7 @@ function handleStatusTransition(cardId, newStatus) {
             const contas = DB.get('contas_receber') || [];
             contas.push({
                 id: contas.length + 1,
+                empresa_id: State.currentEmpresaId,
                 cliente_id: cliente.id,
                 descricao: `${servico.nome} - Pet: ${pet.nome}`,
                 valor: valorTotal,
@@ -388,6 +507,7 @@ function handleStatusTransition(cardId, newStatus) {
             const caixa = DB.get('movimentacoes_caixa') || [];
             caixa.push({
                 id: caixa.length + 1,
+                empresa_id: State.currentEmpresaId,
                 tipo: 'ENTRADA',
                 categoria: 'Serviço',
                 descricao: `Serviço PataForma: ${pet.nome} (${servico.nome})`,
@@ -402,6 +522,8 @@ function handleStatusTransition(cardId, newStatus) {
     }
 
     DB.set('agendamentos_kanban', kanbanData);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Transição Kanban', `Pet ${pet.nome} movido de ${oldStatus} para ${newStatus}`);
+    
     renderKanban();
     State.showToast(`Pet ${pet.nome} movido para ${newStatus}.`, 'info');
 }
@@ -416,6 +538,7 @@ function relatarPulga(id) {
     item.servico_id = 3;
     DB.set('agendamentos_kanban', kanbanData);
     
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Triagem Exceção', `Relatado Ectoparasita no agendamento #${id}`);
     renderKanban();
     State.showToast(`🚨 Triagem: Ectoparasitas relatados! Orçamento de R$ 25,00 adicionais gerado e enviado ao tutor via WhatsApp.`, 'warning');
 }
@@ -427,8 +550,9 @@ function inspeccionarQC(id) {
 
     item.qc_aprovado = true;
     DB.set('agendamentos_kanban', kanbanData);
-    State.showToast(`✅ QC Aprovado pelo Supervisor! O pet já pode ser marcado como Pronto.`, 'success');
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Aprovação QC', `Inspeção de Qualidade aprovada para agendamento #${id}`);
     
+    State.showToast(`✅ QC Aprovado pelo Supervisor! O pet já pode ser marcado como Pronto.`, 'success');
     handleStatusTransition(id, 'Pronto');
 }
 
@@ -442,8 +566,8 @@ function verDetalhesKanban(id) {
 -----------------------------------------
 Pet: ${pet.nome} (${pet.especie} - ${pet.raca})
 Temperamento: ${pet.temperamento}
-Tutor: ${cliente.nome} (${cliente.telefone})
-Endereço: ${cliente.endereco}
+Tutor: ${cliente ? cliente.nome : 'Sem tutor'} (${cliente ? cliente.telefone : ''})
+Endereço: ${cliente ? cliente.endereco : ''}
 
 Serviço: ${servico.nome}
 Preço Base: R$ ${servico.preco.toFixed(2)}
@@ -454,11 +578,92 @@ GPS de Entrega: ${item.latitude_entrega ? `${item.latitude_entrega}, ${item.long
 }
 
 
-// 5. CRUD REGISTRATION MODULES (CLIENTES, PETS, FUNCIONÁRIOS, PRODUTOS, ASSINATURAS)
+// 6. MASTER SAAS PANEL & AUDIT RENDERERS
+function renderMasterPanel() {
+    renderEmpresasTable();
+    renderAuditoriaTable();
+}
 
-// Render Tables & Lists
+function renderEmpresasTable() {
+    const empresas = DB.get('empresas') || [];
+    const tbody = document.getElementById('table-empresas-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    empresas.forEach(emp => {
+        const modulosBadge = Object.keys(emp.modulos).filter(m => emp.modulos[m]).join(', ');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${emp.nome}</strong></td>
+            <td><code>${emp.cnpj}</code></td>
+            <td>${emp.responsavel}</td>
+            <td><span class="validade-badge em-dia">${emp.plano}</span></td>
+            <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
+            <td style="font-size:0.75rem; color:var(--text-secondary);">${modulosBadge}</td>
+            <td>
+                <button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderAuditoriaTable() {
+    const logs = DB.get('logs_auditoria') || [];
+    const empresas = DB.get('empresas') || [];
+    const tbody = document.getElementById('table-auditoria-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    logs.slice().reverse().forEach(log => {
+        const emp = empresas.find(e => e.id === log.empresa_id);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${new Date(log.timestamp).toLocaleString('pt-BR')}</td>
+            <td><strong>${emp ? emp.nome : 'Global'}</strong></td>
+            <td><span class="validade-badge em-dia">${log.usuario}</span></td>
+            <td><strong>${log.acao}</strong></td>
+            <td style="font-size:0.8rem; color:var(--text-secondary);">${log.detalhe}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function salvarEmpresa(e) {
+    e.preventDefault();
+    const nome = document.getElementById('input-emp-nome').value;
+    const cnpj = document.getElementById('input-emp-cnpj').value;
+    const responsavel = document.getElementById('input-emp-responsavel').value;
+    const plano = document.getElementById('select-emp-plano').value;
+    const status = document.getElementById('select-emp-status').value;
+
+    const modulos = {
+        kanban: document.getElementById('check-emp-kanban').checked,
+        taxi_dog: document.getElementById('check-emp-taxi').checked,
+        caixa: document.getElementById('check-emp-caixa').checked,
+        estoque: document.getElementById('check-emp-estoque').checked,
+        assinaturas: document.getElementById('check-emp-assinaturas').checked,
+        analytics: document.getElementById('check-emp-analytics').checked
+    };
+
+    const empresas = DB.get('empresas');
+    const newId = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
+
+    empresas.push({ id: newId, nome, cnpj, responsavel, plano, status, modulos });
+    DB.set('empresas', empresas);
+
+    DB.logAudit(newId, 'Master Super-Admin', 'Criação de Tenant', `Nova empresa cadastrada: ${nome} (Plano ${plano})`);
+
+    closeModal('modal-empresa');
+    renderMasterPanel();
+    renderEmpresasSelector();
+    State.showToast(`🏢 Empresa ${nome} cadastrada com sucesso no SaaS Master!`, 'success');
+}
+
+
+// 7. CRUD REGISTRATION MODULES (FILTERED BY TENANT)
 function renderClientesTable() {
-    const clientes = DB.get('clientes') || [];
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
     const tbody = document.getElementById('table-clientes-body');
     tbody.innerHTML = '';
@@ -479,7 +684,7 @@ function renderClientesTable() {
 }
 
 function renderPetsTable() {
-    const pets = DB.get('pets') || [];
+    const pets = (DB.get('pets') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const clientes = DB.get('clientes') || [];
     const tbody = document.getElementById('table-pets-body');
     tbody.innerHTML = '';
@@ -502,7 +707,7 @@ function renderPetsTable() {
 }
 
 function renderFuncionariosTable() {
-    const usuarios = DB.get('usuarios') || [];
+    const usuarios = (DB.get('usuarios') || []).filter(u => u.empresa_id === State.currentEmpresaId);
     const tbody = document.getElementById('table-funcionarios-body');
     tbody.innerHTML = '';
 
@@ -520,7 +725,7 @@ function renderFuncionariosTable() {
 }
 
 function renderProdutosCrudTable() {
-    const produtos = DB.get('produtos') || [];
+    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const lotes = DB.get('lotes_estoque') || [];
     const tbody = document.getElementById('table-produtos-body');
     tbody.innerHTML = '';
@@ -546,7 +751,7 @@ function renderProdutosCrudTable() {
 }
 
 function renderAssinaturasCards() {
-    const planos = DB.get('planos_assinatura') || [];
+    const planos = (DB.get('planos_assinatura') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const container = document.getElementById('planos-cards-container');
     container.innerHTML = '';
 
@@ -568,16 +773,14 @@ function renderAssinaturasCards() {
         container.appendChild(card);
     });
 
-    // Also populate select options in booking modals
     populateSelectOptions();
 }
 
 function populateSelectOptions() {
-    const clientes = DB.get('clientes') || [];
-    const pets = DB.get('pets') || [];
-    const servicos = DB.get('servicos') || [];
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const pets = (DB.get('pets') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    const servicos = (DB.get('servicos') || []).filter(s => s.empresa_id === State.currentEmpresaId);
 
-    // Populate pet select in appointment modal
     const petSelect = document.getElementById('select-agendar-pet');
     if (petSelect) {
         petSelect.innerHTML = '';
@@ -587,7 +790,6 @@ function populateSelectOptions() {
         });
     }
 
-    // Populate service select
     const servicoSelect = document.getElementById('select-agendar-servico');
     if (servicoSelect) {
         servicoSelect.innerHTML = '';
@@ -596,7 +798,6 @@ function populateSelectOptions() {
         });
     }
 
-    // Populate cliente select for Subscription modal
     const clienteSubSelect = document.getElementById('select-assinar-cliente');
     if (clienteSubSelect) {
         clienteSubSelect.innerHTML = '';
@@ -607,7 +808,7 @@ function populateSelectOptions() {
 }
 
 
-// Save Handlers (Forms Submission)
+// Save Handlers
 function salvarCliente(e) {
     e.preventDefault();
     const nome = document.getElementById('input-cliente-nome').value;
@@ -618,8 +819,10 @@ function salvarCliente(e) {
     const clientes = DB.get('clientes');
     const newId = clientes.length > 0 ? Math.max(...clientes.map(c => c.id)) + 1 : 1;
 
-    clientes.push({ id: newId, nome, telefone, email, endereco, lat_lng: "-23.5505,-46.6333", ultima_visita: new Date().toISOString().split('T')[0] });
+    clientes.push({ id: newId, empresa_id: State.currentEmpresaId, nome, telefone, email, endereco, lat_lng: "-23.5505,-46.6333", ultima_visita: new Date().toISOString().split('T')[0] });
     DB.set('clientes', clientes);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Cliente', `Cliente ${nome} cadastrado`);
 
     closeModal('modal-cliente');
     renderClientesTable();
@@ -640,8 +843,10 @@ function salvarPet(e) {
     const pets = DB.get('pets');
     const newId = pets.length > 0 ? Math.max(...pets.map(p => p.id)) + 1 : 1;
 
-    pets.push({ id: newId, cliente_id, nome, especie, raca, porte, temperamento, vacinas_em_dia, observacoes });
+    pets.push({ id: newId, empresa_id: State.currentEmpresaId, cliente_id, nome, especie, raca, porte, temperamento, vacinas_em_dia, observacoes });
     DB.set('pets', pets);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Pet', `Pet ${nome} (${especie}) cadastrado`);
 
     closeModal('modal-pet');
     renderPetsTable();
@@ -663,8 +868,10 @@ function salvarFuncionario(e) {
     const usuarios = DB.get('usuarios');
     const newId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
 
-    usuarios.push({ id: newId, nome, email, cargo, perfil, kanban, caixa, taxi_dog, qc });
+    usuarios.push({ id: newId, empresa_id: State.currentEmpresaId, nome, email, cargo, perfil, kanban, caixa, taxi_dog, qc });
     DB.set('usuarios', usuarios);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Funcionario', `Funcionário ${nome} (${perfil}) cadastrado`);
 
     closeModal('modal-funcionario');
     renderFuncionariosTable();
@@ -687,12 +894,12 @@ function salvarProduto(e) {
     const newProdId = produtos.length > 0 ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
     const foto = fotoUrl || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23818cf8'><rect width='100' height='100' fill='%231e293b'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>PROD</text></svg>";
 
-    produtos.push({ id: newProdId, nome, categoria, codigo_barras, preco, foto });
+    produtos.push({ id: newProdId, empresa_id: State.currentEmpresaId, nome, categoria, codigo_barras, preco, foto });
     
-    // Create initial FEFO batch
     const newLoteId = lotes.length > 0 ? Math.max(...lotes.map(l => l.id)) + 1 : 1;
     lotes.push({
         id: newLoteId,
+        empresa_id: State.currentEmpresaId,
         produto_id: newProdId,
         lote: `L-${newProdId}01`,
         quantidade: qtdInicial,
@@ -702,6 +909,8 @@ function salvarProduto(e) {
 
     DB.set('produtos', produtos);
     DB.set('lotes_estoque', lotes);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Cadastro Produto', `Produto ${nome} cadastrado com lote FEFO`);
 
     closeModal('modal-produto');
     renderProdutosCrudTable();
@@ -720,8 +929,10 @@ function salvarPlanoAssinatura(e) {
     const planos = DB.get('planos_assinatura');
     const newId = planos.length > 0 ? Math.max(...planos.map(p => p.id)) + 1 : 1;
 
-    planos.push({ id: newId, nome, preco, periodicidade, quantidade_banhos, inclui_tosa, descricao });
+    planos.push({ id: newId, empresa_id: State.currentEmpresaId, nome, preco, periodicidade, quantidade_banhos, inclui_tosa, descricao });
     DB.set('planos_assinatura', planos);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Criação Plano Assinatura', `Plano ${nome} (${periodicidade}) criado`);
 
     closeModal('modal-plano');
     renderAssinaturasCards();
@@ -742,6 +953,7 @@ function assinarPlanoConfirmar(e) {
 
     pacotes.push({
         id: newId,
+        empresa_id: State.currentEmpresaId,
         cliente_id: clienteId,
         plano_id: planoId,
         quantidade_banhos: plano.quantidade_banhos,
@@ -749,10 +961,10 @@ function assinarPlanoConfirmar(e) {
         status: "Ativo"
     });
 
-    // Record revenue
     const movimentacoes = DB.get('movimentacoes_caixa');
     movimentacoes.push({
         id: movimentacoes.length + 1,
+        empresa_id: State.currentEmpresaId,
         tipo: 'ENTRADA',
         categoria: 'Assinatura Recorrente',
         descricao: `Venda de Assinatura ${plano.nome} (${plano.periodicidade}) para ${cliente.nome}`,
@@ -762,6 +974,8 @@ function assinarPlanoConfirmar(e) {
 
     DB.set('pacotes_ativos', pacotes);
     DB.set('movimentacoes_caixa', movimentacoes);
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Ativação Assinatura', `Cliente ${cliente.nome} assinou ${plano.nome}`);
 
     closeModal('modal-assinar');
     State.showToast(`🎉 Assinatura ${plano.nome} ativada para o cliente ${cliente.nome}! Saldo: ${plano.quantidade_banhos} banhos.`, 'success');
@@ -778,6 +992,7 @@ function criarAgendamento(e) {
 
     kanbanData.push({
         id: newId,
+        empresa_id: State.currentEmpresaId,
         pet_id: petId,
         servico_id: servicoId,
         status: taxiDog ? "Em Rota de Busca" : "Agendado",
@@ -791,12 +1006,14 @@ function criarAgendamento(e) {
     });
 
     DB.set('agendamentos_kanban', kanbanData);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Novo Agendamento', `Agendamento #${newId} criado no Kanban`);
+
     closeModal('modal-agendamento');
     renderKanban();
     State.showToast(`Agendamento #${newId} criado com sucesso no Kanban!`, 'success');
 }
 
-// Modal Trigger Helpers
+// Modal Helpers
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.classList.add('active');
@@ -820,7 +1037,7 @@ function abrirModalAssinarPlano(planoId) {
 }
 
 function abrirModalNovoPet() {
-    const clientes = DB.get('clientes') || [];
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
     const select = document.getElementById('select-pet-tutor');
     select.innerHTML = '';
     clientes.forEach(c => select.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
@@ -828,9 +1045,9 @@ function abrirModalNovoPet() {
 }
 
 
-// 6. POS / CAIXA SCREEN
+// 8. POS / CAIXA SCREEN
 function renderCaixa() {
-    const produtos = DB.get('produtos') || [];
+    const produtos = (DB.get('produtos') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const catalogContainer = document.getElementById('pos-catalog');
     catalogContainer.innerHTML = '';
 
@@ -970,6 +1187,7 @@ function checkoutPOS() {
     
     movimentacoes.push({
         id: movimentacoes.length + 1,
+        empresa_id: State.currentEmpresaId,
         tipo: 'ENTRADA',
         categoria: 'Venda Balcão',
         descricao: `Venda de Produtos (${State.cart.map(c => `${c.qty}x ${c.nome}`).join(', ')})`,
@@ -979,6 +1197,7 @@ function checkoutPOS() {
 
     contas.push({
         id: contas.length + 1,
+        empresa_id: State.currentEmpresaId,
         cliente_id: 1,
         descricao: `Venda de Balcão: Itens diversos`,
         valor: totalCheckout,
@@ -991,14 +1210,16 @@ function checkoutPOS() {
     DB.set('movimentacoes_caixa', movimentacoes);
     DB.set('contas_receber', contas);
 
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Venda POS', `Venda de balcão no valor de R$ ${totalCheckout.toFixed(2)}`);
+
     State.showToast(`💸 Venda concluída! Total R$ ${totalCheckout.toFixed(2)}. Estoque deduzido via regra FEFO.`, 'success');
     State.cart = [];
     renderCaixa();
 }
 
-// 7. ESTOQUE FEFO VISUALIZATION
+// 9. ESTOQUE FEFO VISUALIZATION
 function renderEstoque() {
-    const lotes = DB.get('lotes_estoque') || [];
+    const lotes = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
     const produtos = DB.get('produtos') || [];
     const tbody = document.getElementById('table-estoque-body');
     tbody.innerHTML = '';
@@ -1034,9 +1255,9 @@ function renderEstoque() {
     });
 }
 
-// 8. TAXI DOG DRIVER MOBILE VIEW
+// 10. TAXI DOG DRIVER MOBILE VIEW
 function renderTaxiDog() {
-    const kanbanData = DB.get('agendamentos_kanban') || [];
+    const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
     const clientes = DB.get('clientes') || [];
     
@@ -1063,9 +1284,9 @@ function renderTaxiDog() {
         card.innerHTML = `
             <div style="font-weight:700; color:#818cf8; margin-bottom:0.5rem;">${headerLabel}</div>
             <div style="font-size:1.1rem; font-weight:600; margin-bottom:0.25rem;">Pet: ${especieIcon} ${pet.nome} (${pet.raca})</div>
-            <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.75rem;">Tutor: ${cliente.nome} | Tel: ${cliente.telefone}</div>
+            <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.75rem;">Tutor: ${cliente ? cliente.nome : 'Tutor'} | Tel: ${cliente ? cliente.telefone : ''}</div>
             <div style="font-size:0.85rem; color:var(--text-muted); background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; margin-bottom:0.75rem;">
-                📍 ${cliente.endereco}
+                📍 ${cliente ? cliente.endereco : 'Endereço'}
             </div>
 
             <div class="driver-gps-display" id="gps-display-${job.id}">
@@ -1209,11 +1430,11 @@ function finalizarEntregaTaxi(jobId, currentStatus) {
     renderTaxiDog();
 }
 
-// 9. DASHBOARD ANALYTICS (PANDAS-LIKE)
+// 11. DASHBOARD ANALYTICS
 function renderAnalytics() {
-    const contas = DB.get('contas_receber') || [];
-    const kanban = DB.get('agendamentos_kanban') || [];
-    const lotes = DB.get('lotes_estoque') || [];
+    const contas = (DB.get('contas_receber') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const kanban = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
+    const lotes = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
 
     const faturamentoBruto = contas
         .filter(c => c.status === 'Pago')
@@ -1250,12 +1471,13 @@ function renderAnalytics() {
     });
 }
 
-// 10. EVENT BINDING FOR INITIAL LOAD
+// 12. EVENT BINDING FOR INITIAL LOAD
 window.addEventListener('DOMContentLoaded', () => {
     const profileSelector = document.getElementById('current-profile-select');
     profileSelector.addEventListener('change', (e) => {
         applyRBAC(e.target.value);
     });
 
+    renderEmpresasSelector();
     applyRBAC('Admin');
 });
