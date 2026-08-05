@@ -200,26 +200,155 @@
             </div>
         </section>
 
-        <!-- Interactive ROI Calculator Section -->
+        <!-- Showcase Section 1: Ficha Técnica Interactive Demo -->
+        <section class="landing-section" id="ficha-tecnica">
+            <div class="section-tag">TECNOLOGIA EXCLUSIVA PATAFORMA</div>
+            <h2 class="section-title">🧼 Ficha Técnica &amp; Baixa de Insumos em Tempo Real</h2>
+            <p class="section-desc">Calcule a margem de lucro real de cada banho e elimine 100% dos furos no estoque de insumos.</p>
+
+            <div class="glass-panel" style="max-width:960px; margin:0 auto; padding:2rem; border-color:rgba(16,185,129,0.3);">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start;">
+                    <div>
+                        <h3 style="font-size:1.1rem; font-weight:700; color:#34d399; margin-bottom:1rem;">🧪 Simulador de Ficha Técnica por Serviço</h3>
+                        <div class="form-group">
+                            <label>Porte do Pet:</label>
+                            <select id="demo-ft-porte" onchange="simularFichaTecnica()">
+                                <option value="Pequeno">Pequeno (Até 8 kg — ex: Shitzu, Poodle)</option>
+                                <option value="Medio" selected>Médio (8 a 20 kg — ex: Beagle, Cocker)</option>
+                                <option value="Grande">Grande (+20 kg — ex: Golden, Labrador)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Serviço de Estética:</label>
+                            <select id="demo-ft-servico" onchange="simularFichaTecnica()">
+                                <option value="BanhoSimples">Banho Simples + Secagem</option>
+                                <option value="BanhoTosa" selected>Banho + Tosa Tesoura / Máquina</option>
+                                <option value="Tratamento">Banho Tratamento Hipoalergênico / Hidratação</option>
+                            </select>
+                        </div>
+                        <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:1rem;">
+                            💡 Ao concluir o serviço no Kanban, o PataForma dá baixa automática dessas doses exatas no lote do estoque FEFO!
+                        </p>
+                    </div>
+                    <div style="background:rgba(15,23,42,0.6); padding:1.5rem; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+                        <h4 style="font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:1rem;">📋 Resultado da Ficha Técnica:</h4>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem; font-size:0.9rem;">
+                            <span>🧴 Shampoo Dosed:</span><strong id="demo-ft-res-shampoo" style="color:#38bdf8;">40 ml</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem; font-size:0.9rem;">
+                            <span>🧴 Condicionador Dosed:</span><strong id="demo-ft-res-condicionador" style="color:#a5b4fc;">25 ml</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem; font-size:0.9rem;">
+                            <span>🎀 Acessório / Finalização:</span><strong id="demo-ft-res-acessorios" style="color:#f472b6;">1 Lacinho</strong>
+                        </div>
+                        <div style="border-top:1px dashed rgba(255,255,255,0.1); padding-top:0.75rem; margin-top:0.75rem;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.9rem;">
+                                <span>Custo Total de Insumos:</span><strong id="demo-ft-res-custo" style="color:#f87171;">R$ 2.40</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.9rem;">
+                                <span>Preço Cobrado do Cliente:</span><strong id="demo-ft-res-preco" style="color:#10b981;">R$ 110.00</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:0.6rem; font-size:1.05rem; font-weight:800;">
+                                <span>Margem Bruta Real:</span><strong id="demo-ft-res-margem" style="color:#34d399;">97.8% (Lucro: R$ 107.60)</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Showcase Section 2: Prontuário Vet Interactive Demo -->
+        <section class="landing-section" id="prontuario-vet">
+            <div class="section-tag">GESTÃO CLÍNICA COMPLETA</div>
+            <h2 class="section-title">🩺 Prontuário Veterinário &amp; Receituário PDF CRMV</h2>
+            <p class="section-desc">Módulo médico veterinário com histórico vacinal, exames clínicos e emissão instantânea de receitas em PDF assinado.</p>
+
+            <div class="glass-panel" style="max-width:960px; margin:0 auto; padding:2rem; border-color:rgba(20,184,166,0.3);">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;">
+                    <div>
+                        <div style="display:inline-block; background:rgba(20,184,166,0.15); border:1px solid rgba(20,184,166,0.4); color:#2dd4bf; padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:700; margin-bottom:0.75rem;">🩺 PRONTUÁRIO CLÍNICO #102</div>
+                        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:0.5rem;">Thor (Golden Retriever — 4 anos)</h3>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">Tutor: Carlos Mendes | Responsável: Dra. Julia Silveira (CRMV-SP 45678)</p>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem;">
+                            <div style="background:rgba(15,23,42,0.6); padding:0.75rem; border-radius:8px; font-size:0.85rem;"><strong>⚖️ Peso:</strong> 28.5 kg</div>
+                            <div style="background:rgba(15,23,42,0.6); padding:0.75rem; border-radius:8px; font-size:0.85rem;"><strong>🌡️ Temp:</strong> 38.4 °C</div>
+                            <div style="background:rgba(15,23,42,0.6); padding:0.75rem; border-radius:8px; font-size:0.85rem;"><strong>❤️ FC:</strong> 92 bpm</div>
+                            <div style="background:rgba(15,23,42,0.6); padding:0.75rem; border-radius:8px; font-size:0.85rem;"><strong>💉 Vacina V10:</strong> Em dia</div>
+                        </div>
+
+                        <div style="display:flex; gap:0.75rem;">
+                            <button class="btn-primary" style="background:linear-gradient(135deg,#14b8a6,#0d9488); border:none; font-size:0.88rem;" onclick="demoEmissaoReceita()">📄 Testar Emissão de Receita PDF</button>
+                            <button class="btn-hero-secondary" style="font-size:0.88rem;" onclick="State.showToast('📲 Alerta automático enviado via WhatsApp ao tutor!', 'success')">📲 Simular Alerta WhatsApp</button>
+                        </div>
+                    </div>
+
+                    <div style="background:#ffffff; color:#0f172a; padding:1.5rem; border-radius:12px; font-family:serif; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+                        <div style="border-bottom:2px solid #0f172a; padding-bottom:0.5rem; margin-bottom:1rem; text-align:center;">
+                            <div style="font-weight:800; font-size:1.1rem; text-transform:uppercase;">Receituário Médico Veterinário</div>
+                            <div style="font-size:0.75rem; color:#475569;">Dra. Julia Silveira — CRMV/SP 45678</div>
+                        </div>
+                        <div style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Paciente:</strong> Thor (Cão / Golden) | <strong>Tutor:</strong> Carlos Mendes</div>
+                        <div style="font-size:0.85rem; margin-bottom:1rem; border-top:1px dashed #cbd5e1; padding-top:0.5rem;">
+                            <strong>Uso Tópico Otológico:</strong><br>
+                            1. Otodem Plus Solução — Aplicar 5 gotas no conduto auditivo a cada 12 horas por 7 dias.<br>
+                            2. Higienizar a orelha antes da aplicação com solução de limpeza.
+                        </div>
+                        <div style="text-align:right; font-size:0.75rem; color:#64748b; border-top:1px solid #cbd5e1; padding-top:0.5rem;">
+                            São Paulo, 05 de Agosto de 2026<br>
+                            <em>Assinado Digitalmente — CRMV/SP 45678</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real Enterprise ROI Calculator Section -->
         <section class="landing-section" id="calculadora-roi">
             <div class="roi-section">
-                <div class="roi-grid">
+                <div class="roi-grid" style="grid-template-columns:1fr 480px;">
                     <div>
-                        <div class="section-tag" style="text-align:left;">SIMULADOR DE ECONOMIA</div>
-                        <h2 style="font-size:2rem; font-weight:800; margin-bottom:1rem;">Quanto o seu Pet Shop vai economizar?</h2>
-                        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.95rem;">
-                            Estima-se que 15% do frasco de shampoo seja desperdiçado por falta de controle de dosagem e 8% do estoque vença na prateleira. Simule sua economia com o PataForma:
+                        <div class="section-tag" style="text-align:left;">SIMULADOR DE IMPACTO FINANCEIRO REAL</div>
+                        <h2 style="font-size:2rem; font-weight:800; margin-bottom:1rem;">Calculadora de Lucro &amp; Faturamento Recorrente</h2>
+                        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.92rem;">
+                            Diferente de sistemas amadores que só calculam desperdício de shampoo, o PataForma projeta o <strong>crescimento real de receita do seu Pet Shop</strong> baseado em 4 pilares de gestão avançada:
                         </p>
                         <div class="form-group">
                             <label>Quantidade de Banhos / Mês no Pet Shop:</label>
                             <input type="number" id="roi-input-banhos" value="350" oninput="calcularROISimulacao()" style="font-size:1.1rem; font-weight:700;">
                         </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ticket Médio do Banho (R$):</label>
+                                <input type="number" id="roi-input-ticket" value="85" oninput="calcularROISimulacao()" style="font-weight:700;">
+                            </div>
+                            <div class="form-group">
+                                <label>% Convertida em Assinaturas:</label>
+                                <input type="number" id="roi-input-pacotes" value="40" oninput="calcularROISimulacao()" style="font-weight:700;">
+                            </div>
+                        </div>
                     </div>
-                    <div class="roi-result-box">
-                        <span style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase;">Economia Anual Estimada:</span>
-                        <div class="roi-result-value" id="roi-result-text">R$ 14.280,00</div>
-                        <p style="font-size:0.8rem; color:var(--text-muted);">Calculado considerando baixa por Ficha Técnica + eliminação de perdas por validade FEFO.</p>
-                        <button class="btn-hero-primary" style="margin-top:1rem; width:100%;" onclick="document.getElementById('demo-form-section').scrollIntoView({behavior:'smooth'})">Quero Garantir Esta Economia →</button>
+                    <div class="roi-result-box" style="padding:1.75rem;">
+                        <span style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase; font-weight:700;">Impacto Financeiro Adicional Estimado:</span>
+                        <div class="roi-result-value" id="roi-result-text" style="font-size:2.4rem; color:#34d399; margin:0.5rem 0;">R$ 103.880,00</div>
+                        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:1.25rem;">Estimativa de crescimento de receita bruta + economia anual com o PataForma ERP.</p>
+                        
+                        <div style="background:rgba(15,23,42,0.6); padding:1rem; border-radius:10px; margin-bottom:1.25rem; font-size:0.82rem; text-align:left;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                                <span>📈 Assinaturas &amp; Pacotes Recorrentes:</span><strong id="roi-val-recorrencia" style="color:#10b981;">+ R$ 49.980,00/ano</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                                <span>📲 Recuperação de Faltas (WhatsApp):</span><strong id="roi-val-noshows" style="color:#38bdf8;">+ R$ 53.550,00/ano</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                                <span>🩺 Retorno Vacinal &amp; Veterinário:</span><strong id="roi-val-vet" style="color:#a5b4fc;">+ R$ 151.200,00/ano</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>🧼 Ficha Técnica &amp; FEFO:</span><strong id="roi-val-insumos" style="color:#f472b6;">+ R$ 20.160,00/ano</strong>
+                            </div>
+                        </div>
+
+                        <button class="btn-hero-primary" style="width:100%; justify-content:center;" onclick="document.getElementById('demo-form-section').scrollIntoView({behavior:'smooth'})">Quero Garantir Este Crescimento →</button>
                     </div>
                 </div>
             </div>

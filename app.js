@@ -249,6 +249,12 @@ const DB = {
         if (!DB.get('empresas') || (DB.get('empresas') && DB.get('empresas')[0] && DB.get('empresas')[0].nome !== "CatDog Pet Center & Clínica Veterinária")) {
             DB.resetAndSeedCatDogData();
         }
+        // ✅ Auto-sync CatDog SP to DREasy on startup
+        setTimeout(() => {
+            if (typeof sincronizarDREasyFluxoCaixa === 'function') {
+                sincronizarDREasyFluxoCaixa().catch(e => console.log('Auto-sync boot:', e));
+            }
+        }, 1000);
     }
 };
 
@@ -410,12 +416,65 @@ function scrollToTop() {
 }
 
 function calcularROISimulacao() {
-    const banhos = parseInt(document.getElementById('roi-input-banhos').value) || 350;
-    const economiaShampoo = banhos * 12 * 2.80;
-    const economiaEstoque = banhos * 12 * 0.60;
-    const economiaTotal = economiaShampoo + economiaEstoque;
+    const banhosEl = document.getElementById('roi-input-banhos');
+    const ticketEl = document.getElementById('roi-input-ticket');
+    const pacotesEl = document.getElementById('roi-input-pacotes');
 
-    document.getElementById('roi-result-text').innerText = `R$ ${economiaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const banhos = parseInt(banhosEl ? banhosEl.value : 350) || 350;
+    const ticket = parseFloat(ticketEl ? ticketEl.value : 85) || 85;
+    const pacotesPct = parseInt(pacotesEl ? pacotesEl.value : 40) || 40;
+
+    // 1. Ganho com Pacotes Recorrentes (Fidelização + Aumento LTV em 35%)
+    const ganhoRecorrencia = (banhos * (pacotesPct / 100)) * (ticket * 0.35) * 12;
+
+    // 2. Recuperação de Faltas & No-Shows (Lembretes Automáticos WhatsApp)
+    const ganhoNoShows = (banhos * 0.15) * ticket * 12;
+
+    // 3. Retorno Automático Vacinal & Veterinário
+    const ganhoVet = Math.round(banhos * 0.20) * 180 * 12;
+
+    // 4. Economia Ficha Técnica (Dosagem Insumos + Validade FEFO)
+    const economiaInsumos = banhos * 12 * 4.80;
+
+    const impactoTotalAnual = ganhoRecorrencia + ganhoNoShows + ganhoVet + economiaInsumos;
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+    set('roi-result-text', `R$ ${impactoTotalAnual.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    set('roi-val-recorrencia', `+ R$ ${ganhoRecorrencia.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/ano`);
+    set('roi-val-noshows', `+ R$ ${ganhoNoShows.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/ano`);
+    set('roi-val-vet', `+ R$ ${ganhoVet.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/ano`);
+    set('roi-val-insumos', `+ R$ ${economiaInsumos.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/ano`);
+}
+
+function simularFichaTecnica() {
+    const porte = document.getElementById('demo-ft-porte') ? document.getElementById('demo-ft-porte').value : 'Medio';
+    const servico = document.getElementById('demo-ft-servico') ? document.getElementById('demo-ft-servico').value : 'BanhoTosa';
+
+    let shDose = 40, condDose = 25, acc = '1 Lacinho';
+    let custo = 2.40, preco = 80.00;
+
+    if (porte === 'Pequeno') { shDose = 25; condDose = 15; custo = 1.60; preco = 65.00; }
+    else if (porte === 'Grande') { shDose = 70; condDose = 45; acc = '1 Bandana G'; custo = 4.80; preco = 120.00; }
+
+    if (servico === 'BanhoTosa') { preco += 30.00; }
+    else if (servico === 'Tratamento') { shDose += 20; custo += 3.50; preco += 50.00; }
+
+    const margemVal = preco - custo;
+    const margemPct = ((margemVal / preco) * 100).toFixed(1);
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+    set('demo-ft-res-shampoo', `${shDose} ml`);
+    set('demo-ft-res-condicionador', `${condDose} ml`);
+    set('demo-ft-res-acessorios', acc);
+    set('demo-ft-res-custo', `R$ ${custo.toFixed(2)}`);
+    set('demo-ft-res-preco', `R$ ${preco.toFixed(2)}`);
+    set('demo-ft-res-margem', `${margemPct}% (Lucro: R$ ${margemVal.toFixed(2)})`);
+}
+
+function demoEmissaoReceita() {
+    gerarReceitaImpressao(1);
+    State.showToast('📄 Modelo de Receita Médica com CRMV gerado para impressão/PDF!', 'success');
 }
 
 // CNPJ API LOOKUP FREE RECEITA FEDERAL (BrasilAPI)
