@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PataForma — Gestão Inteligente de Pet Shop (ERP & B2B SaaS)</title>
+    <title>PataForma — Gestão Inteligente de Pet Shop (ERP & B2B SaaS Multi-Filial)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <!-- Role Focused Banner (Activated via ?view=driver, ?view=caixa, ?view=banhista) -->
+    <!-- Role Focused Banner -->
     <div class="role-focused-banner" id="role-focused-banner" style="display: none;">
         <span id="role-focused-text">📌 Modo Focado: Visão Específica por Função</span>
         <button onclick="window.location.href='index.html'" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem;">🌐 Exibir Menu Completo</button>
@@ -35,11 +35,18 @@
             <span class="logo-icon">🐾</span>
             <div class="logo-text">
                 <h1 id="current-company-name">🏢 Pet Shop PataForma Matriz</h1>
-                <p>Operação do banho ao caixa — B2B SaaS</p>
+                <p id="current-filial-subtitle">Unidade Jardins (Matriz) — B2B SaaS Multi-Filial</p>
             </div>
         </div>
 
         <div class="header-controls">
+            <!-- Multi-Filial Switcher -->
+            <div class="filial-selector">
+                <select id="select-filial-header" onchange="trocarFilialAtiva(this.value)">
+                    <!-- Filiais loaded dynamically -->
+                </select>
+            </div>
+
             <!-- Connection Status -->
             <div class="status-indicator" id="online-status">
                 <span class="status-dot"></span>
@@ -48,7 +55,7 @@
 
             <!-- Staff Login & Active Session Widget -->
             <div id="user-session-container">
-                <button class="btn-staff-login" onclick="openModal('modal-login-usuario')">🔐 Entrar na Equipe</button>
+                <button class="btn-staff-login" onclick="openModal('modal-login-portal')">🔐 Entrar no Portal</button>
             </div>
 
             <!-- Master Login Trigger -->
@@ -56,9 +63,9 @@
 
             <!-- Role Selector (RBAC simulation) -->
             <div class="role-selector" id="header-role-selector">
-                <label for="current-profile-select" style="font-size: 0.8rem; color: var(--text-secondary); margin-right: 0.25rem;">Perfil:</label>
                 <select id="current-profile-select">
                     <option value="Admin">Admin da Loja</option>
+                    <option value="Veterinario">Veterinário (CRMV)</option>
                     <option value="Supervisor">Supervisor de Estética</option>
                     <option value="Recepcao">Recepção / Atendente</option>
                     <option value="Banhista">Banhista / Tosador</option>
@@ -71,10 +78,12 @@
     <!-- Main Navigation Tabs -->
     <nav class="main-nav" id="main-nav-bar">
         <button class="nav-btn active" id="nav-kanban" onclick="switchTab('kanban')">📋 Kanban Operacional</button>
+        <button class="nav-btn" id="nav-prontuario" style="color:#14b8a6;" onclick="switchTab('prontuario')">🩺 Prontuário Veterinário</button>
         <button class="nav-btn" id="nav-baias" onclick="switchTab('baias')">🏠 Baias & Gaiolas</button>
         <button class="nav-btn" id="nav-clientes-pets" onclick="switchTab('clientes-pets')">🐾 Clientes & Pets</button>
         <button class="nav-btn" id="nav-produtos" onclick="switchTab('produtos')">🏷️ Cadastros ERP de Produtos</button>
-        <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Gestão de Estoque</button>
+        <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Gestão de Estoque FEFO</button>
+        <button class="nav-btn" id="nav-filiais" onclick="switchTab('filiais')">🏢 Multi-Filiais & Remessas</button>
         <button class="nav-btn" id="nav-assinaturas" onclick="switchTab('assinaturas')">💳 Assinaturas & Pacotes</button>
         <button class="nav-btn" id="nav-caixa" onclick="switchTab('caixa')">🛒 Caixa / POS</button>
         <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
@@ -86,7 +95,7 @@
     <!-- 1. KANBAN SECTION -->
     <section class="view-section active" id="section-kanban">
         <div class="action-header">
-            <h2 style="font-weight: 600;">Fluxo Operacional em Tempo Real</h2>
+            <h2 style="font-weight: 600;">Fluxo Operacional em Tempo Real (Com Ficha Técnica de Insumos)</h2>
             <button class="btn-primary" onclick="openModal('modal-agendamento')">➕ Novo Agendamento</button>
         </div>
 
@@ -157,7 +166,35 @@
         </div>
     </section>
 
-    <!-- 2. BAIAS & GAIOLAS SECTION -->
+    <!-- 2. PRONTUÁRIO VETERINÁRIO SECTION -->
+    <section class="view-section" id="section-prontuario">
+        <div class="action-header">
+            <h2 style="font-weight: 600; color: #14b8a6;">🩺 Prontuário Médico Veterinário & Receituário Digital</h2>
+            <button class="btn-vet" onclick="openModal('modal-prontuario')">➕ Nova Consulta Clínica</button>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            Histórico clínico cronológico, exame físico, vacinas e emissão de receita médica veterinária com impressão formatada.
+        </p>
+
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Pet / Tutor</th>
+                        <th>Veterinário (CRMV)</th>
+                        <th>Sinais Vitais (Peso / Temp / FC)</th>
+                        <th>Diagnóstico</th>
+                        <th>Prescrição Médica</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="table-prontuarios-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 3. BAIAS & GAIOLAS SECTION -->
     <section class="view-section" id="section-baias">
         <div class="action-header">
             <h2 style="font-weight: 600;">Mapeamento Visual de Baias & Gaiolas de Espera</h2>
@@ -166,7 +203,7 @@
         <div class="baia-grid" id="baia-grid-container"></div>
     </section>
 
-    <!-- 3. CLIENTES & PETS SECTION -->
+    <!-- 4. CLIENTES & PETS SECTION -->
     <section class="view-section" id="section-clientes-pets">
         <div class="action-header">
             <h2 style="font-weight: 600;">Gestão de Tutores & Pets (Cães 🐶 e Gatos 🐱)</h2>
@@ -212,21 +249,18 @@
         </div>
     </section>
 
-    <!-- 4. CADASTRO DE PRODUTOS ERP SECTION -->
+    <!-- 5. CADASTRO DE PRODUTOS ERP SECTION -->
     <section class="view-section" id="section-produtos">
         <div class="action-header">
             <h2 style="font-weight: 600;">Catálogo de Produtos & Margens de Lucro ERP</h2>
             <button class="btn-primary" onclick="openModal('modal-produto')">➕ Cadastrar Novo Produto ERP</button>
         </div>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
-            Gestão comercial completa com preço de custo, cálculo automático de margem (%), lucro bruto R$ e estoque mínimo.
-        </p>
         <div class="glass-panel table-panel">
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>Produto / Marca</th>
-                        <th>Categoria</th>
+                        <th>Categoria / Tipo</th>
                         <th>Preço Custo (R$)</th>
                         <th>Margem (%)</th>
                         <th>Preço Venda (R$)</th>
@@ -240,18 +274,19 @@
         </div>
     </section>
 
-    <!-- 5. GESTÃO DE ESTOQUE SECTION -->
+    <!-- 6. GESTÃO DE ESTOQUE SECTION -->
     <section class="view-section" id="section-estoque">
         <div class="action-header">
-            <h2 style="font-weight: 600;">Gestão de Estoque & Inventário por Lotes</h2>
+            <h2 style="font-weight: 600;">Gestão de Estoque FEFO (Comercial vs. Insumos Internos)</h2>
             <button class="btn-primary" onclick="openModal('modal-produto')">➕ Dar Entrada de Estoque</button>
         </div>
         <div class="glass-panel table-panel">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Produto</th>
+                        <th>Produto / Insumo</th>
                         <th>Código / Lote</th>
+                        <th>Finalidade</th>
                         <th>Quantidade em Estoque</th>
                         <th>Data de Vencimento</th>
                         <th>Status da Validade</th>
@@ -262,7 +297,48 @@
         </div>
     </section>
 
-    <!-- 6. ASSINATURAS & PACOTES SECTION -->
+    <!-- 7. MULTI-FILIAIS SECTION -->
+    <section class="view-section" id="section-filiais">
+        <div class="action-header">
+            <h2 style="font-weight: 600; color:#38bdf8;">🏢 Gestão Multi-Filiais & Transferências de Estoque</h2>
+            <button class="btn-primary" onclick="openModal('modal-transferencia')">📦 Nova Transferência entre Lojas</button>
+        </div>
+        
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Unidades / Filiais da Rede</h3>
+        <div class="glass-panel table-panel" style="margin-bottom:2rem;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Nome da Filial</th>
+                        <th>Cidade / UF</th>
+                        <th>Gerente Responsável</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="table-filiais-body"></tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">Histórico de Transferências Internas</h3>
+        <div class="glass-panel table-panel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Filial Origem</th>
+                        <th>Filial Destino</th>
+                        <th>Produto / Insumo</th>
+                        <th>Qtd Transferida</th>
+                        <th>Status Remessa</th>
+                    </tr>
+                </thead>
+                <tbody id="table-transferencias-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 8. ASSINATURAS & PACOTES SECTION -->
     <section class="view-section" id="section-assinaturas">
         <div class="action-header">
             <h2 style="font-weight: 600;">Planos de Assinatura Recorrente & Pacotes de Banhos</h2>
@@ -271,7 +347,7 @@
         <div class="grid-container" id="planos-cards-container"></div>
     </section>
 
-    <!-- 7. CAIXA / POS SECTION -->
+    <!-- 9. CAIXA / POS SECTION -->
     <section class="view-section" id="section-caixa">
         <div class="pos-container">
             <div>
@@ -304,7 +380,7 @@
         </div>
     </section>
 
-    <!-- 8. TAXI DOG DRIVER SECTION -->
+    <!-- 10. TAXI DOG DRIVER SECTION -->
     <section class="view-section" id="section-taxi">
         <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">Painel Móvel do Entregador (Táxi Dog)</h2>
         <div class="mobile-view">
@@ -316,7 +392,7 @@
         </div>
     </section>
 
-    <!-- 9. EQUIPE & COMISSÕES SECTION -->
+    <!-- 11. EQUIPE & COMISSÕES SECTION -->
     <section class="view-section" id="section-equipe">
         <div class="action-header">
             <h2 style="font-weight: 600;">Gestão de Equipe & Comissões de Tosadores/Banhistas</h2>
@@ -339,7 +415,7 @@
         </div>
     </section>
 
-    <!-- 10. ANALYTICS SECTION -->
+    <!-- 12. ANALYTICS SECTION -->
     <section class="view-section" id="section-analytics">
         <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dashboard de Governança & Comissões</h2>
         <div class="kpi-row">
@@ -392,7 +468,7 @@
         </div>
     </section>
 
-    <!-- 11. MASTER SAAS & GOVERNANCE SECTION -->
+    <!-- 13. MASTER SAAS & GOVERNANCE SECTION -->
     <section class="view-section" id="section-master-saas">
         <div class="action-header">
             <h2 style="font-weight: 600; color: #fbbf24;">👑 Painel Master Super-Admin (PataForma B2B SaaS)</h2>
@@ -436,26 +512,154 @@
 
     <!-- ================= MODAIS ================= -->
 
-    <!-- Modal Login de Funcionário / Equipe -->
-    <div class="modal-overlay" id="modal-login-usuario">
+    <!-- Modal Nova Consulta Veterinária -->
+    <div class="modal-overlay" id="modal-prontuario">
         <div class="glass-panel modal-content">
             <div class="modal-header">
-                <h3 style="color: #3b82f6;">🔐 Login da Equipe PataForma</h3>
-                <button class="modal-close" onclick="closeModal('modal-login-usuario')">&times;</button>
+                <h3 style="color: #14b8a6;">🩺 Nova Consulta Clínica Veterinária</h3>
+                <button class="modal-close" onclick="closeModal('modal-prontuario')">&times;</button>
             </div>
-            <form onsubmit="loginFuncionarioSubmit(event)">
+            <form onsubmit="salvarProntuarioSubmit(event)">
+                <div class="form-group">
+                    <label>Selecione o Pet:</label>
+                    <select id="select-vet-pet" required></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Peso (kg):</label>
+                        <input type="number" step="0.1" id="input-vet-peso" placeholder="28.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Temperatura (°C):</label>
+                        <input type="number" step="0.1" id="input-vet-temp" placeholder="38.5" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Freq. Cardíaca (bpm):</label>
+                        <input type="number" id="input-vet-fc" placeholder="110" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mucosas / Hidratação:</label>
+                        <select id="select-vet-mucosas">
+                            <option value="Normocoradas / Normohidratado">Normocoradas / Normohidratado</option>
+                            <option value="Pálidas">Pálidas</option>
+                            <option value="Congestas">Congestas</option>
+                            <option value="Ictéricas">Ictéricas</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Anamnese / Queixa Principal:</label>
+                    <textarea id="input-vet-anamnese" rows="2" placeholder="Descreva os sintomas relatados pelo tutor..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Diagnóstico Clínico:</label>
+                    <input type="text" id="input-vet-diagnostico" placeholder="ex: Otite bacteriana bilateral" required>
+                </div>
+                <div class="form-group">
+                    <label>Prescrição Médica & Medicamentos (Dosagem por kg):</label>
+                    <textarea id="input-vet-prescricao" rows="3" placeholder="ex: 1. Otoguard gotas - Aplicar 5 gotas a cada 12h por 7 dias." required></textarea>
+                </div>
+                <button type="submit" class="btn-vet" style="width:100%;">Salvar Consulta & Gerar Receita</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Impressão de Receita Médica Veterinária -->
+    <div class="modal-overlay" id="modal-receita-impressao">
+        <div class="glass-panel modal-content" style="max-width:650px; background:white; color:#1e293b;">
+            <div class="modal-header" style="border-bottom-color:#cbd5e1;">
+                <h3 style="color:#0f766e;">📄 Receituário Veterinário Formato Impressão</h3>
+                <button class="modal-close" style="color:#1e293b;" onclick="closeModal('modal-receita-impressao')">&times;</button>
+            </div>
+            
+            <div class="prescription-printable" id="prescription-print-area">
+                <div class="prescription-header">
+                    <h2 id="print-clinic-name">CLÍNICA VETERINÁRIA PATAFORMA</h2>
+                    <p id="print-clinic-info">Unidade Jardins — CRMV Responsável: SP-12345</p>
+                </div>
+                <div class="prescription-vitals">
+                    <div><strong>Paciente:</strong> <span id="print-pet-name">Thor</span></div>
+                    <div><strong>Tutor:</strong> <span id="print-tutor-name">Carlos Souza</span></div>
+                    <div><strong>Peso:</strong> <span id="print-pet-peso">28.5 kg</span></div>
+                    <div><strong>Data:</strong> <span id="print-date">04/08/2026</span></div>
+                </div>
+                <h4 style="color:#0f766e; margin-bottom:0.5rem; text-decoration:underline;">RECEITA MÉDICA VETERINÁRIA</h4>
+                <div class="prescription-body" id="print-prescription-content">
+                    <!-- Prescription items inserted here -->
+                </div>
+                <div class="prescription-footer">
+                    <div>Impresso via PataForma ERP</div>
+                    <div class="prescription-signature">
+                        <div id="print-vet-signature">Dra. Camila Santos</div>
+                        <div style="font-size:0.75rem; color:#64748b;">Médica Veterinária - CRMV/SP</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+                <button class="btn-vet" style="width:100%;" onclick="window.print()">🖨️ Imprimir Receita (PDF)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login de Funcionário / Portal -->
+    <div class="modal-overlay" id="modal-login-portal">
+        <div class="glass-panel modal-content">
+            <div class="modal-header">
+                <h3 style="color: #3b82f6;">🔐 Portal de Entrada PataForma SaaS</h3>
+                <button class="modal-close" onclick="closeModal('modal-login-portal')">&times;</button>
+            </div>
+            <form onsubmit="loginPortalSubmit(event)">
+                <div class="form-group">
+                    <label>Empresa / Tenant:</label>
+                    <select id="select-portal-empresa" onchange="atualizarFiliaisPortalLogin()"></select>
+                </div>
+                <div class="form-group">
+                    <label>Filial de Acesso:</label>
+                    <select id="select-portal-filial"></select>
+                </div>
                 <div class="form-group">
                     <label>Selecione seu Usuário / E-mail:</label>
-                    <select id="select-staff-user-login" required></select>
+                    <select id="select-portal-usuario" required></select>
                 </div>
                 <div class="form-group">
                     <label>Senha de Acesso:</label>
-                    <input type="password" id="input-staff-pass-login" placeholder="Digite sua senha" value="123456" required>
+                    <input type="password" id="input-portal-senha" value="123456" required>
                 </div>
-                <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1rem;">
-                    💡 O sistema carregará a sua interface focada e os acessos permitidos ao seu cargo.
-                </p>
-                <button type="submit" class="btn-staff-login" style="width: 100%;">Entrar no Sistema</button>
+                <button type="submit" class="btn-staff-login" style="width: 100%;">Entrar na Unidade</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Transferência entre Filiais -->
+    <div class="modal-overlay" id="modal-transferencia">
+        <div class="glass-panel modal-content">
+            <div class="modal-header">
+                <h3 style="color: #38bdf8;">📦 Nova Remessa de Transferência entre Lojas</h3>
+                <button class="modal-close" onclick="closeModal('modal-transferencia')">&times;</button>
+            </div>
+            <form onsubmit="salvarTransferenciaSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Filial Origem:</label>
+                        <select id="select-transf-origem" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Filial Destino:</label>
+                        <select id="select-transf-destino" required></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Selecione o Produto / Insumo:</label>
+                    <select id="select-transf-produto" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Quantidade a Transferir:</label>
+                    <input type="number" id="input-transf-qtd" placeholder="5" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%;">Confirmar Remessa de Estoque</button>
             </form>
         </div>
     </div>
@@ -789,6 +993,7 @@
                     <label>Perfil de Acesso (RBAC):</label>
                     <select id="select-func-perfil">
                         <option value="Admin">Admin</option>
+                        <option value="Veterinario">Veterinário (CRMV)</option>
                         <option value="Supervisor">Supervisor de Estética</option>
                         <option value="Recepcao">Recepção</option>
                         <option value="Banhista">Banhista / Tosador</option>
@@ -804,22 +1009,25 @@
     <div class="modal-overlay" id="modal-produto">
         <div class="glass-panel modal-content">
             <div class="modal-header">
-                <h3>🏷️ Cadastrar Produto ERP (Comercial Profundo)</h3>
+                <h3>🏷️ Cadastrar Produto / Insumo ERP</h3>
                 <button class="modal-close" onclick="closeModal('modal-produto')">&times;</button>
             </div>
             <form onsubmit="salvarProduto(event)">
                 <div class="form-group">
-                    <label>Nome do Produto:</label>
-                    <input type="text" id="input-prod-nome" placeholder="ex: Ração Premier Cães Adultos 15kg" required>
+                    <label>Nome do Produto / Insumo:</label>
+                    <input type="text" id="input-prod-nome" placeholder="ex: Shampoo Hipoalergênico Galaõ 5L" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Marca / Fornecedor:</label>
-                        <input type="text" id="input-prod-marca" placeholder="ex: Premier Pet" required>
+                        <input type="text" id="input-prod-marca" placeholder="ex: Pet Clean" required>
                     </div>
                     <div class="form-group">
-                        <label>Categoria:</label>
-                        <input type="text" id="input-prod-categoria" placeholder="Ração, Higiene, Petiscos, Acessórios" required>
+                        <label>Finalidade / Tipo:</label>
+                        <select id="select-prod-finalidade">
+                            <option value="Comercial">Venda no Balcão (Prateleira)</option>
+                            <option value="Insumo">Insumo Operacional (Uso no Banho & Tosa)</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-row">
@@ -848,9 +1056,6 @@
                         <input type="number" step="0.01" id="input-prod-preco" placeholder="150.00" oninput="calcularPrecoPorVenda()" required>
                     </div>
                 </div>
-                <div style="font-size:0.75rem; color:#10b981; font-weight:700; margin-bottom:1rem; text-align:right;">
-                    Lucro Bruto Estimado por Unidade: <span id="text-lucro-bruto">R$ 0,00</span>
-                </div>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -866,7 +1071,7 @@
                     <label>URL da Foto (Para Frente de Caixa):</label>
                     <input type="text" id="input-prod-foto" placeholder="https://exemplo.com/foto.jpg ou deixe em branco">
                 </div>
-                <button type="submit" class="btn-primary" style="width:100%;">Salvar Produto ERP</button>
+                <button type="submit" class="btn-primary" style="width:100%;">Salvar Produto / Insumo ERP</button>
             </form>
         </div>
     </div>
