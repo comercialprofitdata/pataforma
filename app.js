@@ -2262,6 +2262,7 @@ function renderAuditoriaTable() {
         `;
         tbody.appendChild(tr);
     });
+}
 
 function enviarLeadLanding(e) {
     e.preventDefault();
