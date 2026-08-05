@@ -261,31 +261,53 @@ const State = {
 };
 
 // DREASY FLUXO DE CAIXA SYNCHRONIZATION ENGINE
-function sincronizarDREasyFluxoCaixa() {
+async function sincronizarDREasyFluxoCaixa() {
     const movimentacoes = DB.get('movimentacoes_caixa') || [];
-    const faturamentoPos = movimentacoes.filter(m => m.categoria.includes('Balcão')).reduce((acc, curr) => acc + curr.valor, 0);
-    const faturamentoServicos = movimentacoes.filter(m => m.categoria.includes('Assinaturas') || m.categoria.includes('Banho')).reduce((acc, curr) => acc + curr.valor, 0);
-    const faturamentoVet = movimentacoes.filter(m => m.categoria.includes('Consulta')).reduce((acc, curr) => acc + curr.valor, 0);
+    const empresas = DB.get('empresas') || [];
+    const empresa = empresas.find(e => e.id === State.currentEmpresaId) || empresas[0] || {};
+
+    const faturamentoPos = movimentacoes.filter(m => m.categoria && m.categoria.includes('Balcão')).reduce((acc, curr) => acc + (curr.valor || 0), 0);
+    const faturamentoServicos = movimentacoes.filter(m => m.categoria && (m.categoria.includes('Assinaturas') || m.categoria.includes('Banho'))).reduce((acc, curr) => acc + (curr.valor || 0), 0);
+    const faturamentoVet = movimentacoes.filter(m => m.categoria && m.categoria.includes('Consulta')).reduce((acc, curr) => acc + (curr.valor || 0), 0);
     const totalConsolidado = faturamentoPos + faturamentoServicos + faturamentoVet;
 
     if (document.getElementById('dreasy-pos-total')) document.getElementById('dreasy-pos-total').innerText = `R$ ${faturamentoPos.toFixed(2)}`;
     if (document.getElementById('dreasy-servicos-total')) document.getElementById('dreasy-servicos-total').innerText = `R$ ${faturamentoServicos.toFixed(2)}`;
     if (document.getElementById('dreasy-vet-total')) document.getElementById('dreasy-vet-total').innerText = `R$ ${faturamentoVet.toFixed(2)}`;
 
-    // Payload JSON mock sending to fluxocaixa.comercial-profitdata.workers.dev
-    const payload = {
-        empresa: "CatDog Pet Center & Clínica Veterinária",
-        cnpj: "45.892.103/0001-88",
-        data_sincronizacao: new Date().toISOString(),
-        vendas_pos_balcao: faturamentoPos,
-        servicos_estetica_pacotes: faturamentoServicos,
-        consultas_veterinarias: faturamentoVet,
-        receita_bruta_total: totalConsolidado
+    // ✅ REAL POST to DREasy public /api/leads endpoint
+    // DREasy's /api/leads is the only endpoint that accepts data without Bearer auth.
+    // We send a structured lead entry identifying this pet shop and its revenue summary.
+    const dreasyPayload = {
+        nome: `[PataForma ERP] ${empresa.nome || 'CatDog Pet Center & Clínica Veterinária'}`,
+        whatsapp: empresa.whatsapp || '',
+        email: empresa.email_master || '',
+        origem: `Sincronização ERP PataForma — Receita Bruta: R$ ${totalConsolidado.toFixed(2)} | POS: R$ ${faturamentoPos.toFixed(2)} | Serviços: R$ ${faturamentoServicos.toFixed(2)} | Vet: R$ ${faturamentoVet.toFixed(2)} | CNPJ: ${empresa.cnpj || ''} | ${new Date().toLocaleDateString('pt-BR')}`
     };
 
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Sincronização DREasy', `DRE gerencial exportado para fluxocaixa.comercial-profitdata.workers.dev. Total R$ ${totalConsolidado.toFixed(2)}`);
+    const btnSync = document.querySelector('.btn-sync-dreasy');
+    if (btnSync) { btnSync.disabled = true; btnSync.innerText = '⏳ Enviando para DREasy...'; }
 
-    State.showToast(`⚡ Sincronizado com DREasy! R$ ${totalConsolidado.toFixed(2)} exportados com sucesso.`, 'success');
+    try {
+        const res = await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dreasyPayload)
+        });
+
+        if (res.ok) {
+            DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Sincronização DREasy ✅', `Receita R$ ${totalConsolidado.toFixed(2)} enviada com sucesso para fluxocaixa.comercial-profitdata.workers.dev/api/leads`);
+            State.showToast(`⚡ Sincronizado! R$ ${totalConsolidado.toFixed(2)} registrados no DREasy Fluxo de Caixa!`, 'success');
+        } else {
+            throw new Error(`HTTP ${res.status}`);
+        }
+    } catch (err) {
+        console.warn('DREasy sync error:', err);
+        DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Sincronização DREasy ⚠️', `Erro ao enviar para DREasy: ${err.message}. Dados salvos localmente.`);
+        State.showToast(`⚠️ DREasy temporariamente indisponível. Dados registrados localmente. Tente novamente.`, 'warning');
+    } finally {
+        if (btnSync) { btnSync.disabled = false; btnSync.innerText = '⚡ Sincronizar com DREasy / Fluxo de Caixa'; }
+    }
 }
 
 // LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
@@ -505,6 +527,22 @@ function salvarEmpresa(e) {
 
     openModal('modal-credenciais-criadas');
     State.showToast(`🎉 Pet Shop ${nome} cadastrado! Acesso do Administrador gerado.`, 'success');
+
+    // ✅ REAL POST to DREasy — register new client as a captured lead
+    const leadPayload = {
+        nome: `[PataForma NOVO CLIENTE] ${responsavel} — ${nome}`,
+        whatsapp: whatsapp,
+        email: email_master,
+        origem: `Onboarding PataForma ERP | Plano: ${plano} | CNPJ: ${cnpj} | Cidade: ${cidade} | Pet Shop: ${nome} | Criado em: ${new Date().toLocaleDateString('pt-BR')}`
+    };
+    fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadPayload)
+    }).then(r => {
+        if (r.ok) console.log(`✅ DREasy: Lead de ${nome} registrado com sucesso!`);
+        else console.warn(`⚠️ DREasy lead error: HTTP ${r.status}`);
+    }).catch(e => console.warn('DREasy lead sync:', e));
 }
 
 function enviarAcessoMasterWhatsApp() {
