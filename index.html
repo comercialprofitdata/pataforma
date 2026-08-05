@@ -28,9 +28,17 @@
                 <li><a href="#planos">Planos & Preços</a></li>
             </ul>
 
-            <button class="btn-area-cliente" onclick="abrirAreaClientePortal()">
-                <span>🔐 Área do Cliente</span>
-            </button>
+            <div style="display:flex; gap:0.75rem; align-items:center;">
+                <!-- Cliente Login Button -->
+                <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
+                    <span>🔐 Área do Cliente</span>
+                </button>
+
+                <!-- Gestor SaaS Master Login Button -->
+                <button class="btn-master" onclick="abrirAreaClientePortal('gestor')">
+                    <span>👑 Acesso Gestor PataForma</span>
+                </button>
+            </div>
         </header>
 
         <!-- Hero Section -->
@@ -48,11 +56,14 @@
             </p>
 
             <div class="hero-ctas">
-                <button class="btn-hero-primary" onclick="abrirAreaClientePortal()">
+                <button class="btn-hero-primary" onclick="abrirAreaClientePortal('cliente')">
                     <span>🚀 Experimente 14 Dias Grátis</span>
                 </button>
-                <button class="btn-hero-secondary" onclick="abrirAreaClientePortal()">
+                <button class="btn-hero-secondary" onclick="abrirAreaClientePortal('cliente')">
                     <span>🔐 Entrar na Área do Cliente</span>
+                </button>
+                <button class="btn-master" style="padding:0.9rem 1.5rem;" onclick="abrirAreaClientePortal('gestor')">
+                    <span>👑 Sou Gestor PataForma</span>
                 </button>
             </div>
 
@@ -78,7 +89,7 @@
                     <ul class="feature-list">
                         <li>Baixa exata em ml por tipo de banho</li>
                         <li>Estoque operacional separado de vendas</li>
-                        <li>Custo real por serviço calculated</li>
+                        <li>Custo real por serviço calculado</li>
                     </ul>
                 </div>
 
@@ -158,7 +169,7 @@
                         <span style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase;">Economia Anual Estimada:</span>
                         <div class="roi-result-value" id="roi-result-text">R$ 14.280,00</div>
                         <p style="font-size:0.8rem; color:var(--text-muted);">Calculado considerando baixa por Ficha Técnica + eliminação de perdas por validade FEFO.</p>
-                        <button class="btn-hero-primary" style="margin-top:1rem; width:100%;" onclick="abrirAreaClientePortal()">Quero Garantir Esta Economia</button>
+                        <button class="btn-hero-primary" style="margin-top:1rem; width:100%;" onclick="abrirAreaClientePortal('cliente')">Quero Garantir Esta Economia</button>
                     </div>
                 </div>
             </div>
@@ -183,7 +194,7 @@
                             <li>1 Filial inclusa</li>
                         </ul>
                     </div>
-                    <button class="btn-hero-secondary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal()">Começar Bronze</button>
+                    <button class="btn-hero-secondary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal('cliente')">Começar Bronze</button>
                 </div>
 
                 <div class="pricing-card featured">
@@ -200,7 +211,7 @@
                             <li>Gestão de Pacotes & Assinaturas</li>
                         </ul>
                     </div>
-                    <button class="btn-hero-primary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal()">Assinar Prata</button>
+                    <button class="btn-hero-primary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal('cliente')">Assinar Prata</button>
                 </div>
 
                 <div class="pricing-card">
@@ -216,7 +227,7 @@
                             <li>Atendimento Prioritário VIP</li>
                         </ul>
                     </div>
-                    <button class="btn-hero-secondary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal()">Solicitar Enterprise</button>
+                    <button class="btn-hero-secondary" style="width:100%; text-align:center;" onclick="abrirAreaClientePortal('cliente')">Solicitar Enterprise</button>
                 </div>
             </div>
         </section>
@@ -281,11 +292,11 @@
 
                 <!-- Staff Login & Active Session Widget -->
                 <div id="user-session-container">
-                    <button class="btn-staff-login" onclick="openModal('modal-login-portal')">🔐 Entrar no Portal</button>
+                    <button class="btn-staff-login" onclick="abrirAreaClientePortal('cliente')">🔐 Entrar no Portal</button>
                 </div>
 
                 <!-- Master Login Trigger -->
-                <button class="btn-master" id="btn-master-login" onclick="openModal('modal-login-master')">👑 Login Master</button>
+                <button class="btn-master" id="btn-master-login" onclick="abrirAreaClientePortal('gestor')">👑 Acesso Gestor PataForma</button>
 
                 <!-- Role Selector (RBAC simulation) -->
                 <div class="role-selector" id="header-role-selector">
@@ -738,14 +749,26 @@
 
     <!-- ================= MODAIS ================= -->
 
-    <!-- Modal Login de Funcionário / Portal -->
+    <!-- Modal Login Portal Gateway com Abas (Cliente vs Gestor PataForma) -->
     <div class="modal-overlay" id="modal-login-portal">
         <div class="glass-panel modal-content">
             <div class="modal-header">
-                <h3 style="color: #3b82f6;">🔐 Portal de Entrada PataForma — Área do Cliente</h3>
+                <h3 style="color: #3b82f6;" id="portal-modal-title">🔐 Portal de Entrada PataForma</h3>
                 <button class="modal-close" onclick="closeModal('modal-login-portal')">&times;</button>
             </div>
-            <form onsubmit="loginPortalSubmit(event)">
+
+            <!-- Portal Mode Selector Tabs -->
+            <div class="portal-tab-group">
+                <button type="button" class="portal-tab active" id="tab-portal-cliente" onclick="alternarModoPortal('cliente')">
+                    🏬 Cliente ERP (Pet Shops)
+                </button>
+                <button type="button" class="portal-tab master-tab" id="tab-portal-gestor" onclick="alternarModoPortal('gestor')">
+                    👑 Gestor PataForma (SaaS Admin)
+                </button>
+            </div>
+
+            <!-- FORM 1: CLIENTE ERP LOGIN -->
+            <form id="form-portal-cliente" onsubmit="loginPortalSubmit(event)">
                 <div class="form-group">
                     <label>Empresa / Tenant:</label>
                     <select id="select-portal-empresa" onchange="atualizarFiliaisPortalLogin()"></select>
@@ -762,13 +785,26 @@
                     <label>Senha de Acesso:</label>
                     <input type="password" id="input-portal-senha" value="123456" required>
                 </div>
-                <button type="submit" class="btn-staff-login" style="width: 100%;">Entrar na Área do Cliente ERP</button>
+                <button type="submit" class="btn-staff-login" style="width: 100%; padding:0.7rem; font-size:0.9rem;">Entrar na Área do Cliente ERP</button>
             </form>
 
-            <div class="gestor-login-callout">
-                <span style="font-size:0.8rem; color:var(--text-secondary);">É o Gestor PataForma e deseja cadastrar um novo Pet Shop?</span>
-                <button type="button" class="btn-master" style="width:100%; margin-top:0.5rem;" onclick="abrirCadastroPetShopGestor()">🏢 Cadastrar Novo Pet Shop (Com CNPJ API)</button>
-            </div>
+            <!-- FORM 2: GESTOR PATAFORMA SAAS MASTER LOGIN -->
+            <form id="form-portal-gestor" onsubmit="loginGestorDirectSubmit(event)" style="display: none;">
+                <div class="form-group">
+                    <label>Usuário Gestor PataForma:</label>
+                    <input type="text" id="input-portal-gestor-user" value="pataforma" placeholder="Usuário Master" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha do Gestor:</label>
+                    <input type="password" id="input-portal-gestor-pass" value="abc@123" placeholder="Senha Master" required>
+                </div>
+                <button type="submit" class="btn-master" style="width: 100%; padding:0.7rem; font-size:0.9rem; margin-bottom:0.75rem;">
+                    👑 Entrar como Gestor PataForma
+                </button>
+                <button type="button" class="btn-primary" style="width: 100%; background: linear-gradient(135deg, #0284c7, #0369a1);" onclick="abrirCadastroPetShopGestor()">
+                    🏢 Cadastrar Novo Pet Shop (CNPJ API)
+                </button>
+            </form>
         </div>
     </div>
 
@@ -1030,27 +1066,6 @@
                     <input type="number" step="0.01" id="input-avulso-preco" placeholder="50.00" required>
                 </div>
                 <button type="submit" class="btn-primary" style="width:100%;">Adicionar ao Carrinho</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Login Master Super-Admin -->
-    <div class="modal-overlay" id="modal-login-master">
-        <div class="glass-panel modal-content" style="border-color: rgba(245, 158, 11, 0.4);">
-            <div class="modal-header">
-                <h3 style="color: #fbbf24;">👑 Autenticação Master Super-Admin</h3>
-                <button class="modal-close" onclick="closeModal('modal-login-master')">&times;</button>
-            </div>
-            <form onsubmit="loginMasterSubmit(event)">
-                <div class="form-group">
-                    <label>Usuário Master:</label>
-                    <input type="text" id="input-master-user" placeholder="Digite o usuário Master" required>
-                </div>
-                <div class="form-group">
-                    <label>Senha Master:</label>
-                    <input type="password" id="input-master-pass" placeholder="Digite a senha Master" required>
-                </div>
-                <button type="submit" class="btn-master" style="width: 100%; margin-top: 0.5rem;">Entrar como Master</button>
             </form>
         </div>
     </div>

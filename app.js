@@ -227,8 +227,59 @@ const State = {
 };
 
 // LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
-function abrirAreaClientePortal() {
+function abrirAreaClientePortal(modo = 'cliente') {
     openModal('modal-login-portal');
+    alternarModoPortal(modo);
+}
+
+function alternarModoPortal(modo) {
+    const tabCliente = document.getElementById('tab-portal-cliente');
+    const tabGestor = document.getElementById('tab-portal-gestor');
+    const formCliente = document.getElementById('form-portal-cliente');
+    const formGestor = document.getElementById('form-portal-gestor');
+    const modalTitle = document.getElementById('portal-modal-title');
+
+    if (modo === 'gestor') {
+        if (tabCliente) tabCliente.classList.remove('active');
+        if (tabGestor) tabGestor.classList.add('active');
+        if (formCliente) formCliente.style.display = 'none';
+        if (formGestor) formGestor.style.display = 'block';
+        if (modalTitle) {
+            modalTitle.innerText = "👑 Portal do Gestor PataForma";
+            modalTitle.style.color = "#fbbf24";
+        }
+    } else {
+        if (tabGestor) tabGestor.classList.remove('active');
+        if (tabCliente) tabCliente.classList.add('active');
+        if (formGestor) formGestor.style.display = 'none';
+        if (formCliente) formCliente.style.display = 'block';
+        if (modalTitle) {
+            modalTitle.innerText = "🔐 Portal de Entrada PataForma";
+            modalTitle.style.color = "#3b82f6";
+        }
+    }
+}
+
+function loginGestorDirectSubmit(e) {
+    e.preventDefault();
+    const user = document.getElementById('input-portal-gestor-user').value.trim();
+    const pass = document.getElementById('input-portal-gestor-pass').value.trim();
+
+    if (user === 'pataforma' && pass === 'abc@123') {
+        State.isMasterSuperAdmin = true;
+        document.getElementById('master-top-bar').style.display = 'flex';
+        document.getElementById('nav-master-saas').style.display = 'flex';
+        closeModal('modal-login-portal');
+        
+        exibirAppERP();
+        DB.logAudit(State.currentEmpresaId, 'Master Super-Admin', 'Autenticação Gestor PataForma', 'Login Gestor PataForma realizado via Portal');
+        State.showToast("👑 Autenticado como Gestor PataForma Master!", "success");
+        
+        renderEmpresasSelector();
+        switchTab('master-saas');
+    } else {
+        State.showToast("❌ Credenciais do Gestor PataForma incorretas!", "error");
+    }
 }
 
 function abrirCadastroPetShopGestor() {
@@ -502,7 +553,7 @@ function logoutFuncionario() {
     State.currentProfile = 'Admin';
     const sessionContainer = document.getElementById('user-session-container');
     if (sessionContainer) {
-        sessionContainer.innerHTML = `<button class="btn-staff-login" onclick="openModal('modal-login-portal')">🔐 Entrar no Portal</button>`;
+        sessionContainer.innerHTML = `<button class="btn-staff-login" onclick="abrirAreaClientePortal('cliente')">🔐 Entrar no Portal</button>`;
     }
     applyRBAC('Admin');
     voltarParaLandingPage();
