@@ -951,18 +951,46 @@ function renderClientesTable() {
     clientes.forEach(c => {
         const clientPets = pets.filter(p => p.cliente_id === c.id);
         const petsNames = clientPets.map(p => `${p.especie === 'Gato' ? '🐱' : '🐶'} ${p.nome}`).join(', ');
+        const isAnon = c.status === 'ANONYMIZED' || c.nome.startsWith('TITULAR_ANONIMIZADO');
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><strong>👤 ${c.nome}</strong></td>
-            <td>${c.telefone}</td>
-            <td>${c.email}</td>
-            <td><small>${c.endereco}</small></td>
-            <td><span class="validade-badge em-dia">⭐ ${c.pontos_fidelidade} pts</span></td>
-            <td><button class="card-btn" onclick="abrirModalPetParaCliente(${c.id})">➕ Adicionar Pet</button></td>
+            <td><strong>👤 ${c.nome}</strong> ${isAnon ? '<span class="validade-badge vencido" style="font-size:0.65rem;">🔒 LGPD Anonimizado</span>' : ''}</td>
+            <td>${c.telefone || '—'}</td>
+            <td>${c.email || '—'}</td>
+            <td><small>${c.endereco || '—'}</small></td>
+            <td><span class="validade-badge em-dia">⭐ ${c.pontos_fidelidade || 0} pts</span></td>
+            <td>
+                <div style="display:flex; gap:0.4rem;">
+                    <button class="card-btn" onclick="abrirModalPetParaCliente(${c.id})">➕ Pet</button>
+                    ${!isAnon ? `<button class="card-btn" style="background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);" onclick="anonimizarClienteLGPD(${c.id})">🔒 LGPD</button>` : ''}
+                </div>
+            </td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+function anonimizarClienteLGPD(clienteId) {
+    if (!confirm('🔒 LGPD (Art. 18, VI) — Direito ao Esquecimento:\n\nTem certeza que deseja anonimizar este cliente?\nOs dados pessoais (Nome, Telefone, E-mail, Endereço) serão substituídos por uma máscara anônima irreversível. Os históricos de vendas e lançamentos de caixa serão preservados para auditoria fiscal.')) return;
+
+    const clientes = DB.get('clientes') || [];
+    const idx = clientes.findIndex(c => c.id === clienteId);
+    if (idx === -1) return;
+
+    const oldName = clientes[idx].nome;
+    const anonHash = 'TITULAR_ANONIMIZADO_' + clienteId;
+    clientes[idx].nome = anonHash;
+    clientes[idx].telefone = '00000000000';
+    clientes[idx].email = `anon_${clienteId}@lgpd.lgpd`;
+    clientes[idx].endereco = 'Endereço Anonimizado conforme Art. 18, VI LGPD';
+    clientes[idx].status = 'ANONYMIZED';
+    clientes[idx].custom_attributes = {};
+
+    DB.set('clientes', clientes);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Anonimização LGPD 🛡️', `Cliente "${oldName}" (ID ${clienteId}) foi anonimizado conforme Art. 18, VI da LGPD.`);
+    State.showToast(`🛡️ Cliente anonimizado com sucesso conforme a LGPD! Histórico financeiro preservado.`, 'success');
+    renderClientesTable();
 }
 
 function renderPetsTable() {
