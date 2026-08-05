@@ -1276,3 +1276,152 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border
     gap: 1.25rem;
     margin-bottom: 1.5rem;
 }
+
+/* ===================================================================
+   FINANCIAL ERP & DRE MODULE
+   =================================================================== */
+.dre-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    font-size: 0.88rem;
+}
+
+.dre-subtotal {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 0;
+    margin: 0.25rem 0;
+    font-weight: 700;
+}
+
+.dre-lucro {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08));
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin-top: 0.75rem;
+    font-size: 1.05rem;
+    color: #34d399;
+}
+
+.validade-badge.pendente-badge {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ===================================================================
+   COMPARATIVO DE CONCORRENTES LANDING
+   =================================================================== */
+.comparativo-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.comparativo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.comparativo-table th, .comparativo-table td {
+    padding: 0.9rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comparativo-table th {
+    background: rgba(15, 23, 42, 0.8);
+    color: var(--text-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.comparativo-table th.col-pataforma,
+.comparativo-table td.col-pataforma {
+    background: rgba(99, 102, 241, 0.12);
+    font-size: 0.95rem;
+}
+
+.comparativo-table td.check {
+    font-size: 1.1rem;
+}
+
+.comparativo-table td.cross {
+    opacity: 0.4;
+    font-size: 0.9rem;
+}
+
+.comparativo-table tr.price-row td {
+    border-top: 2px solid rgba(255, 255, 255, 0.15);
+    font-size: 1.05rem;
+    padding: 1.1rem 1rem;
+}
+
+.excl-badge {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 6px;
+    padding: 0.05rem 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    margin-left: 0.3rem;
+    vertical-align: middle;
+}
+
+/* ===================================================================
+   LEAD FORM CAPTURE LANDING
+   =================================================================== */
+.lead-form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 2.5rem;
+    align-items: center;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+@media (max-width: 868px) {
+    .lead-form-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+.lead-form-right {
+    padding: 2rem;
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ===================================================================
+   WHATSAPP FLOATING BUTTON
+   =================================================================== */
+.whatsapp-float {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    width: 56px;
+    height: 56px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+    z-index: 9999;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+}
+

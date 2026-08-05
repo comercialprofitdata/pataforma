@@ -211,13 +211,35 @@ const DB = {
 
         // 16. Caixas & Movimentações Financeiras CatDog SP
         DB.set('movimentacoes_caixa', [
-            { id: 1, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Assinaturas Recorrentes", descricao: "Mensalidade Plano VIP Carlos Mendes", valor: 279.00, data: "2026-08-01T09:00:00" },
-            { id: 2, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Venda Ração Premier 15kg Mariana Alcantara", valor: 209.90, data: "2026-08-03T14:30:00" },
-            { id: 3, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Consulta Veterinária", descricao: "Consulta Clínica Dr. Thiago (Thor)", valor: 180.00, data: "2026-08-04T10:30:00" },
-            { id: 4, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Antipulgas Bravecto Sabrina Sato", valor: 249.90, data: "2026-08-04T16:15:00" }
+            { id: 1, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Assinaturas Recorrentes", descricao: "Mensalidade Plano VIP — Carlos Mendes", valor: 279.00, data: "2026-08-01T09:00:00" },
+            { id: 2, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Assinaturas Recorrentes", descricao: "Mensalidade Plano Premium — Dr. Gustavo Borges", valor: 399.00, data: "2026-08-01T10:00:00" },
+            { id: 3, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Ração Premier 15kg — Mariana Alcantara", valor: 209.90, data: "2026-08-02T14:30:00" },
+            { id: 4, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Estética / Banho & Tosa", descricao: "Banho + Tosa Tesoura — Thor (Camila Viana)", valor: 180.00, data: "2026-08-02T11:00:00" },
+            { id: 5, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Consulta Veterinária", descricao: "Consulta Clínica Dr. Thiago — Luna", valor: 220.00, data: "2026-08-03T10:30:00" },
+            { id: 6, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Antipulgas Bravecto — Sabrina Sato", valor: 249.90, data: "2026-08-03T16:15:00" },
+            { id: 7, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Táxi Dog", descricao: "Coleta + Devolução — Zeus (Ricardo Siqueira)", valor: 65.00, data: "2026-08-04T09:00:00" },
+            { id: 8, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Estética / Banho & Tosa", descricao: "Banho Simples + Perfume — Mel (Beatriz Oliveira)", valor: 95.00, data: "2026-08-04T14:00:00" },
+            { id: 9, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Consulta Veterinária", descricao: "Vacinação V10 + Raiva — Apolo (Larissa Manoela)", valor: 180.00, data: "2026-08-04T15:30:00" },
+            { id: 10, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Assinaturas Recorrentes", descricao: "Mensalidade Plano VIP — Giovanna Ewbank", valor: 279.00, data: "2026-08-04T17:00:00" }
         ]);
 
-        // 17. Audit Logs
+        // 17. Contas a Pagar / Despesas CatDog SP
+        const hoje2 = new Date();
+        const d = (offset) => { const dt = new Date(hoje2); dt.setDate(dt.getDate() + offset); return dt.toISOString().split('T')[0]; };
+        DB.set('contas_pagar', [
+            { id: 1, empresa_id: 1, filial_id: 101, categoria: "Aluguel", descricao: "Aluguel — Unidade Moema (Matriz SP)", valor: 8500.00, data_vencimento: d(5), data_pagamento: null, status: "Pendente", responsavel: "Dra. Julia Silveira" },
+            { id: 2, empresa_id: 1, filial_id: 101, categoria: "Folha de Pagamento", descricao: "Salários Agosto — Equipe CatDog (6 colaboradores)", valor: 14800.00, data_vencimento: d(10), data_pagamento: null, status: "Pendente", responsavel: "Dra. Julia Silveira" },
+            { id: 3, empresa_id: 1, filial_id: 101, categoria: "Fornecedores / Insumos", descricao: "NF Premier Pet — Ração 20 sacas 15kg", valor: 2700.00, data_vencimento: d(3), data_pagamento: null, status: "Pendente", responsavel: "Amanda Souza" },
+            { id: 4, empresa_id: 1, filial_id: 101, categoria: "Água / Energia / Internet", descricao: "Conta de Água + Luz — Moema Agosto", valor: 1340.00, data_vencimento: d(-2), data_pagamento: null, status: "Vencida", responsavel: "Camila Rocha" },
+            { id: 5, empresa_id: 1, filial_id: 101, categoria: "Impostos (Simples Nacional)", descricao: "DAS Simples Nacional — Agosto 2026", valor: 3120.00, data_vencimento: d(8), data_pagamento: null, status: "Pendente", responsavel: "Dra. Julia Silveira" },
+            { id: 6, empresa_id: 1, filial_id: 101, categoria: "Marketing / Publicidade", descricao: "Meta Ads + Google Ads — Campanha Agosto", valor: 900.00, data_vencimento: d(15), data_pagamento: "2026-08-02", status: "Pago", responsavel: "Camila Rocha" },
+            { id: 7, empresa_id: 1, filial_id: 101, categoria: "Manutenção / Limpeza", descricao: "Desjejum + Produtos de Limpeza — Moema", valor: 420.00, data_vencimento: d(-5), data_pagamento: "2026-07-30", status: "Pago", responsavel: "Amanda Souza" },
+            { id: 8, empresa_id: 1, filial_id: 101, categoria: "Comissões", descricao: "Comissões Agosto — Bruno Lima + Amanda Souza", valor: 1160.50, data_vencimento: d(12), data_pagamento: null, status: "Pendente", responsavel: "Dra. Julia Silveira" },
+            { id: 9, empresa_id: 1, filial_id: 101, categoria: "Fornecedores / Insumos", descricao: "NF Pet Clean — Shampoo Galão 5L (10 un)", valor: 650.00, data_vencimento: d(7), data_pagamento: null, status: "Pendente", responsavel: "Amanda Souza" },
+            { id: 10, empresa_id: 1, filial_id: 101, categoria: "Outros", descricao: "Seguro Empresarial — CatDog SP Agosto", valor: 580.00, data_vencimento: d(20), data_pagamento: null, status: "Pendente", responsavel: "Dra. Julia Silveira" }
+        ]);
+
+        // 18. Audit Logs
         DB.set('logs_auditoria', [
             { id: 1, empresa_id: 1, usuario: "Dra. Julia Silveira", acao: "Inicialização CatDog SP", detalhe: "Base CatDog Pet Center & Clínica Veterinária inicializada com 20 clientes", timestamp: new Date().toISOString() }
         ]);
@@ -798,6 +820,7 @@ function switchTab(tabId) {
     if (tabId === 'equipe') renderFuncionariosTable();
     if (tabId === 'assinaturas') renderAssinaturasCards();
     if (tabId === 'dreasy') sincronizarDREasyFluxoCaixa();
+    if (tabId === 'financeiro') renderFinanceiro();
     if (tabId === 'master-saas') renderMasterPanel();
 }
 
@@ -1581,6 +1604,235 @@ function renderAnalytics() {
     });
 }
 
+// 13b. MÓDULO FINANCEIRO ERP COMPLETO
+function renderFinanceiro() {
+    const movs = (DB.get('movimentacoes_caixa') || []).filter(m => m.empresa_id === State.currentEmpresaId);
+    const despesas = (DB.get('contas_pagar') || []).filter(d => d.empresa_id === State.currentEmpresaId);
+    const filialId = State.currentFilialId;
+
+    // ---- KPIs ----
+    const hoje = new Date().toISOString().split('T')[0];
+    const receitaTotal = movs.filter(m => m.tipo === 'ENTRADA').reduce((a, m) => a + m.valor, 0);
+    const despesasPagas = despesas.filter(d => d.status === 'Pago').reduce((a, d) => a + d.valor, 0);
+    const despesasPendentes = despesas.filter(d => d.status !== 'Pago').reduce((a, d) => a + d.valor, 0);
+    const lucroLiquido = receitaTotal - despesasPagas;
+    const receitaHoje = movs.filter(m => m.data.startsWith(hoje) && m.tipo === 'ENTRADA').reduce((a, m) => a + m.valor, 0);
+    const despesasVencidas = despesas.filter(d => d.status === 'Vencida').reduce((a, d) => a + d.valor, 0);
+
+    // ---- DRE Simplificado ----
+    const produtos = DB.get('produtos') || [];
+    const lotes = DB.get('lotes_estoque') || [];
+    const cmv = movs.filter(m => m.categoria === 'Venda Balcão POS').reduce((a, m) => a + m.valor * 0.38, 0);
+    const margem = receitaTotal - cmv;
+    const comissoes = despesas.filter(d => d.categoria === 'Comissões').reduce((a, d) => a + d.valor, 0);
+
+    // ---- Render KPIs ----
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('fin-receita-total', `R$ ${receitaTotal.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('fin-despesas-pagas', `R$ ${despesasPagas.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('fin-pendente', `R$ ${despesasPendentes.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('fin-lucro', `R$ ${lucroLiquido.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('fin-hoje', `R$ ${receitaHoje.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('fin-vencidas', `R$ ${despesasVencidas.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+
+    // ---- DRE ----
+    set('dre-receita', `R$ ${receitaTotal.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('dre-cmv', `(R$ ${cmv.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')})`);
+    set('dre-margem', `R$ ${margem.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+    set('dre-despesas', `(R$ ${despesasPagas.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')})`);
+    set('dre-lucro', `R$ ${lucroLiquido.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+
+    // ---- Estoque Valor ----
+    let valorEstoque = 0;
+    lotes.forEach(l => {
+        if (l.empresa_id === State.currentEmpresaId && l.status !== 'Esgotado') {
+            const p = produtos.find(pr => pr.id === l.produto_id);
+            if (p) valorEstoque += p.preco_custo * l.quantidade;
+        }
+    });
+    set('fin-estoque-valor', `R$ ${valorEstoque.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`);
+
+    // ---- Tabela Despesas ----
+    const tBody = document.getElementById('table-despesas-body');
+    if (tBody) {
+        tBody.innerHTML = '';
+        [...despesas].sort((a, b) => new Date(a.data_vencimento) - new Date(b.data_vencimento)).forEach(d => {
+            const statusClass = d.status === 'Pago' ? 'em-dia' : d.status === 'Vencida' ? 'vencendo' : 'pendente-badge';
+            const statusLabel = d.status === 'Pago' ? '✅ Pago' : d.status === 'Vencida' ? '🔴 Vencida' : '🟡 Pendente';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${d.descricao}</strong></td>
+                <td><span class="product-category">${d.categoria}</span></td>
+                <td style="color:#f87171; font-weight:700;">R$ ${d.valor.toFixed(2)}</td>
+                <td>${d.data_vencimento.split('-').reverse().join('/')}</td>
+                <td><span class="validade-badge ${statusClass}">${statusLabel}</span></td>
+                <td>
+                    ${d.status !== 'Pago' ? `<button class="card-btn" onclick="marcarPago(${d.id})">✅ Marcar Pago</button>` : `<span style="color:var(--text-muted);font-size:0.75rem">${d.data_pagamento || ''}</span>`}
+                </td>`;
+            tBody.appendChild(tr);
+        });
+    }
+
+    // ---- Tabela Receitas ----
+    const rBody = document.getElementById('table-receitas-fin-body');
+    if (rBody) {
+        rBody.innerHTML = '';
+        [...movs].sort((a, b) => new Date(b.data) - new Date(a.data)).slice(0, 20).forEach(m => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${new Date(m.data).toLocaleDateString('pt-BR')}</td>
+                <td>${m.descricao}</td>
+                <td><span class="product-category">${m.categoria}</span></td>
+                <td style="color:#10b981; font-weight:700;">+ R$ ${m.valor.toFixed(2)}</td>`;
+            rBody.appendChild(tr);
+        });
+    }
+
+    // ---- Gráfico Canvas ----
+    renderGraficoFluxo(movs, despesas);
+}
+
+function renderGraficoFluxo(movs, despesas) {
+    const canvas = document.getElementById('canvas-fluxo');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth || 800;
+    canvas.height = 220;
+
+    // Build 30-day data
+    const days = [];
+    const receitas = [];
+    const saidas = [];
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().split('T')[0];
+        days.push(key.slice(5)); // MM-DD
+        receitas.push(movs.filter(m => m.data.startsWith(key) && m.tipo === 'ENTRADA').reduce((a, m) => a + m.valor, 0));
+        saidas.push(despesas.filter(dp => dp.data_pagamento === key).reduce((a, dp) => a + dp.valor, 0));
+    }
+
+    const maxVal = Math.max(...receitas, ...saidas, 1);
+    const W = canvas.width, H = canvas.height;
+    const pad = { top: 20, bottom: 40, left: 10, right: 10 };
+    const barW = (W - pad.left - pad.right) / 30;
+    const barGap = 3;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    for (let g = 0; g <= 4; g++) {
+        const y = pad.top + ((H - pad.top - pad.bottom) / 4) * g;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    }
+
+    // Bars
+    days.forEach((day, i) => {
+        const x = pad.left + i * barW;
+        const availH = H - pad.top - pad.bottom;
+
+        // Receita bar
+        const rH = receitas[i] > 0 ? Math.max((receitas[i] / maxVal) * availH, 3) : 0;
+        const grad = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
+        grad.addColorStop(0, 'rgba(99,102,241,0.9)');
+        grad.addColorStop(1, 'rgba(99,102,241,0.3)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(x + barGap, H - pad.bottom - rH, barW - barGap * 2 - barW/2, rH, [3, 3, 0, 0]);
+        ctx.fill();
+
+        // Saida bar
+        const sH = saidas[i] > 0 ? Math.max((saidas[i] / maxVal) * availH, 3) : 0;
+        const grad2 = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
+        grad2.addColorStop(0, 'rgba(239,68,68,0.8)');
+        grad2.addColorStop(1, 'rgba(239,68,68,0.2)');
+        ctx.fillStyle = grad2;
+        ctx.beginPath();
+        ctx.roundRect(x + barGap + barW/2 - barGap, H - pad.bottom - sH, barW - barGap * 2 - barW/2, sH, [3, 3, 0, 0]);
+        ctx.fill();
+
+        // Day label (every 5)
+        if (i % 5 === 0) {
+            ctx.fillStyle = 'rgba(148,163,184,0.7)';
+            ctx.font = '9px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(day, x + barW / 2, H - pad.bottom + 14);
+        }
+    });
+
+    // Legend
+    ctx.fillStyle = 'rgba(99,102,241,0.9)'; ctx.fillRect(pad.left, H - 14, 10, 8);
+    ctx.fillStyle = 'rgba(148,163,184,0.8)'; ctx.font = '10px Inter, sans-serif';
+    ctx.fillText('Receitas', pad.left + 14, H - 7);
+    ctx.fillStyle = 'rgba(239,68,68,0.8)'; ctx.fillRect(pad.left + 80, H - 14, 10, 8);
+    ctx.fillStyle = 'rgba(148,163,184,0.8)';
+    ctx.fillText('Despesas Pagas', pad.left + 94, H - 7);
+}
+
+function marcarPago(despesaId) {
+    const despesas = DB.get('contas_pagar');
+    const item = despesas.find(d => d.id === despesaId);
+    if (!item) return;
+    item.status = 'Pago';
+    item.data_pagamento = new Date().toISOString().split('T')[0];
+    DB.set('contas_pagar', despesas);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Baixa Despesa', `Despesa "${item.descricao}" marcada como paga.`);
+    State.showToast(`✅ "${item.descricao}" marcada como Paga!`, 'success');
+    renderFinanceiro();
+}
+
+function lancarDespesa(e) {
+    e.preventDefault();
+    const descricao = document.getElementById('fin-input-descricao').value;
+    const categoria = document.getElementById('fin-select-categoria').value;
+    const valor = parseFloat(document.getElementById('fin-input-valor').value);
+    const vencimento = document.getElementById('fin-input-vencimento').value;
+    const responsavel = document.getElementById('fin-input-responsavel').value || State.currentProfile;
+
+    if (!descricao || !valor || !vencimento) { State.showToast('Preencha todos os campos obrigatórios.', 'error'); return; }
+
+    const despesas = DB.get('contas_pagar') || [];
+    const newId = despesas.length > 0 ? Math.max(...despesas.map(d => d.id)) + 1 : 1;
+    const hoje = new Date().toISOString().split('T')[0];
+    const vencida = vencimento < hoje;
+
+    despesas.push({
+        id: newId, empresa_id: State.currentEmpresaId, filial_id: State.currentFilialId,
+        categoria, descricao, valor, data_vencimento: vencimento,
+        data_pagamento: null, status: vencida ? 'Vencida' : 'Pendente', responsavel
+    });
+    DB.set('contas_pagar', despesas);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Nova Despesa', `Despesa: ${descricao} R$${valor.toFixed(2)}`);
+    State.showToast(`💸 Despesa "${descricao}" lançada com sucesso!`, 'success');
+    closeModal('modal-lancardespesa');
+    e.target.reset();
+    renderFinanceiro();
+}
+
+function lancarReceita(e) {
+    e.preventDefault();
+    const descricao = document.getElementById('fin-rec-descricao').value;
+    const categoria = document.getElementById('fin-rec-categoria').value;
+    const valor = parseFloat(document.getElementById('fin-rec-valor').value);
+
+    if (!descricao || !valor) { State.showToast('Preencha todos os campos.', 'error'); return; }
+
+    const movs = DB.get('movimentacoes_caixa') || [];
+    const newId = movs.length > 0 ? Math.max(...movs.map(m => m.id)) + 1 : 1;
+    movs.push({
+        id: newId, empresa_id: State.currentEmpresaId, filial_id: State.currentFilialId,
+        tipo: 'ENTRADA', categoria, descricao, valor, data: new Date().toISOString()
+    });
+    DB.set('movimentacoes_caixa', movs);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Receita Manual', `${descricao} R$${valor.toFixed(2)}`);
+    State.showToast(`💰 Receita "${descricao}" registrada!`, 'success');
+    closeModal('modal-lancarreceita');
+    e.target.reset();
+    renderFinanceiro();
+}
+
 // 13. TAXI DOG DRIVER MOBILE VIEW
 function renderTaxiDog() {
     const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
@@ -1866,6 +2118,35 @@ function renderAuditoriaTable() {
         `;
         tbody.appendChild(tr);
     });
+
+function enviarLeadLanding(e) {
+    e.preventDefault();
+    const nome = document.getElementById('lead-nome').value;
+    const whatsapp = document.getElementById('lead-whatsapp').value;
+    const petshop = document.getElementById('lead-petshop').value;
+    const cidade = document.getElementById('lead-cidade').value || 'Não informada';
+    const banhos = document.getElementById('lead-banhos').value;
+    const btn = document.getElementById('btn-lead-submit');
+
+    if (!nome || !whatsapp || !petshop) {
+        State.showToast('Por favor, preencha os campos obrigatórios.', 'error');
+        return;
+    }
+
+    if (btn) btn.disabled = true;
+
+    // Send to DREasy API
+    notificarDREasyNovoLead(petshop, nome, whatsapp, `Plano Solicitado via Landing | ${cidade} | Vol: ${banhos}`);
+
+    State.showToast('🚀 Solicitação recebida! Um consultor entrará em contato em breve via WhatsApp.', 'success');
+
+    setTimeout(() => {
+        const cleanTel = whatsapp.replace(/\D/g, '');
+        const msg = `Olá! Meu nome é *${nome}*, proprietário do *${petshop}* (${cidade}). Gostaria de agendar a demonstração gratuita do PataForma!`;
+        window.open(`https://api.whatsapp.com/send?phone=5511999998888&text=${encodeURIComponent(msg)}`, '_blank');
+        e.target.reset();
+        if (btn) btn.disabled = false;
+    }, 1500);
 }
 
 // Initial Load
