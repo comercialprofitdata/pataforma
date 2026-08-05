@@ -1066,33 +1066,82 @@
 
         <!-- 9. CAIXA / POS SECTION -->
         <section class="view-section" id="section-caixa">
-            <div class="pos-container">
+            <div class="action-header">
                 <div>
-                    <div class="pos-search-bar">
-                        <input type="text" id="pos-search-input" class="pos-search-input" placeholder="🔍 Buscar produto por nome ou código de barras..." oninput="filtrarProdutosPOS(this.value)">
-                        <button class="btn-primary" onclick="openModal('modal-item-avulso')">➕ Item Avulso</button>
+                    <h2 style="font-weight:700; color:#38bdf8;">🛒 Frente de Caixa POS CatDog (Checkout Inteligente)</h2>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">PDV com catálogo visual por fotos, busca EAN, fidelidade e múltiplos meios de pagamento</p>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-primary" onclick="openModal('modal-item-avulso')">➕ Item Avulso</button>
+                    <button class="btn-hero-secondary" style="font-size:0.85rem;" onclick="State.cart = []; renderCart(); State.showToast('🛒 Carrinho limpo.', 'info');">🗑️ Limpar Carrinho</button>
+                </div>
+            </div>
+
+            <div class="pos-container" style="display:grid; grid-template-columns:1fr 380px; gap:1.5rem; align-items:start;">
+                <!-- Left: Catalog & Search -->
+                <div>
+                    <div class="pos-search-bar" style="display:flex; gap:0.75rem; margin-bottom:1.25rem;">
+                        <input type="text" id="pos-search-input" class="pos-search-input" placeholder="🔍 Buscar produto por nome, marca ou código de barras..." oninput="filtrarProdutosPOS(this.value)" style="flex:1; font-size:1rem; padding:0.75rem 1rem;">
                     </div>
-                    <h2 style="margin-bottom: 1rem; font-weight: 600;">Frente de Caixa CatDog (Produtos com Foto)</h2>
+                    
+                    <!-- Category Filter Buttons -->
+                    <div style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.75rem; margin-bottom:1rem;" id="pos-category-filters">
+                        <button class="card-btn active" style="background:rgba(56,189,248,0.2); color:#38bdf8; border-color:rgba(56,189,248,0.4);" onclick="filtrarCategoriaPOS('TODOS', this)">Todos</button>
+                        <button class="card-btn" onclick="filtrarCategoriaPOS('Ração', this)">🐶 Ração &amp; Alimentos</button>
+                        <button class="card-btn" onclick="filtrarCategoriaPOS('Medicamentos', this)">💊 Medicamentos &amp; Vet</button>
+                        <button class="card-btn" onclick="filtrarCategoriaPOS('Higiene & Estética', this)">🧼 Higiene &amp; Estética</button>
+                        <button class="card-btn" onclick="filtrarCategoriaPOS('Acessórios', this)">🎀 Acessórios &amp; Brinquedos</button>
+                    </div>
+
                     <div class="pos-catalog" id="pos-catalog"></div>
                 </div>
 
-                <div class="glass-panel cart-panel">
-                    <div class="cart-title">
-                        <span>🛒 Carrinho de Vendas</span>
-                        <button class="card-btn" onclick="State.cart = []; renderCart();">Limpar</button>
+                <!-- Right: Checkout Counter -->
+                <div class="glass-panel cart-panel" style="padding:1.5rem; border-color:rgba(56,189,248,0.3); position:sticky; top:1rem;">
+                    <div class="cart-title" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:0.75rem; margin-bottom:1rem;">
+                        <span style="font-weight:700; font-size:1.1rem; color:#38bdf8;">🛒 Comanda de Venda</span>
+                        <span class="validade-badge em-dia" id="pos-items-count">0 itens</span>
                     </div>
-                    <div class="cart-items" id="cart-items"></div>
-                    <div class="cart-total-row">
-                        <div class="cart-total-item">
-                            <span>Subtotal:</span>
-                            <span id="cart-subtotal">R$ 0,00</span>
-                        </div>
-                        <div class="cart-total-item grand-total">
-                            <span>Total:</span>
-                            <span id="cart-grandtotal">R$ 0,00</span>
+
+                    <!-- Customer Selector for Loyalty Points -->
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="font-size:0.8rem; color:var(--text-secondary);">Cliente / Tutor (Fidelidade):</label>
+                        <select id="pos-select-cliente" style="font-size:0.88rem; padding:0.5rem;" onchange="atualizarFidelidadeClientePOS(this.value)">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <div id="pos-cliente-fidelidade-info" style="font-size:0.75rem; color:#10b981; margin-top:0.25rem;">⭐ Pontos de Fidelidade: 120 pts disponíveis</div>
+                    </div>
+
+                    <!-- Cart Items Table -->
+                    <div class="cart-items" id="cart-items" style="max-height:260px; overflow-y:auto; margin-bottom:1rem; padding-right:0.25rem;"></div>
+
+                    <!-- Payment Method Selector -->
+                    <div style="margin-bottom:1rem;">
+                        <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:0.5rem;">Forma de Pagamento:</label>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;" id="pos-payment-methods">
+                            <button class="card-btn active" style="background:rgba(16,185,129,0.2); color:#34d399; border-color:rgba(16,185,129,0.4);" onclick="selecionarFormaPagamentoPOS('Pix / Dinheiro', this)">⚡ PIX / Dinheiro</button>
+                            <button class="card-btn" onclick="selecionarFormaPagamentoPOS('Cartão de Crédito', this)">💳 Cartão Crédito</button>
+                            <button class="card-btn" onclick="selecionarFormaPagamentoPOS('Cartão de Débito', this)">💳 Cartão Débito</button>
+                            <button class="card-btn" onclick="selecionarFormaPagamentoPOS('Assinatura / Faturado', this)">💎 Assinatura</button>
                         </div>
                     </div>
-                    <button class="btn-mobile-primary" style="width: 100%;" onclick="checkoutPOS()">💰 Finalizar Venda</button>
+
+                    <!-- Totals Box -->
+                    <div style="background:rgba(15,23,42,0.6); padding:1rem; border-radius:10px; margin-bottom:1.25rem;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.88rem;">
+                            <span>Subtotal Insumos:</span><strong id="cart-subtotal" style="color:var(--text-secondary);">R$ 0,00</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.88rem;">
+                            <span>Desconto:</span><strong style="color:#f87171;">- R$ 0,00</strong>
+                        </div>
+                        <div style="border-top:1px dashed rgba(255,255,255,0.1); padding-top:0.6rem; margin-top:0.6rem; display:flex; justify-content:space-between; font-size:1.25rem; font-weight:800;">
+                            <span>Total Geral:</span><strong id="cart-grandtotal" style="color:#34d399;">R$ 0,00</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn-hero-primary" style="width:100%; justify-content:center; padding:0.9rem; font-size:1.05rem;" onclick="checkoutPOS()">
+                        💰 Finalizar Venda &amp; Emitir Recibo PDF
+                    </button>
                 </div>
             </div>
         </section>
@@ -1134,50 +1183,99 @@
 
         <!-- 12. ANALYTICS SECTION -->
         <section class="view-section" id="section-analytics">
-            <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dashboard de Governança CatDog SP</h2>
-            <div class="kpi-row">
-                <div class="glass-panel kpi-card">
+            <div class="action-header">
+                <div>
+                    <h2 style="font-weight:700; color:#c084fc;">📊 Executive Analytics &amp; BI CatDog SP</h2>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">Inteligência de mercado, vendas por categoria, ranking de profissionais e DRE consolidada</p>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#c084fc,#9333ea);" onclick="renderAnalytics(); State.showToast('📊 Analytics atualizado.', 'info');">🔄 Atualizar BI</button>
+                </div>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="analytics-kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); margin-bottom:1.5rem;">
+                <div class="analytics-kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.06);">
                     <div class="kpi-icon">💰</div>
-                    <div class="kpi-info">
-                        <h4>Faturamento Bruto</h4>
-                        <p id="stat-faturamento">R$ 0,00</p>
-                    </div>
+                    <div class="kpi-label">Faturamento Bruto</div>
+                    <div class="kpi-value" id="stat-faturamento" style="color:#10b981; font-size:1.6rem;">R$ 0,00</div>
+                    <div class="kpi-sub" style="color:#34d399;">📈 +18.4% vs mês anterior</div>
                 </div>
-                
-                <div class="glass-panel kpi-card">
+
+                <div class="analytics-kpi-card" style="border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.06);">
                     <div class="kpi-icon">📈</div>
-                    <div class="kpi-info">
-                        <h4>Ticket Médio</h4>
-                        <p id="stat-ticket">R$ 0,00</p>
-                    </div>
+                    <div class="kpi-label">Ticket Médio por Atendimento</div>
+                    <div class="kpi-value" id="stat-ticket" style="color:#38bdf8; font-size:1.6rem;">R$ 0,00</div>
+                    <div class="kpi-sub" style="color:#7dd3fc;">🏷️ Média por comanda POS/Serviço</div>
                 </div>
 
-                <div class="glass-panel kpi-card">
+                <div class="analytics-kpi-card" style="border-color:rgba(192,132,252,0.4); background:rgba(192,132,252,0.06);">
                     <div class="kpi-icon">✂️</div>
-                    <div class="kpi-info">
-                        <h4>Comissões Equipe</h4>
-                        <p id="stat-comissoes">R$ 0,00</p>
+                    <div class="kpi-label">Comissões Tosadores / Banhistas</div>
+                    <div class="kpi-value" id="stat-comissoes" style="color:#c084fc; font-size:1.6rem;">R$ 0,00</div>
+                    <div class="kpi-sub" style="color:#e9d5ff;">👥 Calculado automaticamente por serviço</div>
+                </div>
+
+                <div class="analytics-kpi-card" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.06);">
+                    <div class="kpi-icon">⚠️</div>
+                    <div class="kpi-label">Validades Críticas</div>
+                    <div class="kpi-value" id="stat-criticos" style="color:#f87171; font-size:1.6rem;">0 lotes</div>
+                    <div class="kpi-sub" style="color:#fca5a5;">📦 Controle FEFO Preventivo</div>
+                </div>
+            </div>
+
+            <!-- Charts & Category Breakdown -->
+            <div style="display:grid; grid-template-columns:1fr 340px; gap:1.5rem; margin-bottom:1.5rem;">
+                <!-- Daily Sales Canvas Chart -->
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <h3 style="font-size:0.9rem; font-weight:700; color:var(--text-secondary); margin-bottom:1rem;">📊 EVOLUÇÃO DE VENDAS DIÁRIAS (ÚLTIMOS 30 DIAS)</h3>
+                    <div style="position:relative; width:100%;">
+                        <canvas id="canvas-analytics-vendas" style="width:100%; height:200px; display:block;"></canvas>
                     </div>
                 </div>
 
-                <div class="glass-panel kpi-card">
-                    <div class="kpi-icon">⚠️</div>
-                    <div class="kpi-info">
-                        <h4>Validades Críticas</h4>
-                        <p id="stat-criticos">0 lotes</p>
+                <!-- Sales by Category Progress Bars -->
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <h3 style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary); margin-bottom:1.25rem;">🏷️ Vendas por Categoria</h3>
+                    
+                    <div style="margin-bottom:1rem;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.35rem;">
+                            <span>🧼 Estética / Banho &amp; Tosa:</span><strong style="color:#10b981;">R$ 19.800 (46%)</strong>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.08); height:8px; border-radius:4px; overflow:hidden;">
+                            <div style="background:#10b981; width:46%; height:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1rem;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.35rem;">
+                            <span>🛒 Venda Balcão POS:</span><strong style="color:#38bdf8;">R$ 18.450 (43%)</strong>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.08); height:8px; border-radius:4px; overflow:hidden;">
+                            <div style="background:#38bdf8; width:43%; height:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1rem;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.35rem;">
+                            <span>🩺 Consultas Veterinárias:</span><strong style="color:#a5b4fc;">R$ 4.600 (11%)</strong>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.08); height:8px; border-radius:4px; overflow:hidden;">
+                            <div style="background:#a5b4fc; width:11%; height:100%;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h3 style="margin-bottom: 1rem; font-weight: 600;">Últimas Transações Financeiras (Caixa CatDog)</h3>
+            <h3 style="margin-bottom: 1rem; font-weight: 600;">📥 Últimas Transações Financeiras (Caixa CatDog SP)</h3>
             <div class="glass-panel table-panel">
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Data</th>
                             <th>Descrição</th>
-                            <th>Origem</th>
-                            <th>Valor</th>
+                            <th>Origem / Categoria</th>
+                            <th>Valor Total</th>
                         </tr>
                     </thead>
                     <tbody id="table-receitas-body"></tbody>
