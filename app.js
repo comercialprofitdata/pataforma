@@ -331,21 +331,32 @@ async function sincronizarDREasyFluxoCaixa() {
         if (token) {
             const cleanCnpj = (empresa.cnpj || '38.490.128/0001-99').replace(/\D/g, '');
             try {
-                await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
+                const compPayload = {
+                    cnpj: cleanCnpj,
+                    name: `${empresa.nome || 'CatDog Pet Center & Clínica Veterinária'} (PataForma ERP)`,
+                    responsavel: empresa.responsavel || 'Dra. Julia Silveira',
+                    email: empresa.email_master || 'julia@catdogpet.com.br',
+                    telefone: empresa.whatsapp || '(11) 99999-8888',
+                    password: cleanCnpj.slice(0, 4) || '3849',
+                    modules: ['fluxo', 'agenda', 'prec', 'balanco', 'simulador', 'graficos']
+                };
+
+                const compRes = await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({
-                        cnpj: cleanCnpj,
-                        name: `${empresa.nome || 'CatDog Pet Center & Clínica Veterinária'} (PataForma ERP)`,
-                        responsavel: empresa.responsavel || 'Dra. Julia Silveira',
-                        email: empresa.email_master || 'julia@catdogpet.com.br',
-                        telefone: empresa.whatsapp || '(11) 99999-8888',
-                        password: cleanCnpj.slice(0, 4) || '3849',
-                        modules: ['fluxo', 'agenda', 'prec', 'balanco', 'simulador', 'graficos']
-                    })
+                    body: JSON.stringify(compPayload)
                 });
+
+                // If already registered (HTTP 409 Conflict), update via PUT
+                if (compRes.status === 409) {
+                    await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(compPayload)
+                    });
+                }
             } catch (e) {
-                console.warn('Company register note:', e);
+                console.warn('Company sync note:', e);
             }
         }
 
