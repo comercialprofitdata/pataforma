@@ -28,10 +28,15 @@
                 <li><a href="#planos">Planos & Preços</a></li>
             </ul>
 
-            <!-- Clean Top-Right Button -->
-            <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
-                <span>🔐 Área do Cliente</span>
-            </button>
+            <!-- Clean Top-Right Buttons -->
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+                <button class="btn-hero-secondary" style="font-size:0.82rem; padding:0.45rem 0.85rem;" onclick="abrirLoginOperacionalPIN()">
+                    <span>🔑 Login Operacional (PIN)</span>
+                </button>
+                <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
+                    <span>🔐 Área do Cliente</span>
+                </button>
+            </div>
         </header>
 
         <!-- Hero Section -->
@@ -2073,6 +2078,63 @@
                 </div>
                 <button type="submit" class="btn-primary" style="width:100%; background:linear-gradient(135deg,#10b981,#059669);">Salvar Receita</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal Login Operacional PWA (Para Entregador, Banhista, Caixa, Vet) -->
+    <div class="modal-overlay" id="modal-login-operacional">
+        <div class="glass-panel modal-content" style="max-width:480px; padding:2rem; border-color:rgba(56,189,248,0.4);">
+            <div class="modal-header" style="margin-bottom:1rem;">
+                <div>
+                    <h3 style="color:#38bdf8; font-weight:800; font-size:1.3rem;">🔑 Login Operacional PWA</h3>
+                    <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">Acesso rápido para Entregador, Banhista, Tosador, Caixa e Vet</p>
+                </div>
+                <button class="modal-close" onclick="closeModal('modal-login-operacional')">&times;</button>
+            </div>
+            
+            <form onsubmit="executarLoginOperacionalPIN(event)">
+                <div class="form-group">
+                    <label>Unidade Pet Shop / Empresa:</label>
+                    <select id="login-operacional-empresa" style="font-weight:700; color:#38bdf8;"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecione seu Perfil Operacional:</label>
+                    <select id="login-operacional-perfil" onchange="atualizarOpcoesOperadorLogin(this.value)" style="font-weight:700;">
+                        <option value="Entregador">🚚 Entregador (Táxi Dog)</option>
+                        <option value="Banhista" selected>🧼 Banhista / Tosador (Estética)</option>
+                        <option value="Recepcao">🛒 Atendente de Caixa / POS</option>
+                        <option value="Veterinario">🩺 Veterinário / Clínico</option>
+                        <option value="Admin">👑 Administrador / Gerente</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nome do Colaborador / Operador:</label>
+                    <select id="login-operacional-usuario" style="font-weight:600;"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>PIN de Acesso Rápido (4 dígitos):</label>
+                    <input type="password" id="login-operacional-pin" placeholder="••••" maxlength="4" style="font-size:1.5rem; letter-spacing:0.5rem; text-align:center; font-weight:800;" value="1234" required>
+                </div>
+
+                <button type="submit" class="btn-hero-primary" style="width:100%; justify-content:center; padding:0.9rem; font-size:1.05rem; margin-top:0.5rem;">
+                    🚀 Entrar no Sistema Operacional
+                </button>
+            </form>
+
+            <div style="border-top:1px dashed rgba(255,255,255,0.1); margin-top:1.25rem; padding-top:1rem;">
+                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:0.5rem; text-align:center;">
+                    ⚡ Atalhos de 1-Clique por Função:
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                    <button class="card-btn" style="color:#818cf8;" onclick="loginRapidoPerfil('Entregador')">🚚 Táxi Dog</button>
+                    <button class="card-btn" style="color:#34d399;" onclick="loginRapidoPerfil('Banhista')">🧼 Banho &amp; Tosa</button>
+                    <button class="card-btn" style="color:#fbbf24;" onclick="loginRapidoPerfil('Recepcao')">🛒 Caixa POS</button>
+                    <button class="card-btn" style="color:#2dd4bf;" onclick="loginRapidoPerfil('Veterinario')">🩺 Receita Vet</button>
+                </div>
+            </div>
         </div>
     </div>
 

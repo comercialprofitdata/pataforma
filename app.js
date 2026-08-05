@@ -456,6 +456,85 @@ function alternarModoPortal(modo) {
     }
 }
 
+function abrirLoginOperacionalPIN() {
+    populateLoginOperacionalOptions();
+    openModal('modal-login-operacional');
+}
+
+function populateLoginOperacionalOptions() {
+    const empresas = DB.get('empresas') || [];
+    const empSelect = document.getElementById('login-operacional-empresa');
+    if (empSelect) {
+        empSelect.innerHTML = '';
+        empresas.forEach(e => {
+            empSelect.innerHTML += `<option value="${e.id}">${e.nome}</option>`;
+        });
+        if (State.currentEmpresaId) empSelect.value = State.currentEmpresaId;
+    }
+
+    const perfilSelect = document.getElementById('login-operacional-perfil');
+    if (perfilSelect) {
+        atualizarOpcoesOperadorLogin(perfilSelect.value);
+    }
+}
+
+function atualizarOpcoesOperadorLogin(perfil) {
+    const usuarios = DB.get('usuarios') || [];
+    const userSelect = document.getElementById('login-operacional-usuario');
+    if (!userSelect) return;
+
+    userSelect.innerHTML = '';
+    const filtered = usuarios.filter(u => u.perfil === perfil || perfil === 'Admin');
+    
+    if (filtered.length > 0) {
+        filtered.forEach(u => {
+            userSelect.innerHTML += `<option value="${u.id}">${u.nome} (${u.perfil})</option>`;
+        });
+    } else {
+        userSelect.innerHTML = `<option value="1">Operador Padrão — ${perfil}</option>`;
+    }
+}
+
+function executarLoginOperacionalPIN(e) {
+    if (e) e.preventDefault();
+    const pin = document.getElementById('login-operacional-pin')?.value || '1234';
+    const perfil = document.getElementById('login-operacional-perfil')?.value || 'Banhista';
+    const empresaId = parseInt(document.getElementById('login-operacional-empresa')?.value) || State.currentEmpresaId;
+    const usuarioId = parseInt(document.getElementById('login-operacional-usuario')?.value) || 1;
+
+    const usuarios = DB.get('usuarios') || [];
+    const userObj = usuarios.find(u => u.id === usuarioId) || { nome: 'Operador', perfil };
+
+    // Apply active session
+    State.currentEmpresaId = empresaId;
+    State.currentProfile = perfil;
+    State.currentUser = userObj;
+
+    const profileSelector = document.getElementById('current-profile-select');
+    if (profileSelector) profileSelector.value = perfil;
+
+    closeModal('modal-login-operacional');
+    exibirAppERP();
+    applyRBAC(perfil);
+
+    DB.logAudit(empresaId, perfil, 'Login PIN Operacional 🔑', `Operador ${userObj.nome} (${perfil}) logou via PIN no app operacional.`);
+    State.showToast(`🚀 Bem-vindo(a), ${userObj.nome}! Ambiente configurado para ${perfil}.`, 'success');
+
+    // Direct Landing based on role
+    if (perfil === 'Entregador') switchTab('taxi');
+    else if (perfil === 'Banhista') switchTab('kanban');
+    else if (perfil === 'Recepcao') switchTab('caixa');
+    else if (perfil === 'Veterinario') switchTab('prontuario');
+    else switchTab('kanban');
+}
+
+function loginRapidoPerfil(perfil) {
+    const perfilSelect = document.getElementById('login-operacional-perfil');
+    if (perfilSelect) perfilSelect.value = perfil;
+    atualizarOpcoesOperadorLogin(perfil);
+    executarLoginOperacionalPIN(null);
+}
+
 function loginGestorDirectSubmit(e) {
     e.preventDefault();
     const user = document.getElementById('input-portal-gestor-user').value.trim();
@@ -2401,6 +2480,13 @@ window.addEventListener('DOMContentLoaded', () => {
     populateSelectOptions();
     calcularROISimulacao();
     applyRBAC('Admin');
+
+    // Auto-open operational PIN login if URL contains #login or #app
+    if (window.location.hash === '#login' || window.location.hash === '#app' || window.location.search.includes('mode=app')) {
+        setTimeout(() => {
+            abrirLoginOperacionalPIN();
+        }, 300);
+    }
 
     switchTab('kanban');
 });
