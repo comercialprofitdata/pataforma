@@ -341,16 +341,32 @@ async function sincronizarDREasyFluxoCaixa() {
                     modules: ['fluxo', 'agenda', 'prec', 'balanco', 'simulador', 'graficos']
                 };
 
-                const compRes = await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify(compPayload)
-                });
+                // Check if company already exists to avoid HTTP 409 red log entries in console
+                let exists = false;
+                try {
+                    const listRes = await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (listRes.ok) {
+                        const listData = await listRes.json();
+                        const existingList = listData.companies || [];
+                        exists = existingList.some(c => (c.cnpj || '').replace(/\D/g, '') === cleanCnpj);
+                    }
+                } catch (e) {
+                    console.warn('Company lookup note:', e);
+                }
 
-                // If already registered (HTTP 409 Conflict), update via PUT
-                if (compRes.status === 409) {
+                if (exists) {
+                    // Update existing company via PUT
                     await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
                         method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(compPayload)
+                    });
+                } else {
+                    // Create new company via POST
+                    await fetch('https://fluxocaixa.comercial-profitdata.workers.dev/api/companies', {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                         body: JSON.stringify(compPayload)
                     });
