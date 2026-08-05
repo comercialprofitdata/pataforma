@@ -1174,6 +1174,72 @@ function toggleChecklistKanban(jobId, key, checked) {
     renderKanban();
 }
 
+function inspeccionarQC(jobId) {
+    const kanbanData = DB.get('agendamentos_kanban');
+    const item = kanbanData.find(k => k.id === jobId);
+    if (!item) return;
+
+    item.status = 'Pronto';
+    DB.set('agendamentos_kanban', kanbanData);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Inspeção QC ✅', `Pet ID ${item.pet_id} aprovado na inspeção de qualidade de Banho & Tosa.`);
+    State.showToast(`🔍 Inspeção de Qualidade aprovada! Status alterado para "Pronto".`, 'success');
+    renderKanban();
+}
+
+function verDetalhesKanban(jobId) {
+    const kanbanData = DB.get('agendamentos_kanban') || [];
+    const item = kanbanData.find(k => k.id === jobId);
+    if (!item) return;
+
+    const pets = DB.get('pets') || [];
+    const clientes = DB.get('clientes') || [];
+    const pet = pets.find(p => p.id === item.pet_id);
+    const cliente = pet ? clientes.find(c => c.id === pet.cliente_id) : null;
+
+    const msg = `ℹ️ Detalhes da Ordem #${item.id}\n\nPet: ${pet ? pet.nome : 'N/A'} (${pet ? pet.raca : ''})\nTutor: ${cliente ? cliente.nome : 'N/A'}\nTelefone: ${cliente ? cliente.telefone : 'N/A'}\nStatus: ${item.status}\nHorário: ${item.horario}\nProfissional: ${item.profissional}`;
+    alert(msg);
+}
+
+function atualizarOrcamentoDinamicoAgendamento() {
+    const servicoSelect = document.getElementById('select-agendar-servico');
+    const pelagemSelect = document.getElementById('select-agendar-pelagem');
+    const taxiCheck = document.getElementById('check-agendar-taxi');
+
+    const precoDisplay = document.getElementById('calc-agendar-preco');
+    const tempoDisplay = document.getElementById('calc-agendar-tempo');
+    const taxiDisplay = document.getElementById('calc-agendar-taxi');
+
+    if (!servicoSelect || !precoDisplay) return;
+
+    const produtos = DB.get('produtos') || [];
+    const servicoId = parseInt(servicoSelect.value);
+    const servico = produtos.find(p => p.id === servicoId);
+
+    let precoBase = servico ? servico.preco : 85.00;
+    let tempoBase = servico && servico.tempo_estimado_min ? servico.tempo_estimado_min : 45;
+
+    if (pelagemSelect) {
+        if (pelagemSelect.value === 'Longa') precoBase += 15.00;
+        if (pelagemSelect.value === 'Com Nós') { precoBase += 35.00; tempoBase += 20; }
+    }
+
+    let taxiExtra = 0;
+    if (taxiCheck && taxiCheck.checked) {
+        taxiExtra = 20.00;
+        if (taxiDisplay) taxiDisplay.innerText = 'Sim (+R$ 20)';
+    } else {
+        if (taxiDisplay) taxiDisplay.innerText = 'Não';
+    }
+
+    const valorTotal = precoBase + taxiExtra;
+    if (precoDisplay) precoDisplay.innerText = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
+    if (tempoDisplay) tempoDisplay.innerText = `${tempoBase} min`;
+}
+
+function atualizarOrcamentoDinâmicoAgendamento() {
+    atualizarOrcamentoDinamicoAgendamento();
+}
+
 function getColumnIdByStatus(status) {
     const map = { 'Agendado': 'agendado', 'Em Rota de Busca': 'rota', 'Aguardando Banho': 'aguardando', 'No Banho': 'banho', 'Em Tosa': 'tosa', 'Inspecao QC': 'qc', 'Pronto': 'pronto', 'Entregue': 'entregue' };
     return map[status] || 'agendado';
