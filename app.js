@@ -2220,7 +2220,7 @@ function enviarLeadLanding(e) {
     setTimeout(() => {
         const cleanTel = whatsapp.replace(/\D/g, '');
         const msg = `Olá! Meu nome é *${nome}*, proprietário do *${petshop}* (${cidade}). Gostaria de agendar a demonstração gratuita do PataForma!`;
-        window.open(`https://api.whatsapp.com/send?phone=5511999998888&text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?phone=5566996513050&text=${encodeURIComponent(msg)}`, '_blank');
         e.target.reset();
         if (btn) btn.disabled = false;
     }, 1500);
