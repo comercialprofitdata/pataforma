@@ -781,6 +781,99 @@
             </div>
         </section>
 
+        <!-- 15. DREASY INTEGRATION DASHBOARD SECTION -->
+        <section class="view-section" id="section-dreasy">
+            <div class="action-header">
+                <div>
+                    <h2 style="font-weight:700; color:#38bdf8;">🔗 Painel de Integração DREasy Fluxo de Caixa</h2>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">Governança, Handshake API e Mapeamento Contábil PataForma ERP 🤝 DREasy SaaS</p>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);" onclick="sincronizarDREasyFluxoCaixa()">⚡ Testar Handshake &amp; Enviar DRE</button>
+                </div>
+            </div>
+
+            <!-- Integration Status & Metrics Cards -->
+            <div class="analytics-kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+                <div class="analytics-kpi-card" style="border-color:rgba(56,189,248,0.4); background:rgba(14,165,233,0.06);">
+                    <div class="kpi-icon">🟢</div>
+                    <div class="kpi-label">Status da Conexão API</div>
+                    <div class="kpi-value" style="color:#38bdf8; font-size:1.2rem;">Ativo &amp; Sincronizado</div>
+                    <div class="kpi-sub">Handshake HTTP 200 OK</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(99,102,241,0.3);">
+                    <div class="kpi-icon">🔑</div>
+                    <div class="kpi-label">Token de Integração / Key</div>
+                    <div class="kpi-value" style="color:#a5b4fc; font-size:0.9rem; font-family:monospace;">dre_live_token_771829...</div>
+                    <div class="kpi-sub">Empresa ID: EMP-8849-SP</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(16,185,129,0.3);">
+                    <div class="kpi-icon">💎</div>
+                    <div class="kpi-label">Plano de Integração</div>
+                    <div class="kpi-value" style="color:#34d399; font-size:1.1rem;">Combo Ouro Enterprise</div>
+                    <div class="kpi-sub">Integração Nativa Inclusa</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(245,158,11,0.3);">
+                    <div class="kpi-icon">📤</div>
+                    <div class="kpi-label">Última Carga Transmitida</div>
+                    <div class="kpi-value" id="dreasy-card-faturamento" style="color:#fbbf24; font-size:1.2rem;">R$ 42.850,00</div>
+                    <div class="kpi-sub" id="dreasy-card-timestamp">Hoje às 10:52 (Automatic)</div>
+                </div>
+            </div>
+
+            <!-- Main Layout: Chart of Accounts & Transmission Logs -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem;">
+                
+                <!-- De/Para Plano de Contas -->
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <h3 style="font-size:0.95rem; font-weight:700; color:#38bdf8;">📑 Mapeamento Plano de Contas (De / Para)</h3>
+                        <span class="excl-badge" style="background:rgba(56,189,248,0.15); color:#38bdf8; border-color:rgba(56,189,248,0.3);">DE / PARA DREASY</span>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">Como os lançamentos do PataForma ERP são categorizados na DRE do DREasy:</p>
+
+                    <div class="table-panel">
+                        <table class="data-table" style="font-size:0.82rem;">
+                            <thead>
+                                <tr><th>Origem PataForma</th><th>Conta Contábil DREasy</th><th>Tipo DRE</th><th>Status</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Vendas Balcão POS</td><td style="font-family:monospace; color:#38bdf8;">3.1.01 - Receita Bruta Produtos</td><td>Receita Operacional</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                                <tr><td>Estética / Banhos</td><td style="font-family:monospace; color:#38bdf8;">3.1.02 - Receita Serviços Pet</td><td>Receita Operacional</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                                <tr><td>Consultas Vet</td><td style="font-family:monospace; color:#38bdf8;">3.1.03 - Receita Clínica Vet</td><td>Receita Operacional</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                                <tr><td>Assinaturas Recorrentes</td><td style="font-family:monospace; color:#38bdf8;">3.1.04 - Receita Recorrente SaaS</td><td>Receita Operacional</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                                <tr><td>Fornecedores / Insumos</td><td style="font-family:monospace; color:#f87171;">4.1.01 - CMV &amp; Insumos Operac.</td><td>Custo Direto (CMV)</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                                <tr><td>Folha &amp; Comissões</td><td style="font-family:monospace; color:#f87171;">4.2.01 - Despesas com Pessoal</td><td>Despesa Operacional</td><td><span class="validade-badge em-dia">✅ Mapeado</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Histórico e Comprovantes de Transmissão API -->
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <h3 style="font-size:0.95rem; font-weight:700; color:#34d399;">📡 Log de Transmissões API &amp; Handshake</h3>
+                        <span class="validade-badge em-dia">HTTP 200 OK</span>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">Registro de envio de dados e comprovantes digitais de recepção pelo DREasy:</p>
+
+                    <div class="table-panel">
+                        <table class="data-table" style="font-size:0.82rem;">
+                            <thead>
+                                <tr><th>Data/Hora</th><th>Evento / Payload</th><th>Status HTTP</th><th>Latência</th><th>Hash Comprovante</th></tr>
+                            </thead>
+                            <tbody id="table-dreasy-logs-body">
+                                <tr><td>Hoje 10:52:14</td><td>Auto-Sync Boot CatDog SP</td><td><span style="color:#10b981; font-weight:700;">200 OK</span></td><td>112ms</td><td style="font-family:monospace; font-size:0.75rem; color:var(--text-muted);">hash_a9f82d1c...</td></tr>
+                                <tr><td>Hoje 10:45:00</td><td>Handshake Onboarding Lead</td><td><span style="color:#10b981; font-weight:700;">200 OK</span></td><td>98ms</td><td style="font-family:monospace; font-size:0.75rem; color:var(--text-muted);">hash_3b7190e2...</td></tr>
+                                <tr><td>04/08 18:00:00</td><td>Fechamento DRE Diária</td><td><span style="color:#10b981; font-weight:700;">200 OK</span></td><td>145ms</td><td style="font-family:monospace; font-size:0.75rem; color:var(--text-muted);">hash_f284e910...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- 2. PRONTUÁRIO VETERINÁRIO SECTION -->
         <section class="view-section" id="section-prontuario">
             <div class="action-header">
