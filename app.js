@@ -18,180 +18,214 @@ const DB = {
         DB.set('logs_auditoria', logs);
     },
 
-    init: () => {
-        if (!DB.get('empresas')) {
-            DB.set('empresas', [
-                {
-                    id: 1,
-                    nome: "Pet Shop PataForma Matriz",
-                    cnpj: "12.345.678/0001-95",
-                    responsavel: "Carlos Vitorio",
-                    email_master: "carlos@pataforma.com",
-                    whatsapp: "(11) 98888-7777",
-                    plano: "Enterprise VIP",
-                    status: "Ativo",
-                    modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true }
-                },
-                {
-                    id: 2,
-                    nome: "PetCare & Grooming Moema",
-                    cnpj: "98.765.432/0001-10",
-                    responsavel: "Fernando Lima",
-                    email_master: "fernando@petcaremoema.com",
-                    whatsapp: "(11) 97777-6666",
-                    plano: "Pro",
-                    status: "Ativo",
-                    modulos: { kanban: true, taxi_dog: false, caixa: true, estoque: true, assinaturas: true, analytics: false }
-                }
-            ]);
-        }
+    resetAndSeedCatDogData: () => {
+        // Clear all previous key stores
+        ['empresas', 'filiais', 'usuarios', 'clientes', 'pets', 'prontuarios', 'baias', 'planos_assinatura', 'servicos', 'insumos_servico', 'produtos', 'lotes_estoque', 'transferencias_estoque', 'pacotes_ativos', 'agendamentos_kanban', 'movimentacoes_caixa', 'logs_auditoria'].forEach(key => localStorage.removeItem(`pataforma_${key}`));
 
-        if (!DB.get('filiais')) {
-            DB.set('filiais', [
-                { id: 101, empresa_id: 1, nome: "Unidade Jardins (Matriz)", cidade: "São Paulo", uf: "SP", gerente: "Carlos Vitorio", status: "Ativa" },
-                { id: 102, empresa_id: 1, nome: "Unidade Moema (Filial 02)", cidade: "São Paulo", uf: "SP", gerente: "Fernando Lima", status: "Ativa" },
-                { id: 103, empresa_id: 1, nome: "Unidade Barra (Filial 03)", cidade: "Rio de Janeiro", uf: "RJ", gerente: "Patricia Santos", status: "Ativa" }
-            ]);
-        }
-
-        if (!DB.get('usuarios')) {
-            DB.set('usuarios', [
-                { id: 1, empresa_id: 1, filial_id: 101, nome: "Admin Dono", perfil: "Admin", email: "admin@pataforma.com", kanban: true, taxi_dog: true, caixa: true, qc: true, cargo: "Gerente Geral", comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 120.00 },
-                { id: 2, empresa_id: 1, filial_id: 101, nome: "Dra. Camila Santos", perfil: "Veterinario", email: "camila@pataforma.com", crmv: "SP-12345", kanban: true, taxi_dog: false, caixa: false, qc: true, cargo: "Médica Veterinária Lead", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 500.00 },
-                { id: 3, empresa_id: 1, filial_id: 101, nome: "Juliana Esteticista", perfil: "Supervisor", email: "juliana@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: true, cargo: "Supervisora de Estética", comissao_banho: 15, comissao_tosa: 30, comissao_acumulada: 340.50 },
-                { id: 4, empresa_id: 1, filial_id: 101, nome: "Marcos Recepção", perfil: "Recepcao", email: "marcos@pataforma.com", kanban: true, taxi_dog: false, caixa: true, qc: false, cargo: "Atendente do Caixa", comissao_banho: 5, comissao_tosa: 5, comissao_acumulada: 45.00 },
-                { id: 5, empresa_id: 1, filial_id: 101, nome: "Tiago Banhista", perfil: "Banhista", email: "tiago@pataforma.com", kanban: true, taxi_dog: false, caixa: false, qc: false, cargo: "Banhista Sênior", comissao_banho: 20, comissao_tosa: 20, comissao_acumulada: 280.00 },
-                { id: 6, empresa_id: 1, filial_id: 101, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@pataforma.com", kanban: false, taxi_dog: true, caixa: false, qc: false, cargo: "Motorista Táxi Dog", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 150.00 }
-            ]);
-        }
-
-        if (!DB.get('clientes')) {
-            DB.set('clientes', [
-                { id: 1, empresa_id: 1, filial_id: 101, nome: "Carlos Souza", telefone: "(11) 98888-7777", email: "carlos@gmail.com", endereco: "Av. Paulista, 1000 - Ap 42", lat_lng: "-23.5614,-46.6558", pontos_fidelidade: 189, ultima_visita: "2026-07-28" },
-                { id: 2, empresa_id: 1, filial_id: 101, nome: "Mariana Lima", telefone: "(11) 97777-6666", email: "mariana@gmail.com", endereco: "Rua Augusta, 450", lat_lng: "-23.5512,-46.6521", pontos_fidelidade: 320, ultima_visita: "2026-08-01" },
-                { id: 3, empresa_id: 1, filial_id: 101, nome: "Roberto Alves", telefone: "(11) 96666-5555", email: "roberto@gmail.com", endereco: "Alameda Lorena, 89", lat_lng: "-23.5678,-46.6610", pontos_fidelidade: 45, ultima_visita: "2026-08-03" }
-            ]);
-        }
-
-        if (!DB.get('pets')) {
-            DB.set('pets', [
-                { id: 1, empresa_id: 1, filial_id: 101, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco." },
-                { id: 2, empresa_id: 1, filial_id: 101, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", pelagem: "Longa", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Muito sensível no ouvido esquerdo." },
-                { id: 3, empresa_id: 1, filial_id: 101, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", pelagem: "Curta", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira." },
-                { id: 4, empresa_id: 1, filial_id: 101, cliente_id: 2, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa pelagem longa." }
-            ]);
-        }
-
-        if (!DB.get('prontuarios')) {
-            DB.set('prontuarios', [
-                {
-                    id: 1, empresa_id: 1, filial_id: 101, pet_id: 1, veterinario_id: 2, veterinario_nome: "Dra. Camila Santos",
-                    crmv: "SP-12345", data: "2026-08-04T10:30:00", peso: 28.5, temperatura: 38.5, fc: 110, mucosas: "Normocoradas / Normohidratado",
-                    anamnese: "Paciente apresenta prurido moderado no conduto auditivo esquerdo há 3 dias com secreção castanha.",
-                    diagnostico: "Otite eritematosa leve",
-                    prescricao: "1. Otoguard Gotas Auriculares: Instilar 4 gotas no ouvido esquerdo a cada 12h por 7 dias.\n2. Higienização prévia com solução fisiológica morna."
-                }
-            ]);
-        }
-
-        if (!DB.get('baias')) {
-            const baias = [];
-            for (let i = 1; i <= 12; i++) {
-                baias.push({
-                    id: i, empresa_id: 1, filial_id: 101,
-                    numero: `Baia ${i < 10 ? '0' + i : i}`,
-                    status: i === 1 ? 'Ocupada' : (i === 3 ? 'Ocupada' : 'Livre'),
-                    pet_id: i === 1 ? 1 : (i === 3 ? 2 : null)
-                });
+        // 1. CatDog Tenant
+        DB.set('empresas', [
+            {
+                id: 1,
+                nome: "CatDog Pet Center & Clínica Veterinária",
+                cnpj: "45.892.103/0001-88",
+                responsavel: "Dra. Julia Silveira",
+                email_master: "julia@catdog.com.br",
+                whatsapp: "(11) 98765-4321",
+                plano: "Enterprise VIP + DREasy",
+                status: "Ativo",
+                modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true, dreasy: true }
             }
-            DB.set('baias', baias);
+        ]);
+
+        // 2. Filiais SP
+        DB.set('filiais', [
+            { id: 101, empresa_id: 1, nome: "Unidade Moema (Matriz SP)", cidade: "São Paulo", uf: "SP", gerente: "Dra. Julia Silveira", status: "Ativa" },
+            { id: 102, empresa_id: 1, nome: "Unidade Jardins", cidade: "São Paulo", uf: "SP", gerente: "Camila Rocha", status: "Ativa" },
+            { id: 103, empresa_id: 1, nome: "Unidade Pinheiros", cidade: "São Paulo", uf: "SP", gerente: "Dr. Thiago Ramos", status: "Ativa" }
+        ]);
+
+        // 3. Equipe CatDog
+        DB.set('usuarios', [
+            { id: 1, empresa_id: 1, filial_id: 101, nome: "Dra. Julia Silveira", perfil: "Admin", email: "julia@catdog.com.br", senha: "catdog123", crmv: "SP-34567", cargo: "Proprietária / Diretora Clínica", comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 450.00 },
+            { id: 2, empresa_id: 1, filial_id: 101, nome: "Dr. Thiago Ramos", perfil: "Veterinario", email: "thiago@catdog.com.br", senha: "123456", crmv: "SP-45678", cargo: "Médico Veterinário Lead", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 980.00 },
+            { id: 3, empresa_id: 1, filial_id: 101, nome: "Amanda Souza", perfil: "Supervisor", email: "amanda@catdog.com.br", senha: "123456", cargo: "Supervisora de Banho & Tosa", comissao_banho: 15, comissao_tosa: 30, comissao_acumulada: 620.50 },
+            { id: 4, empresa_id: 1, filial_id: 101, nome: "Camila Rocha", perfil: "Recepcao", email: "camila@catdog.com.br", senha: "123456", cargo: "Atendente / Caixa", comissao_banho: 5, comissao_tosa: 5, comissao_acumulada: 120.00 },
+            { id: 5, empresa_id: 1, filial_id: 101, nome: "Bruno Lima", perfil: "Banhista", email: "bruno@catdog.com.br", senha: "123456", cargo: "Tosador Sênior", comissao_banho: 20, comissao_tosa: 25, comissao_acumulada: 540.00 },
+            { id: 6, empresa_id: 1, filial_id: 101, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@catdog.com.br", senha: "123456", cargo: "Motorista Táxi Dog SP", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 280.00 }
+        ]);
+
+        // 4. 20 Realistic Clients (Tutores SP)
+        DB.set('clientes', [
+            { id: 1, empresa_id: 1, filial_id: 101, nome: "Carlos Eduardo Mendes", telefone: "(11) 98888-1111", email: "carlos.mendes@gmail.com", endereco: "Av. Moema, 780 - Apt 121, Moema - SP", lat_lng: "-23.6012,-46.6621", pontos_fidelidade: 240, ultima_visita: "2026-08-01" },
+            { id: 2, empresa_id: 1, filial_id: 101, nome: "Mariana Alcantara", telefone: "(11) 97777-2222", email: "mariana.alcantara@hotmail.com", endereco: "Alameda Lorena, 1450, Jardins - SP", lat_lng: "-23.5678,-46.6610", pontos_fidelidade: 450, ultima_visita: "2026-08-03" },
+            { id: 3, empresa_id: 1, filial_id: 101, nome: "Roberto Ferraz", telefone: "(11) 96666-3333", email: "roberto.ferraz@uol.com.br", endereco: "Rua dos Pinheiros, 600 - Pinheiros - SP", lat_lng: "-23.5634,-46.6850", pontos_fidelidade: 110, ultima_visita: "2026-07-29" },
+            { id: 4, empresa_id: 1, filial_id: 101, nome: "Fernanda Costa", telefone: "(11) 95555-4444", email: "fernanda.costa@gmail.com", endereco: "Rua Pedroso Alvarenga, 900, Itaim Bibi - SP", lat_lng: "-23.5840,-46.6780", pontos_fidelidade: 320, ultima_visita: "2026-08-02" },
+            { id: 5, empresa_id: 1, filial_id: 101, nome: "Dr. Gustavo Borges", telefone: "(11) 94444-5555", email: "gustavo.borges@adv.com.br", endereco: "Av. República do Líbano, 1100, Ibirapuera - SP", lat_lng: "-23.5910,-46.6600", pontos_fidelidade: 580, ultima_visita: "2026-08-04" },
+            { id: 6, empresa_id: 1, filial_id: 101, nome: "Beatriz Oliveira", telefone: "(11) 93333-6666", email: "beatriz.oliver@gmail.com", endereco: "Rua Domingos de Morais, 1200, Vila Mariana - SP", lat_lng: "-23.5890,-46.6340", pontos_fidelidade: 95, ultima_visita: "2026-07-28" },
+            { id: 7, empresa_id: 1, filial_id: 101, nome: "Ricardo Siqueira", telefone: "(11) 92222-7777", email: "ricardo.siqueira@outlook.com", endereco: "Rua Mato Grosso, 340, Higienópolis - SP", lat_lng: "-23.5480,-46.6540", pontos_fidelidade: 180, ultima_visita: "2026-08-02" },
+            { id: 8, empresa_id: 1, filial_id: 101, nome: "Camila Viana", telefone: "(11) 91111-8888", email: "camila.viana@yahoo.com.br", endereco: "Rua Haddock Lobo, 890, Cerqueira César - SP", lat_lng: "-23.5610,-46.6670", pontos_fidelidade: 390, ultima_visita: "2026-08-03" },
+            { id: 9, empresa_id: 1, filial_id: 101, nome: "Lucas Rodrigues", telefone: "(11) 98765-1234", email: "lucas.rodrigues@tech.com", endereco: "Rua Fradique Coutinho, 750, Vila Madalena - SP", lat_lng: "-23.5580,-46.6890", pontos_fidelidade: 70, ultima_visita: "2026-07-30" },
+            { id: 10, empresa_id: 1, filial_id: 101, nome: "Patricia Abravanel", telefone: "(11) 97654-2345", email: "patricia.ab@gmail.com", endereco: "Rua Curitiba, 500, Paraíso - SP", lat_lng: "-23.5760,-46.6500", pontos_fidelidade: 620, ultima_visita: "2026-08-04" },
+            { id: 11, empresa_id: 1, filial_id: 101, nome: "Thiago Martins", telefone: "(11) 96543-3456", email: "thiago.martins@actor.com", endereco: "Av. Macuco, 300, Moema - SP", lat_lng: "-23.6040,-46.6640", pontos_fidelidade: 140, ultima_visita: "2026-07-27" },
+            { id: 12, empresa_id: 1, filial_id: 101, nome: "Vanessa Camargo", telefone: "(11) 95432-4567", email: "vanessa.c@gmail.com", endereco: "Rua Oscar Freire, 1100, Jardins - SP", lat_lng: "-23.5620,-46.6710", pontos_fidelidade: 410, ultima_visita: "2026-08-01" },
+            { id: 13, empresa_id: 1, filial_id: 101, nome: "Marcelo Rossi", telefone: "(11) 94321-5678", email: "marcelo.rossi@ig.com.br", endereco: "Av. Faria Lima, 2200, Itaim Bibi - SP", lat_lng: "-23.5790,-46.6870", pontos_fidelidade: 230, ultima_visita: "2026-08-02" },
+            { id: 14, empresa_id: 1, filial_id: 101, nome: "Juliana Paes", telefone: "(11) 93210-6789", email: "ju.paes@globo.com", endereco: "Rua Pamplona, 950, Jardim Paulista - SP", lat_lng: "-23.5690,-46.6560", pontos_fidelidade: 510, ultima_visita: "2026-08-04" },
+            { id: 15, empresa_id: 1, filial_id: 101, nome: "Eduardo Kobra", telefone: "(11) 92109-7890", email: "kobra.art@studio.com", endereco: "Rua Harmonia, 400, Vila Madalena - SP", lat_lng: "-23.5540,-46.6910", pontos_fidelidade: 190, ultima_visita: "2026-07-31" },
+            { id: 16, empresa_id: 1, filial_id: 101, nome: "Sabrina Sato", telefone: "(11) 91098-8901", email: "sabrina.sato@japa.com", endereco: "Rua Bela Cintra, 1800, Consolação - SP", lat_lng: "-23.5590,-46.6620", pontos_fidelidade: 840, ultima_visita: "2026-08-04" },
+            { id: 17, empresa_id: 1, filial_id: 101, nome: "Otavio Mesquita", telefone: "(11) 90987-9012", email: "otavio@mesquita.com.br", endereco: "Av. Brigadeiro Luis Antonio, 3000 - SP", lat_lng: "-23.5710,-46.6490", pontos_fidelidade: 300, ultima_visita: "2026-08-03" },
+            { id: 18, empresa_id: 1, filial_id: 101, nome: "Larissa Manoela", telefone: "(11) 99876-0123", email: "lari.manoela@disney.com", endereco: "Rua Cluch, 120, Perdizes - SP", lat_lng: "-23.5350,-46.6730", pontos_fidelidade: 470, ultima_visita: "2026-08-02" },
+            { id: 19, empresa_id: 1, filial_id: 101, nome: "Caio Castro", telefone: "(11) 98765-4321", email: "caio.castro@drift.com", endereco: "Av. Europa, 650, Jardim Europa - SP", lat_lng: "-23.5750,-46.6740", pontos_fidelidade: 360, ultima_visita: "2026-08-01" },
+            { id: 20, empresa_id: 1, filial_id: 101, nome: "Giovanna Ewbank", telefone: "(11) 97654-5432", email: "gio.ewbank@gioh.com", endereco: "Rua Artur de Azevedo, 500, Pinheiros - SP", lat_lng: "-23.5640,-46.6810", pontos_fidelidade: 920, ultima_visita: "2026-08-04" }
+        ]);
+
+        // 5. 20+ Real Pets Linked to Tutores
+        DB.set('pets', [
+            { id: 1, empresa_id: 1, filial_id: 101, cliente_id: 1, nome: "Thor", especie: "Cachorro", raca: "Golden Retriever", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Alergia a shampoo de coco. Pele sensível." },
+            { id: 2, empresa_id: 1, filial_id: 101, cliente_id: 2, nome: "Luna", especie: "Cachorro", raca: "Shih Tzu", porte: "Pequeno", pelagem: "Longa", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Sensível no ouvido esquerdo. Usar algodão protetor." },
+            { id: 3, empresa_id: 1, filial_id: 101, cliente_id: 3, nome: "Max", especie: "Cachorro", raca: "Rottweiler", porte: "Grande", pelagem: "Curta", temperamento: "Agressivo", vacinas_em_dia: false, observacoes: "Exige uso de focinheira na banheira e secador fraco." },
+            { id: 4, empresa_id: 1, filial_id: 101, cliente_id: 4, nome: "Mingau", especie: "Gato", raca: "Persa", porte: "Pequeno", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato Persa com nós no dorso. Banho especial seco." },
+            { id: 5, empresa_id: 1, filial_id: 101, cliente_id: 5, nome: "Zeus", especie: "Cachorro", raca: "Spitz Alemão (Lulu)", porte: "Pequeno", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Tosa bebê tesoura. Escovação de dentes diária." },
+            { id: 6, empresa_id: 1, filial_id: 101, cliente_id: 6, nome: "Belinha", especie: "Cachorro", raca: "Poodle Toy", porte: "Pequeno", pelagem: "Longa", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Medo de barulho alto. Usar protetor auricular." },
+            { id: 7, empresa_id: 1, filial_id: 101, cliente_id: 7, nome: "Simba", especie: "Gato", raca: "Maine Coon", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Gato de 9kg. Exige banheira adaptada para felinos." },
+            { id: 8, empresa_id: 1, filial_id: 101, cliente_id: 8, nome: "Pandora", especie: "Cachorro", raca: "Bulldog Francês", porte: "Pequeno", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Assaduras nas dobras faciais. Limpar com lenço umedecido." },
+            { id: 9, empresa_id: 1, filial_id: 101, cliente_id: 9, nome: "Bob", especie: "Cachorro", raca: "Border Collie", porte: "Médio", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Muito ativo! Adora brincar com água." },
+            { id: 10, empresa_id: 1, filial_id: 101, cliente_id: 10, nome: "Mel", especie: "Cachorro", raca: "Yorkshire Terrier", porte: "Pequeno", pelagem: "Longa", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Usar lacinho rosa artesanal pós-banho." },
+            { id: 11, empresa_id: 1, filial_id: 101, cliente_id: 11, nome: "Apollo", especie: "Cachorro", raca: "Pastor Alemão", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Displasia coxofemoral leve. Cuidado ao subir na mesa." },
+            { id: 12, empresa_id: 1, filial_id: 101, cliente_id: 12, nome: "Chico", especie: "Cachorro", raca: "SRD (Vira-lata)", porte: "Médio", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Resgatado! Adora carinho no pescoço." },
+            { id: 13, empresa_id: 1, filial_id: 101, cliente_id: 13, nome: "Snow", especie: "Gato", raca: "Siamês", porte: "Pequeno", pelagem: "Curta", temperamento: "Arisco", vacinas_em_dia: true, observacoes: "Unhas bem afiadas. Corte obrigatório." },
+            { id: 14, empresa_id: 1, filial_id: 101, cliente_id: 14, nome: "Nina", especie: "Cachorro", raca: "Maltês", porte: "Pequeno", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Mancha lacrimal ao redor dos olhos." },
+            { id: 15, empresa_id: 1, filial_id: 101, cliente_id: 15, nome: "Toby", especie: "Cachorro", raca: "Beagle", porte: "Médio", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Otite fúngica crônica. Ouvidos sob tratamento." },
+            { id: 16, empresa_id: 1, filial_id: 101, cliente_id: 16, nome: "Zoe", especie: "Cachorro", raca: "Pug", porte: "Pequeno", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Olhos proeminentes. Cuidado com shampoo nos olhos." },
+            { id: 17, empresa_id: 1, filial_id: 101, cliente_id: 17, nome: "Fred", especie: "Cachorro", raca: "Dachshund (Salsicha)", porte: "Pequeno", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Problema na coluna. Não dobrar as costas." },
+            { id: 18, empresa_id: 1, filial_id: 101, cliente_id: 18, nome: "Mia", especie: "Gato", raca: "Ragdoll", porte: "Médio", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Super dócil. Fica imóvel na escovação." },
+            { id: 19, empresa_id: 1, filial_id: 101, cliente_id: 19, nome: "Rock", especie: "Cachorro", raca: "Boxer", porte: "Grande", pelagem: "Curta", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Força física alta. Usar guia reforçada." },
+            { id: 20, empresa_id: 1, filial_id: 101, cliente_id: 20, nome: "Maya", especie: "Cachorro", raca: "Samoieda", porte: "Grande", pelagem: "Longa", temperamento: "Calmo", vacinas_em_dia: true, observacoes: "Pelagem dupla branca super densa. 2h de secador!" }
+        ]);
+
+        // 6. Clinical Vet Records
+        DB.set('prontuarios', [
+            {
+                id: 1, empresa_id: 1, filial_id: 101, pet_id: 1, veterinario_id: 2, veterinario_nome: "Dr. Thiago Ramos",
+                crmv: "SP-45678", data: "2026-08-04T10:30:00", peso: 31.2, temperatura: 38.4, fc: 105, mucosas: "Normocoradas / Normohidratado",
+                anamnese: "Paciente Thor trouxe histórico de dermatite atópica sazonal e prurido em patas traseiras.",
+                diagnostico: "Dermatite atópica canina eritematosa",
+                prescricao: "1. Apoquel 16mg: Tomar 1 comprimido via oral a cada 12h por 7 dias.\n2. Banho semanal com Shampoo Hipoalergênico Ozonizado."
+            },
+            {
+                id: 2, empresa_id: 1, filial_id: 101, pet_id: 15, veterinario_id: 2, veterinario_nome: "Dr. Thiago Ramos",
+                crmv: "SP-45678", data: "2026-08-03T15:00:00", peso: 14.5, temperatura: 38.8, fc: 120, mucosas: "Normocoradas / Normohidratado",
+                anamnese: "Paciente Toby com secreção ceruminosa escura e odor fétido no conduto auditivo direito.",
+                diagnostico: "Otite externa por Malassezia pachydermatis",
+                prescricao: "1. Auritop Gotas: Aplicar 5 gotas no ouvido direito a cada 12h por 10 dias após higienização prévia."
+            }
+        ]);
+
+        // 7. Baias CatDog
+        const baias = [];
+        for (let i = 1; i <= 12; i++) {
+            baias.push({
+                id: i, empresa_id: 1, filial_id: 101,
+                numero: `Baia ${i < 10 ? '0' + i : i}`,
+                status: i === 1 ? 'Ocupada' : (i === 3 ? 'Ocupada' : (i === 5 ? 'Ocupada' : 'Livre')),
+                pet_id: i === 1 ? 1 : (i === 3 ? 2 : (i === 5 ? 5 : null))
+            });
         }
+        DB.set('baias', baias);
 
-        if (!DB.get('planos_assinatura')) {
-            DB.set('planos_assinatura', [
-                { id: 1, empresa_id: 1, nome: "Plano Mensal Gold (4 Banhos + Tosa)", descricao: "4 banhos mensais + 1 tosa completa.", preco: 240.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
-                { id: 2, empresa_id: 1, nome: "Plano VIP Semanal", descricao: "1 banho por semana com secagem rápida.", preco: 65.00, periodicidade: "Semanal", quantidade_banhos: 1, inclui_tosa: false }
-            ]);
-        }
+        // 8. Planos de Assinatura
+        DB.set('planos_assinatura', [
+            { id: 1, empresa_id: 1, nome: "Plano Mensal VIP (4 Banhos + Tosa)", descricao: "4 banhos completos mensais + 1 tosa higiênica e hidratação ozonizada.", preco: 279.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: true },
+            { id: 2, empresa_id: 1, nome: "Plano Felino Persa (2 Banhos Secos)", descricao: "2 banhos a seco com escovação de nós para gatos de pelagem longa.", preco: 180.00, periodicidade: "Mensal", quantidade_banhos: 2, inclui_tosa: false },
+            { id: 3, empresa_id: 1, nome: "Plano Semanal Banho & Secagem", descricao: "1 banho por semana para cães de médio e grande porte.", preco: 220.00, periodicidade: "Mensal", quantidade_banhos: 4, inclui_tosa: false }
+        ]);
 
-        if (!DB.get('servicos')) {
-            DB.set('servicos', [
-                { id: 1, empresa_id: 1, nome: "Banho & Secagem", descricao: "Banho completo, secagem, corte de unhas.", preco: 70.00, duracao: 45 },
-                { id: 2, empresa_id: 1, nome: "Tosa Completa", descricao: "Banho completo + Tosa com máquina e tesoura.", preco: 120.00, duracao: 90 },
-                { id: 3, empresa_id: 1, nome: "Banho Antipulgas", descricao: "Banho com shampoo ectoparasiticida.", preco: 95.00, duracao: 60 }
-            ]);
-        }
+        // 9. Serviços CatDog
+        DB.set('servicos', [
+            { id: 1, empresa_id: 1, nome: "Banho & Secagem Completa", descricao: "Banho com shampoo neutro, secagem, corte de unhas e ouvido.", preco: 85.00, duracao: 45 },
+            { id: 2, empresa_id: 1, nome: "Tosa Tesoura / Bebê", descricao: "Banho completo + Tosa artesanal na tesoura.", preco: 140.00, duracao: 90 },
+            { id: 3, empresa_id: 1, nome: "Banho Hipoalergênico Ozonizado", descricao: "Tratamento dermatológico com ozônio e água morna.", preco: 110.00, duracao: 60 }
+        ]);
 
-        if (!DB.get('insumos_servico')) {
-            DB.set('insumos_servico', [
-                { id: 1, servico_id: 1, produto_id: 2, nome_insumo: "Shampoo Hipoalergênico", quantidade_dose: 1, unidade: "UN" },
-                { id: 2, servico_id: 1, produto_id: 4, nome_insumo: "Lacinhos Artesanais", quantidade_dose: 2, unidade: "UN" }
-            ]);
-        }
+        // 10. Insumos por Serviço (Ficha Técnica em ml / g / un)
+        DB.set('insumos_servico', [
+            { id: 1, servico_id: 1, produto_id: 2, nome_insumo: "Shampoo Hipoalergênico 5L", quantidade_dose: 1, unidade: "UN" },
+            { id: 2, servico_id: 1, produto_id: 4, nome_insumo: "Lacinhos Artesanais Kit", quantidade_dose: 2, unidade: "UN" }
+        ]);
 
-        if (!DB.get('produtos')) {
-            DB.set('produtos', [
-                { id: 1, empresa_id: 1, filial_id: 101, nome: "Ração Premier Cães Adultos 15kg", marca: "Premier Pet", codigo_barras: "78910001", preco_custo: 120.00, margem_lucro: 58.25, preco: 189.90, estoque_minimo: 5, finalidade: "Comercial", categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30' fill='%23818cf8'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
-                { id: 2, empresa_id: 1, filial_id: 101, nome: "Shampoo Hipoalergênico 500ml", marca: "Pet Clean", codigo_barras: "78910002", preco_custo: 22.50, margem_lucro: 100.0, preco: 45.00, estoque_minimo: 8, finalidade: "Insumo", categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5' fill='%23c084fc'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
-                { id: 3, empresa_id: 1, filial_id: 101, nome: "Petisco Biscoito Canino 100g", marca: "DogPet", codigo_barras: null, preco_custo: 5.00, margem_lucro: 150.0, preco: 12.50, estoque_minimo: 10, finalidade: "Comercial", categoria: "Petiscos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><path d='M30,50 C30,40 40,30 50,30 C60,30 70,40 70,50 C40,70 30,60 30,50 Z' fill='%23fbbf24'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>COOKS</text></svg>" },
-                { id: 4, empresa_id: 1, filial_id: 101, nome: "Lacinhos Artesanais (Kit 4 un)", marca: "Pet Style", codigo_barras: null, preco_custo: 2.50, margem_lucro: 220.0, preco: 8.00, estoque_minimo: 15, finalidade: "Insumo", categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='25' fill='%23ec4899'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>LACE</text></svg>" }
-            ]);
-        }
+        // 11. Produtos & Insumos ERP
+        DB.set('produtos', [
+            { id: 1, empresa_id: 1, filial_id: 101, nome: "Ração Premier Cães Adultos Golden 15kg", marca: "Premier Pet", codigo_barras: "78910001", preco_custo: 135.00, margem_lucro: 55.5, preco: 209.90, estoque_minimo: 5, finalidade: "Comercial", categoria: "Ração", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='30' fill='%23818cf8'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>RAÇÃO</text></svg>" },
+            { id: 2, empresa_id: 1, filial_id: 101, nome: "Shampoo Hipoalergênico Galão 5 Litros", marca: "Pet Clean", codigo_barras: "78910002", preco_custo: 65.00, margem_lucro: 100.0, preco: 130.00, estoque_minimo: 4, finalidade: "Insumo", categoria: "Higiene", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><rect x='35' y='20' width='30' height='60' rx='5' fill='%23c084fc'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>SHAMP</text></svg>" },
+            { id: 3, empresa_id: 1, filial_id: 101, nome: "Antipulgas Bravecto Cães 10 a 20kg", marca: "MSD Saude", codigo_barras: "78910003", preco_custo: 180.00, margem_lucro: 38.8, preco: 249.90, estoque_minimo: 3, finalidade: "Comercial", categoria: "Medicamentos", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><polygon points='50,15 90,85 10,85' fill='%2314b8a6'/><text x='50' y='65' font-size='8' fill='white' text-anchor='middle'>BRAVECTO</text></svg>" },
+            { id: 4, empresa_id: 1, filial_id: 101, nome: "Lacinhos Artesanais (Kit 100 un)", marca: "Pet Style SP", codigo_barras: null, preco_custo: 15.00, margem_lucro: 166.6, preco: 40.00, estoque_minimo: 10, finalidade: "Insumo", categoria: "Acessórios", foto: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e293b'/><circle cx='50' cy='50' r='25' fill='%23ec4899'/><text x='50' y='55' font-size='10' fill='white' text-anchor='middle'>LACE</text></svg>" }
+        ]);
 
-        if (!DB.get('lotes_estoque')) {
-            const hoje = new Date();
-            const vencendo = new Date(hoje); vencendo.setDate(hoje.getDate() + 5);
-            const emDia = new Date(hoje); emDia.setDate(hoje.getDate() + 120);
+        // 12. Lotes FEFO com Validade
+        const hoje = new Date();
+        const vencendo = new Date(hoje); vencendo.setDate(hoje.getDate() + 8);
+        const emDia = new Date(hoje); emDia.setDate(hoje.getDate() + 180);
 
-            DB.set('lotes_estoque', [
-                { id: 1, empresa_id: 1, filial_id: 101, produto_id: 1, lote: "L-RAC01", quantidade: 3, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 2, empresa_id: 1, filial_id: 101, produto_id: 1, lote: "L-RAC02", quantidade: 10, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 3, empresa_id: 1, filial_id: 101, produto_id: 2, lote: "L-SH01", quantidade: 15, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 4, empresa_id: 1, filial_id: 101, produto_id: 3, lote: "L-PT01", quantidade: 20, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
-                { id: 5, empresa_id: 1, filial_id: 101, produto_id: 4, lote: "L-AC01", quantidade: 50, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
-            ]);
-        }
+        DB.set('lotes_estoque', [
+            { id: 1, empresa_id: 1, filial_id: 101, produto_id: 1, lote: "L-RAC-SP01", quantidade: 4, data_vencimento: vencendo.toISOString().split('T')[0], status: "Disponivel" },
+            { id: 2, empresa_id: 1, filial_id: 101, produto_id: 1, lote: "L-RAC-SP02", quantidade: 15, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+            { id: 3, empresa_id: 1, filial_id: 101, produto_id: 2, lote: "L-SH5L-01", quantidade: 8, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" },
+            { id: 4, empresa_id: 1, filial_id: 101, produto_id: 3, lote: "L-BRAV-01", quantidade: 6, data_vencimento: emDia.toISOString().split('T')[0], status: "Disponivel" }
+        ]);
 
-        if (!DB.get('transferencias_estoque')) {
-            DB.set('transferencias_estoque', [
-                { id: 1, empresa_id: 1, origem_filial_id: 101, destino_filial_id: 102, produto_id: 2, quantidade: 5, data: "2026-08-03", status: "Concluída" }
-            ]);
-        }
+        // 13. Transferências
+        DB.set('transferencias_estoque', [
+            { id: 1, empresa_id: 1, origem_filial_id: 101, destino_filial_id: 102, produto_id: 2, quantidade: 2, data: "2026-08-03", status: "Concluída" }
+        ]);
 
-        if (!DB.get('pacotes_ativos')) {
-            DB.set('pacotes_ativos', [
-                { id: 1, empresa_id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" }
-            ]);
-        }
+        // 14. Pacotes Recorrentes Ativos
+        DB.set('pacotes_ativos', [
+            { id: 1, empresa_id: 1, cliente_id: 1, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-01", status: "Ativo" },
+            { id: 2, empresa_id: 1, cliente_id: 5, plano_id: 1, quantidade_banhos: 4, data_aquisicao: "2026-08-02", status: "Ativo" },
+            { id: 3, empresa_id: 1, cliente_id: 16, plano_id: 3, quantidade_banhos: 4, data_aquisicao: "2026-08-03", status: "Ativo" }
+        ]);
 
-        if (!DB.get('agendamentos_kanban')) {
-            DB.set('agendamentos_kanban', [
-                {
-                    id: 1, empresa_id: 1, filial_id: 101, pet_id: 1, servico_id: 1, baia_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00",
-                    possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
-                    checklist: { rasqueamento: false, ouvidos: true, unhas: false, adereco: false, perfume: false },
-                    boletim_zootie: null
-                },
-                {
-                    id: 2, empresa_id: 1, filial_id: 101, pet_id: 2, servico_id: 2, baia_id: 3, status: "Aguardando Banho", data_agendamento: "2026-08-04T11:30:00",
-                    possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
-                    checklist: { rasqueamento: true, ouvidos: true, unhas: true, adereco: false, perfume: false },
-                    boletim_zootie: null
-                }
-            ]);
-        }
+        // 15. Agendamentos Kanban Ativos no CatDog SP
+        DB.set('agendamentos_kanban', [
+            {
+                id: 1, empresa_id: 1, filial_id: 101, pet_id: 1, servico_id: 1, baia_id: 1, status: "Agendado", data_agendamento: "2026-08-04T10:00:00",
+                possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
+                checklist: { rasqueamento: false, ouvidos: true, unhas: false, adereco: false, perfume: false }, boletim_zootie: null
+            },
+            {
+                id: 2, empresa_id: 1, filial_id: 101, pet_id: 2, servico_id: 2, baia_id: 3, status: "Em Rota de Busca", data_agendamento: "2026-08-04T11:00:00",
+                possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
+                checklist: { rasqueamento: true, ouvidos: true, unhas: true, adereco: false, perfume: false }, boletim_zootie: null
+            },
+            {
+                id: 3, empresa_id: 1, filial_id: 101, pet_id: 3, servico_id: 1, baia_id: 5, status: "No Banho", data_agendamento: "2026-08-04T11:30:00",
+                possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: false, latitude_entrega: null, longitude_entrega: null, foto_comprovante_url: null,
+                checklist: { rasqueamento: true, ouvidos: false, unhas: false, adereco: false, perfume: false }, boletim_zootie: null
+            },
+            {
+                id: 4, empresa_id: 1, filial_id: 101, pet_id: 5, servico_id: 2, baia_id: 2, status: "Pronto", data_agendamento: "2026-08-04T09:00:00",
+                possui_ectoparasitas: false, adicional_desembolo: 0, qc_aprovado: true, latitude_entrega: "-23.6012", longitude_entrega: "-46.6621", foto_comprovante_url: null,
+                checklist: { rasqueamento: true, ouvidos: true, unhas: true, adereco: true, perfume: true },
+                boletim_zootie: { estrelas: "5", secador: "Sim, super tranquilo", unhas: "Concluído sem problemas", obs: "O Zeus ficou uma fofura! Tosa tesoura perfeita." }
+            }
+        ]);
 
-        if (!DB.get('contas_receber')) DB.set('contas_receber', []);
-        if (!DB.get('movimentacoes_caixa')) {
-            DB.set('movimentacoes_caixa', [
-                { id: 1, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão", descricao: "Venda Ração Carlos", valor: 189.90, data: "2026-08-04T14:30:00" }
-            ]);
-        }
+        // 16. Caixas & Movimentações Financeiras CatDog SP
+        DB.set('movimentacoes_caixa', [
+            { id: 1, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Assinaturas Recorrentes", descricao: "Mensalidade Plano VIP Carlos Mendes", valor: 279.00, data: "2026-08-01T09:00:00" },
+            { id: 2, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Venda Ração Premier 15kg Mariana Alcantara", valor: 209.90, data: "2026-08-03T14:30:00" },
+            { id: 3, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Consulta Veterinária", descricao: "Consulta Clínica Dr. Thiago (Thor)", valor: 180.00, data: "2026-08-04T10:30:00" },
+            { id: 4, empresa_id: 1, filial_id: 101, tipo: "ENTRADA", categoria: "Venda Balcão POS", descricao: "Antipulgas Bravecto Sabrina Sato", valor: 249.90, data: "2026-08-04T16:15:00" }
+        ]);
 
-        if (!DB.get('logs_auditoria')) {
-            DB.set('logs_auditoria', [
-                { id: 1, empresa_id: 1, usuario: "Sistema Gestão", acao: "Inicialização SaaS", detalhe: "Plataforma B2B Multi-Tenant inicializada com sucesso", timestamp: new Date().toISOString() }
-            ]);
+        // 17. Audit Logs
+        DB.set('logs_auditoria', [
+            { id: 1, empresa_id: 1, usuario: "Dra. Julia Silveira", acao: "Inicialização CatDog SP", detalhe: "Base CatDog Pet Center & Clínica Veterinária inicializada com 20 clientes", timestamp: new Date().toISOString() }
+        ]);
+    },
+
+    init: () => {
+        if (!DB.get('empresas') || (DB.get('empresas') && DB.get('empresas')[0] && DB.get('empresas')[0].nome !== "CatDog Pet Center & Clínica Veterinária")) {
+            DB.resetAndSeedCatDogData();
         }
     }
 };
@@ -225,6 +259,34 @@ const State = {
         }, 4000);
     }
 };
+
+// DREASY FLUXO DE CAIXA SYNCHRONIZATION ENGINE
+function sincronizarDREasyFluxoCaixa() {
+    const movimentacoes = DB.get('movimentacoes_caixa') || [];
+    const faturamentoPos = movimentacoes.filter(m => m.categoria.includes('Balcão')).reduce((acc, curr) => acc + curr.valor, 0);
+    const faturamentoServicos = movimentacoes.filter(m => m.categoria.includes('Assinaturas') || m.categoria.includes('Banho')).reduce((acc, curr) => acc + curr.valor, 0);
+    const faturamentoVet = movimentacoes.filter(m => m.categoria.includes('Consulta')).reduce((acc, curr) => acc + curr.valor, 0);
+    const totalConsolidado = faturamentoPos + faturamentoServicos + faturamentoVet;
+
+    if (document.getElementById('dreasy-pos-total')) document.getElementById('dreasy-pos-total').innerText = `R$ ${faturamentoPos.toFixed(2)}`;
+    if (document.getElementById('dreasy-servicos-total')) document.getElementById('dreasy-servicos-total').innerText = `R$ ${faturamentoServicos.toFixed(2)}`;
+    if (document.getElementById('dreasy-vet-total')) document.getElementById('dreasy-vet-total').innerText = `R$ ${faturamentoVet.toFixed(2)}`;
+
+    // Payload JSON mock sending to fluxocaixa.comercial-profitdata.workers.dev
+    const payload = {
+        empresa: "CatDog Pet Center & Clínica Veterinária",
+        cnpj: "45.892.103/0001-88",
+        data_sincronizacao: new Date().toISOString(),
+        vendas_pos_balcao: faturamentoPos,
+        servicos_estetica_pacotes: faturamentoServicos,
+        consultas_veterinarias: faturamentoVet,
+        receita_bruta_total: totalConsolidado
+    };
+
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Sincronização DREasy', `DRE gerencial exportado para fluxocaixa.comercial-profitdata.workers.dev. Total R$ ${totalConsolidado.toFixed(2)}`);
+
+    State.showToast(`⚡ Sincronizado com DREasy! R$ ${totalConsolidado.toFixed(2)} exportados com sucesso.`, 'success');
+}
 
 // LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
 function abrirAreaClientePortal(modo = 'cliente') {
@@ -376,7 +438,7 @@ function salvarEmpresa(e) {
     const newFilialId = filiais.length > 0 ? Math.max(...filiais.map(f => f.id)) + 1 : 101;
     const newUsuarioId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
 
-    const senhaGerada = "pataforma123";
+    const senhaGerada = "catdog123";
 
     // 1. Save Empresa
     empresas.push({
@@ -584,18 +646,16 @@ function trocarEmpresaAtiva(empresaId) {
     const emp = DB.get('empresas').find(e => e.id === State.currentEmpresaId);
     
     const companyHeader = document.getElementById('current-company-name');
-    if (companyHeader) companyHeader.innerHTML = emp ? `🏢 ${emp.nome}` : '🏢 PataForma Matriz';
+    if (companyHeader) companyHeader.innerHTML = emp ? `🏢 ${emp.nome}` : '🏢 CatDog Pet Center SP';
 
     renderFiliaisHeaderSelector();
     applyRBAC(State.currentProfile);
     State.showToast(`Contexto alterado para: ${emp ? emp.nome : 'Empresa'}`, 'info');
 }
 
-
 // 4. RBAC VISIBILITY & ROUTER
 function applyRBAC(profileName) {
     State.currentProfile = profileName;
-    const empresa = DB.get('empresas').find(e => e.id === State.currentEmpresaId) || { modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true } };
 
     const navKanban = document.getElementById('nav-kanban');
     const navProntuario = document.getElementById('nav-prontuario');
@@ -609,6 +669,7 @@ function applyRBAC(profileName) {
     const navProdutos = document.getElementById('nav-produtos');
     const navEquipe = document.getElementById('nav-equipe');
     const navAssinaturas = document.getElementById('nav-assinaturas');
+    const navDreasy = document.getElementById('nav-dreasy');
 
     if (profileName === 'Veterinario') {
         if (navKanban) navKanban.style.display = 'flex';
@@ -623,6 +684,7 @@ function applyRBAC(profileName) {
         if (navProdutos) navProdutos.style.display = 'none';
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
+        if (navDreasy) navDreasy.style.display = 'none';
     } else if (profileName === 'Entregador') {
         if (navKanban) navKanban.style.display = 'none';
         if (navProntuario) navProntuario.style.display = 'none';
@@ -636,6 +698,7 @@ function applyRBAC(profileName) {
         if (navProdutos) navProdutos.style.display = 'none';
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
+        if (navDreasy) navDreasy.style.display = 'none';
     } else if (profileName === 'Banhista') {
         if (navKanban) navKanban.style.display = 'flex';
         if (navProntuario) navProntuario.style.display = 'none';
@@ -649,6 +712,7 @@ function applyRBAC(profileName) {
         if (navProdutos) navProdutos.style.display = 'none';
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
+        if (navDreasy) navDreasy.style.display = 'none';
     } else {
         if (navKanban) navKanban.style.display = 'flex';
         if (navProntuario) navProntuario.style.display = 'flex';
@@ -662,6 +726,7 @@ function applyRBAC(profileName) {
         if (navProdutos) navProdutos.style.display = 'flex';
         if (navEquipe) navEquipe.style.display = 'flex';
         if (navAssinaturas) navAssinaturas.style.display = 'flex';
+        if (navDreasy) navDreasy.style.display = 'flex';
     }
 }
 
@@ -687,11 +752,102 @@ function switchTab(tabId) {
     if (tabId === 'produtos') renderProdutosCrudTable();
     if (tabId === 'equipe') renderFuncionariosTable();
     if (tabId === 'assinaturas') renderAssinaturasCards();
+    if (tabId === 'dreasy') sincronizarDREasyFluxoCaixa();
     if (tabId === 'master-saas') renderMasterPanel();
 }
 
+// 5. CLIENTES (20 TUTORES SP) & PETS TABLES
+function renderClientesTable() {
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const pets = DB.get('pets') || [];
+    const tbody = document.getElementById('table-clientes-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
 
-// 5. FICHA TÉCNICA SUPPLY DEDUCTION & KANBAN ENGINE
+    clientes.forEach(c => {
+        const clientPets = pets.filter(p => p.cliente_id === c.id);
+        const petsNames = clientPets.map(p => `${p.especie === 'Gato' ? '🐱' : '🐶'} ${p.nome}`).join(', ');
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>👤 ${c.nome}</strong></td>
+            <td>${c.telefone}</td>
+            <td>${c.email}</td>
+            <td><small>${c.endereco}</small></td>
+            <td><span class="validade-badge em-dia">⭐ ${c.pontos_fidelidade} pts</span></td>
+            <td><button class="card-btn" onclick="abrirModalPetParaCliente(${c.id})">➕ Adicionar Pet</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderPetsTable() {
+    const pets = (DB.get('pets') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    const clientes = DB.get('clientes') || [];
+    const tbody = document.getElementById('table-pets-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    pets.forEach(p => {
+        const tutor = clientes.find(c => c.id === p.cliente_id);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${p.especie === 'Gato' ? '🐱' : '🐶'} ${p.nome}</strong></td>
+            <td>${p.especie}</td>
+            <td>${p.raca} | ${p.porte} | ${p.pelagem}</td>
+            <td><span class="validade-badge ${p.temperamento === 'Agressivo' ? 'vencido' : (p.temperamento === 'Arisco' ? 'vencendo' : 'em-dia')}">${p.temperamento}</span></td>
+            <td>${tutor ? tutor.nome : 'Sem tutor'}</td>
+            <td><span class="validade-badge ${p.vacinas_em_dia ? 'em-dia' : 'vencido'}">${p.vacinas_em_dia ? 'Em dia' : 'Atrasadas'}</span></td>
+            <td><small>${p.observacoes}</small></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderFuncionariosTable() {
+    const usuarios = (DB.get('usuarios') || []).filter(u => u.empresa_id === State.currentEmpresaId);
+    const tbody = document.getElementById('table-funcionarios-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    usuarios.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${u.nome}</strong></td>
+            <td><span class="validade-badge em-dia">${u.perfil}</span></td>
+            <td>${u.cargo || u.perfil}</td>
+            <td>${u.comissao_banho}%</td>
+            <td>${u.comissao_tosa}%</td>
+            <td style="color:#10b981; font-weight:700;">R$ ${(u.comissao_acumulada || 0).toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderAssinaturasCards() {
+    const planos = (DB.get('planos_assinatura') || []).filter(p => p.empresa_id === State.currentEmpresaId);
+    const container = document.getElementById('planos-cards-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    planos.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'glass-panel kpi-card';
+        card.style.flexDirection = 'column';
+        card.style.alignItems = 'flex-start';
+        card.innerHTML = `
+            <h3 style="color:var(--primary); font-size:1.1rem; margin-bottom:0.5rem;">💳 ${p.nome}</h3>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.75rem;">${p.descricao}</p>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--text-main); margin-bottom:0.75rem;">
+                R$ ${p.preco.toFixed(2)} <span style="font-size:0.8rem; color:var(--text-muted);">/ ${p.periodicidade}</span>
+            </div>
+            <button class="btn-primary" style="width:100%; justify-content:center;" onclick="abrirModalAssinarPlano(${p.id})">✍️ Vincular a Cliente Tutor</button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// 6. FICHA TÉCNICA SUPPLY DEDUCTION & KANBAN ENGINE
 function deduzirInsumosFichaTecnica(servicoId) {
     const insumos = DB.get('insumos_servico') || [];
     const servicoInsumos = insumos.filter(i => i.servico_id === servicoId);
@@ -845,8 +1001,7 @@ function handleStatusTransition(cardId, newStatus) {
     State.showToast(`Pet ${pet.nome} movido para ${newStatus}.`, 'info');
 }
 
-
-// 6. VETERINARY CLINICAL RECORDS & PRESCRIPTION ENGINE
+// 7. VETERINARY CLINICAL RECORDS & PRESCRIPTION ENGINE
 function renderProntuariosTable() {
     const prontuarios = (DB.get('prontuarios') || []).filter(p => p.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
@@ -893,8 +1048,8 @@ function salvarProntuarioSubmit(e) {
         filial_id: State.currentFilialId,
         pet_id: petId,
         veterinario_id: State.currentUser ? State.currentUser.id : 2,
-        veterinario_nome: State.currentUser ? State.currentUser.nome : "Dra. Camila Santos",
-        crmv: "SP-12345",
+        veterinario_nome: State.currentUser ? State.currentUser.nome : "Dr. Thiago Ramos",
+        crmv: "SP-45678",
         data: new Date().toISOString(),
         peso, temperatura, fc, mucosas, anamnese, diagnostico, prescricao
     });
@@ -916,8 +1071,8 @@ function gerarReceitaImpressao(prontuarioId) {
     const cliente = pet ? DB.get('clientes').find(c => c.id === pet.cliente_id) : null;
     const filial = DB.get('filiais').find(f => f.id === p.filial_id);
 
-    document.getElementById('print-clinic-name').innerText = `CLÍNICA VETERINÁRIA PATAFORMA`;
-    document.getElementById('print-clinic-info').innerText = `${filial ? filial.nome : 'Unidade Matriz'} — CRMV Responsável: ${p.crmv}`;
+    document.getElementById('print-clinic-name').innerText = `CLÍNICA VETERINÁRIA CATDOG SP`;
+    document.getElementById('print-clinic-info').innerText = `${filial ? filial.nome : 'Unidade Moema Matriz'} — CRMV Responsável: ${p.crmv}`;
     document.getElementById('print-pet-name').innerText = pet ? pet.nome : 'Pet';
     document.getElementById('print-tutor-name').innerText = cliente ? cliente.nome : 'Tutor';
     document.getElementById('print-pet-peso').innerText = `${p.peso} kg`;
@@ -928,8 +1083,7 @@ function gerarReceitaImpressao(prontuarioId) {
     openModal('modal-receita-impressao');
 }
 
-
-// 7. MULTI-FILIAIS & INTER-BRANCH TRANSFERS
+// 8. MULTI-FILIAIS & INTER-BRANCH TRANSFERS
 function renderFiliaisTable() {
     const filiais = (DB.get('filiais') || []).filter(f => f.empresa_id === State.currentEmpresaId);
     const tbody = document.getElementById('table-filiais-body');
@@ -1009,8 +1163,7 @@ function salvarTransferenciaSubmit(e) {
     State.showToast(`📦 Remessa de estoque registrada com sucesso!`, 'success');
 }
 
-
-// 8. CAGE GRID & ZOOTIE CARDS
+// 9. CAGE GRID & ZOOTIE CARDS
 function renderBaiasGrid() {
     const baias = (DB.get('baias') || []).filter(b => b.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
@@ -1056,14 +1209,13 @@ function salvarZootieBoletim(e) {
 
     closeModal('modal-zootie');
     
-    const msg = `🐾 *BOLETIM DO PET - PATAFORMA* 🐾%0A%0AHolá ${cliente.nome}! Segue o boletim do *${pet.nome}* no banho hoje:%0A%0A⭐ Avaliação: ${'⭐'.repeat(parseInt(estrelas))}%0A💨 Secador: ${secador}%0A✂️ Unhas/Ouvidos: ${unhas}%0A💬 Recadinho: ${obs || 'Ficou super cheiroso e lindo!'}`;
+    const msg = `🐾 *BOLETIM DO PET - CATDOG SP* 🐾%0A%0AHolá ${cliente.nome}! Segue o boletim do *${pet.nome}* no banho hoje:%0A%0A⭐ Avaliação: ${'⭐'.repeat(parseInt(estrelas))}%0A💨 Secador: ${secador}%0A✂️ Unhas/Ouvidos: ${unhas}%0A💬 Recadinho: ${obs || 'Ficou super cheiroso e lindo!'}`;
     
     State.showToast(`🐶 Boletim do Pet ${pet.nome} gerado! Enviar no WhatsApp do Tutor.`, 'success');
     window.open(`https://api.whatsapp.com/send?phone=55${cliente.telefone.replace(/\D/g, '')}&text=${msg}`, '_blank');
 }
 
-
-// 9. ERP PRODUCT MARGIN CALCULATOR & TABLES
+// 10. ERP PRODUCT MARGIN CALCULATOR & TABLES
 function calcularMargemProduto() {
     const custo = parseFloat(document.getElementById('input-prod-custo').value) || 0;
     const margem = parseFloat(document.getElementById('input-prod-margem').value) || 0;
@@ -1100,7 +1252,7 @@ function renderProdutosCrudTable() {
                     <img src="${p.foto}" style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
                     <div>
                         <strong>${p.nome}</strong>
-                        <div style="font-size:0.7rem; color:var(--text-secondary);">${p.marca || 'PataForma'}</div>
+                        <div style="font-size:0.7rem; color:var(--text-secondary);">${p.marca || 'CatDog'}</div>
                     </div>
                 </div>
             </td>
@@ -1155,8 +1307,7 @@ function salvarProduto(e) {
     State.showToast(`Produto/Insumo ERP ${nome} cadastrado com sucesso!`, 'success');
 }
 
-
-// 10. POS CAIXA & ITEM AVULSO
+// 11. POS CAIXA & ITEM AVULSO
 function renderCaixa() {
     let produtos = DB.get('produtos') || [];
     const catalogContainer = document.getElementById('pos-catalog');
@@ -1299,8 +1450,8 @@ function checkoutPOS() {
         empresa_id: State.currentEmpresaId,
         filial_id: State.currentFilialId,
         tipo: 'ENTRADA',
-        categoria: 'Venda Balcão',
-        descricao: `Venda POS (${State.cart.map(c => `${c.qty}x ${c.nome}`).join(', ')})`,
+        categoria: 'Venda Balcão POS',
+        descricao: `Venda POS CatDog (${State.cart.map(c => `${c.qty}x ${c.nome}`).join(', ')})`,
         valor: totalCheckout,
         data: new Date().toISOString()
     });
@@ -1315,8 +1466,7 @@ function checkoutPOS() {
     renderCaixa();
 }
 
-
-// 11. ESTOQUE FEFO & ANALYTICS
+// 12. ESTOQUE FEFO & ANALYTICS
 function renderEstoque() {
     const lotes = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
     const produtos = DB.get('produtos') || [];
@@ -1375,8 +1525,7 @@ function renderAnalytics() {
     });
 }
 
-
-// 12. TAXI DOG DRIVER MOBILE VIEW
+// 13. TAXI DOG DRIVER MOBILE VIEW
 function renderTaxiDog() {
     const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
@@ -1449,13 +1598,13 @@ function capturarLocalizacao(jobId) {
             State.showToast("GPS gravado no servidor!", "success");
         },
         (error) => {
-            const mockLat = "-23.56" + Math.floor(Math.random() * 900 + 100);
-            const mockLng = "-46.65" + Math.floor(Math.random() * 900 + 100);
-            display.innerHTML = `<span>⚠️ Mock GPS: Lat ${mockLat}, Lng ${mockLng}</span>`;
+            const mockLat = "-23.60" + Math.floor(Math.random() * 900 + 100);
+            const mockLng = "-46.66" + Math.floor(Math.random() * 900 + 100);
+            display.innerHTML = `<span>⚠️ Mock GPS SP: Lat ${mockLat}, Lng ${mockLng}</span>`;
             const kanbanData = DB.get('agendamentos_kanban');
             const item = kanbanData.find(k => k.id === jobId);
             if (item) { item.latitude_entrega = mockLat; item.longitude_entrega = mockLng; DB.set('agendamentos_kanban', kanbanData); }
-            State.showToast("GPS MOCK Registrado", "warning");
+            State.showToast("GPS MOCK SP Registrado", "warning");
         }
     );
 }
@@ -1634,7 +1783,7 @@ function renderEmpresasTable() {
         tr.innerHTML = `
             <td><strong>${emp.nome}</strong></td>
             <td><code>${emp.cnpj}</code></td>
-            <td>${emp.responsavel} (${emp.email_master || 'dono@petshop.com'})</td>
+            <td>${emp.responsavel} (${emp.email_master || 'julia@catdog.com.br'})</td>
             <td><span class="validade-badge em-dia">${emp.plano}</span></td>
             <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
             <td><button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button></td>
