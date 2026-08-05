@@ -28,17 +28,10 @@
                 <li><a href="#planos">Planos & Preços</a></li>
             </ul>
 
-            <div style="display:flex; gap:0.75rem; align-items:center;">
-                <!-- Cliente Login Button -->
-                <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
-                    <span>🔐 Área do Cliente</span>
-                </button>
-
-                <!-- Gestor SaaS Master Login Button -->
-                <button class="btn-master" onclick="abrirAreaClientePortal('gestor')">
-                    <span>👑 Acesso Gestor PataForma</span>
-                </button>
-            </div>
+            <!-- Clean Top-Right Button -->
+            <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
+                <span>🔐 Área do Cliente</span>
+            </button>
         </header>
 
         <!-- Hero Section -->
@@ -59,11 +52,8 @@
                 <button class="btn-hero-primary" onclick="abrirAreaClientePortal('cliente')">
                     <span>🚀 Experimente 14 Dias Grátis</span>
                 </button>
-                <button class="btn-hero-secondary" onclick="abrirAreaClientePortal('cliente')">
-                    <span>🔐 Entrar na Área do Cliente</span>
-                </button>
-                <button class="btn-master" style="padding:0.9rem 1.5rem;" onclick="abrirAreaClientePortal('gestor')">
-                    <span>👑 Sou Gestor PataForma</span>
+                <button class="btn-hero-secondary" onclick="window.open('https://api.whatsapp.com/send?phone=5511999998888&text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20PataForma', '_blank')">
+                    <span>💬 Falar com Consultor</span>
                 </button>
             </div>
 
@@ -242,18 +232,18 @@
 
     <!-- ================= 2. CLIENT ERP SYSTEM CONTAINER ================= -->
     <div id="app-erp-container" style="display: none;">
-        <!-- Top Bar for Master Super-Admin -->
+        <!-- Top Bar for System Governance -->
         <div class="master-bar" id="master-top-bar" style="display: none;">
             <div>
-                <span class="master-badge">👑 Master Super-Admin SaaS</span>
-                <span style="margin-left: 0.5rem; color: #fef08a;">PataForma Governance Control</span>
+                <span class="master-badge">🏢 Painel de Gestão PataForma</span>
+                <span style="margin-left: 0.5rem; color: #38bdf8;">Governança de Contratações SaaS</span>
             </div>
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <span>Empresa Ativa no SaaS:</span>
-                <select id="select-empresa-ativa" onchange="trocarEmpresaAtiva(this.value)" style="background:#0f172a; color:#fbbf24; border:1px solid rgba(245,158,11,0.4); border-radius:6px; padding:0.2rem 0.5rem; font-weight:600; cursor:pointer;">
+                <span>Empresa Selecionada:</span>
+                <select id="select-empresa-ativa" onchange="trocarEmpresaAtiva(this.value)" style="background:#0f172a; color:#38bdf8; border:1px solid rgba(56,189,248,0.4); border-radius:6px; padding:0.2rem 0.5rem; font-weight:600; cursor:pointer;">
                     <!-- Empresas loaded dynamically -->
                 </select>
-                <button onclick="logoutMaster()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem; font-weight:600;">Sair Master</button>
+                <button onclick="logoutMaster()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem; font-weight:600;">Sair da Gestão</button>
             </div>
         </div>
 
@@ -295,8 +285,8 @@
                     <button class="btn-staff-login" onclick="abrirAreaClientePortal('cliente')">🔐 Entrar no Portal</button>
                 </div>
 
-                <!-- Master Login Trigger -->
-                <button class="btn-master" id="btn-master-login" onclick="abrirAreaClientePortal('gestor')">👑 Acesso Gestor PataForma</button>
+                <!-- Gestão Login Trigger -->
+                <button class="card-btn" id="btn-master-login" style="color:#38bdf8;" onclick="abrirAreaClientePortal('gestor')">🏢 Acesso Gestão</button>
 
                 <!-- Role Selector (RBAC simulation) -->
                 <div class="role-selector" id="header-role-selector">
@@ -326,7 +316,7 @@
             <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
             <button class="nav-btn" id="nav-equipe" onclick="switchTab('equipe')">👥 Equipe & Comissões</button>
             <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
-            <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #fbbf24;">👑 Master SaaS</button>
+            <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #38bdf8;">🏢 Gestão PataForma</button>
         </nav>
 
         <!-- 1. KANBAN SECTION -->
@@ -708,8 +698,8 @@
         <!-- 13. MASTER SAAS & GOVERNANCE SECTION -->
         <section class="view-section" id="section-master-saas">
             <div class="action-header">
-                <h2 style="font-weight: 600; color: #fbbf24;">👑 Painel Master Super-Admin (PataForma B2B SaaS)</h2>
-                <button class="btn-master" onclick="openModal('modal-empresa')">🏢 Cadastrar Novo Pet Shop (CNPJ API)</button>
+                <h2 style="font-weight: 600; color: #38bdf8;">🏢 Painel de Gestão PataForma (SaaS B2B)</h2>
+                <button class="btn-primary" style="background:linear-gradient(135deg, #0284c7, #0369a1);" onclick="openModal('modal-empresa')">🏢 Cadastrar Novo Pet Shop (CNPJ API)</button>
             </div>
 
             <h3 style="margin-bottom: 1rem; font-weight: 600;">Empresas Contratantes do SaaS (Pet Shops)</h3>
@@ -719,7 +709,7 @@
                         <tr>
                             <th>Razão Social / Fantasia</th>
                             <th>CNPJ</th>
-                            <th>Proprietário / E-mail Master</th>
+                            <th>Proprietário / E-mail</th>
                             <th>Plano SaaS</th>
                             <th>Status Contrato</th>
                             <th>Ações</th>
@@ -749,21 +739,21 @@
 
     <!-- ================= MODAIS ================= -->
 
-    <!-- Modal Login Portal Gateway com Abas (Cliente vs Gestor PataForma) -->
+    <!-- Modal Login Portal Gateway com Abas Clean (Acesso Pet Shop vs Gestão PataForma) -->
     <div class="modal-overlay" id="modal-login-portal">
         <div class="glass-panel modal-content">
             <div class="modal-header">
-                <h3 style="color: #3b82f6;" id="portal-modal-title">🔐 Portal de Entrada PataForma</h3>
+                <h3 style="color: #3b82f6;" id="portal-modal-title">🔐 Portal de Entrada — PataForma</h3>
                 <button class="modal-close" onclick="closeModal('modal-login-portal')">&times;</button>
             </div>
 
-            <!-- Portal Mode Selector Tabs -->
+            <!-- Clean Portal Mode Selector Tabs -->
             <div class="portal-tab-group">
                 <button type="button" class="portal-tab active" id="tab-portal-cliente" onclick="alternarModoPortal('cliente')">
-                    🏬 Cliente ERP (Pet Shops)
+                    🏬 Acesso Pet Shop
                 </button>
-                <button type="button" class="portal-tab master-tab" id="tab-portal-gestor" onclick="alternarModoPortal('gestor')">
-                    👑 Gestor PataForma (SaaS Admin)
+                <button type="button" class="portal-tab gestao-tab" id="tab-portal-gestor" onclick="alternarModoPortal('gestor')">
+                    🏢 Gestão PataForma
                 </button>
             </div>
 
@@ -788,21 +778,21 @@
                 <button type="submit" class="btn-staff-login" style="width: 100%; padding:0.7rem; font-size:0.9rem;">Entrar na Área do Cliente ERP</button>
             </form>
 
-            <!-- FORM 2: GESTOR PATAFORMA SAAS MASTER LOGIN -->
+            <!-- FORM 2: GESTÃO PATAFORMA LOGIN -->
             <form id="form-portal-gestor" onsubmit="loginGestorDirectSubmit(event)" style="display: none;">
                 <div class="form-group">
-                    <label>Usuário Gestor PataForma:</label>
-                    <input type="text" id="input-portal-gestor-user" value="pataforma" placeholder="Usuário Master" required>
+                    <label>Usuário de Gestão:</label>
+                    <input type="text" id="input-portal-gestor-user" value="pataforma" placeholder="Usuário de Gestão" required>
                 </div>
                 <div class="form-group">
-                    <label>Senha do Gestor:</label>
-                    <input type="password" id="input-portal-gestor-pass" value="abc@123" placeholder="Senha Master" required>
+                    <label>Senha de Acesso:</label>
+                    <input type="password" id="input-portal-gestor-pass" value="abc@123" placeholder="Senha de Acesso" required>
                 </div>
-                <button type="submit" class="btn-master" style="width: 100%; padding:0.7rem; font-size:0.9rem; margin-bottom:0.75rem;">
-                    👑 Entrar como Gestor PataForma
+                <button type="submit" class="btn-primary" style="width: 100%; background:linear-gradient(135deg, #0284c7, #0369a1); padding:0.7rem; font-size:0.9rem; margin-bottom:0.75rem;">
+                    🏢 Entrar na Gestão PataForma
                 </button>
-                <button type="button" class="btn-primary" style="width: 100%; background: linear-gradient(135deg, #0284c7, #0369a1);" onclick="abrirCadastroPetShopGestor()">
-                    🏢 Cadastrar Novo Pet Shop (CNPJ API)
+                <button type="button" class="btn-primary" style="width: 100%; border:1px solid var(--panel-border); background:rgba(30,41,59,0.8);" onclick="abrirCadastroPetShopGestor()">
+                    ➕ Cadastrar Novo Pet Shop (CNPJ API)
                 </button>
             </form>
         </div>
@@ -812,7 +802,7 @@
     <div class="modal-overlay" id="modal-empresa">
         <div class="glass-panel modal-content" style="max-width:620px;">
             <div class="modal-header">
-                <h3 style="color: #fbbf24;">🏢 Cadastrar Novo Pet Shop (Gestor PataForma)</h3>
+                <h3 style="color: #38bdf8;">🏢 Cadastrar Novo Pet Shop</h3>
                 <button class="modal-close" onclick="closeModal('modal-empresa')">&times;</button>
             </div>
             <form onsubmit="salvarEmpresa(event)">
@@ -842,8 +832,8 @@
                     <input type="text" id="input-emp-endereco" placeholder="Preenchido via API CNPJ..." required>
                 </div>
 
-                <h4 style="color:#fbbf24; font-size:0.9rem; margin:1rem 0 0.5rem 0; border-top:1px solid var(--panel-border); padding-top:0.75rem;">
-                    👤 Dados do Proprietário (Usuário Master do Pet Shop)
+                <h4 style="color:#38bdf8; font-size:0.9rem; margin:1rem 0 0.5rem 0; border-top:1px solid var(--panel-border); padding-top:0.75rem;">
+                    👤 Dados do Proprietário (Administrador do Pet Shop)
                 </h4>
 
                 <div class="form-row">
@@ -858,7 +848,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>E-mail Oficial do Proprietário (Será o Login Master):</label>
+                    <label>E-mail Oficial do Proprietário (Login Principal):</label>
                     <input type="email" id="input-emp-email-master" placeholder="dono@petshop.com.br" required>
                 </div>
 
@@ -880,21 +870,21 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary" style="width:100%; margin-top:0.5rem;">Cadastrar Pet Shop & Criar Acesso Master</button>
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:0.5rem;">Cadastrar Pet Shop & Criar Acesso do Proprietário</button>
             </form>
         </div>
     </div>
 
-    <!-- Modal Exibição de Credenciais Master Criadas + WhatsApp -->
+    <!-- Modal Exibição de Credenciais Criadas + WhatsApp -->
     <div class="modal-overlay" id="modal-credenciais-criadas">
-        <div class="glass-panel modal-content" style="border-color: var(--master-gold);">
+        <div class="glass-panel modal-content" style="border-color: var(--primary);">
             <div class="modal-header">
-                <h3 style="color: #fbbf24;">🎉 Pet Shop & Usuário Master Criados com Sucesso!</h3>
+                <h3 style="color: #34d399;">🎉 Pet Shop & Acesso Criados com Sucesso!</h3>
                 <button class="modal-close" onclick="closeModal('modal-credenciais-criadas')">&times;</button>
             </div>
             
             <p style="font-size:0.9rem; color:var(--text-secondary);">
-                O Pet Shop foi cadastrado e o Usuário Master do Proprietário foi gerado com sucesso.
+                O Pet Shop foi cadastrado e o acesso do Proprietário foi gerado com sucesso.
             </p>
 
             <div class="credentials-box">
@@ -907,8 +897,8 @@
                     <strong id="created-owner-nome">Dr. Ricardo Mendes</strong>
                 </div>
                 <div class="credentials-item">
-                    <span>📧 Login Master:</span>
-                    <code id="created-owner-email" style="color:#fbbf24;">dono@petshop.com.br</code>
+                    <span>📧 E-mail do Administrador:</span>
+                    <code id="created-owner-email" style="color:#38bdf8;">dono@petshop.com.br</code>
                 </div>
                 <div class="credentials-item">
                     <span>🔑 Senha Inicial:</span>
@@ -921,7 +911,7 @@
             </p>
 
             <button class="whatsapp-btn-large" id="btn-envio-whatsapp-master" onclick="enviarAcessoMasterWhatsApp()">
-                💬 Enviar Acesso Master no WhatsApp do Dono
+                💬 Enviar Dados de Acesso no WhatsApp do Proprietário
             </button>
         </div>
     </div>

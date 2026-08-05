@@ -190,7 +190,7 @@ const DB = {
 
         if (!DB.get('logs_auditoria')) {
             DB.set('logs_auditoria', [
-                { id: 1, empresa_id: 1, usuario: "Sistema Master", acao: "Inicialização SaaS", detalhe: "Plataforma B2B Multi-Tenant inicializada com sucesso", timestamp: new Date().toISOString() }
+                { id: 1, empresa_id: 1, usuario: "Sistema Gestão", acao: "Inicialização SaaS", detalhe: "Plataforma B2B Multi-Tenant inicializada com sucesso", timestamp: new Date().toISOString() }
             ]);
         }
     }
@@ -245,8 +245,8 @@ function alternarModoPortal(modo) {
         if (formCliente) formCliente.style.display = 'none';
         if (formGestor) formGestor.style.display = 'block';
         if (modalTitle) {
-            modalTitle.innerText = "👑 Portal do Gestor PataForma";
-            modalTitle.style.color = "#fbbf24";
+            modalTitle.innerText = "🏢 Portal de Gestão PataForma";
+            modalTitle.style.color = "#38bdf8";
         }
     } else {
         if (tabGestor) tabGestor.classList.remove('active');
@@ -254,7 +254,7 @@ function alternarModoPortal(modo) {
         if (formGestor) formGestor.style.display = 'none';
         if (formCliente) formCliente.style.display = 'block';
         if (modalTitle) {
-            modalTitle.innerText = "🔐 Portal de Entrada PataForma";
+            modalTitle.innerText = "🔐 Portal de Entrada — PataForma";
             modalTitle.style.color = "#3b82f6";
         }
     }
@@ -272,13 +272,13 @@ function loginGestorDirectSubmit(e) {
         closeModal('modal-login-portal');
         
         exibirAppERP();
-        DB.logAudit(State.currentEmpresaId, 'Master Super-Admin', 'Autenticação Gestor PataForma', 'Login Gestor PataForma realizado via Portal');
-        State.showToast("👑 Autenticado como Gestor PataForma Master!", "success");
+        DB.logAudit(State.currentEmpresaId, 'Gestão PataForma', 'Autenticação Gestão', 'Acesso à gestão realizado via Portal');
+        State.showToast("🏢 Autenticado com sucesso na Gestão PataForma!", "success");
         
         renderEmpresasSelector();
         switchTab('master-saas');
     } else {
-        State.showToast("❌ Credenciais do Gestor PataForma incorretas!", "error");
+        State.showToast("❌ Credenciais de Gestão incorretas!", "error");
     }
 }
 
@@ -355,7 +355,7 @@ async function buscarCNPJReceitaAPI() {
     }
 }
 
-// SAVE NEW PET SHOP TENANT & GENERATE MASTER OWNER USER
+// SAVE NEW PET SHOP TENANT & GENERATE OWNER USER
 function salvarEmpresa(e) {
     e.preventDefault();
     const cnpj = document.getElementById('input-emp-cnpj').value;
@@ -402,7 +402,7 @@ function salvarEmpresa(e) {
         status: "Ativa"
     });
 
-    // 3. Save Master Owner User
+    // 3. Save Owner User
     const masterUser = {
         id: newUsuarioId,
         empresa_id: newEmpresaId,
@@ -411,7 +411,7 @@ function salvarEmpresa(e) {
         perfil: "Admin",
         email: email_master,
         senha: senhaGerada,
-        cargo: "Proprietário Master",
+        cargo: "Proprietário Administrador",
         kanban: true, taxi_dog: true, caixa: true, qc: true,
         comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 0
     };
@@ -421,7 +421,7 @@ function salvarEmpresa(e) {
     DB.set('filiais', filiais);
     DB.set('usuarios', usuarios);
 
-    DB.logAudit(newEmpresaId, 'Gestor PataForma', 'Onboarding Pet Shop', `Empresa ${nome} cadastrada com Usuário Master ${email_master}`);
+    DB.logAudit(newEmpresaId, 'Gestão PataForma', 'Onboarding Pet Shop', `Empresa ${nome} cadastrada com Administrador ${email_master}`);
 
     State.lastCreatedMasterUser = {
         petshop: nome,
@@ -442,7 +442,7 @@ function salvarEmpresa(e) {
     document.getElementById('created-owner-pass').innerText = senhaGerada;
 
     openModal('modal-credenciais-criadas');
-    State.showToast(`🎉 Pet Shop ${nome} cadastrado! Usuário Master gerado.`, 'success');
+    State.showToast(`🎉 Pet Shop ${nome} cadastrado! Acesso do Administrador gerado.`, 'success');
 }
 
 function enviarAcessoMasterWhatsApp() {
@@ -450,7 +450,7 @@ function enviarAcessoMasterWhatsApp() {
     if (!cred) return;
 
     const cleanTel = cred.whatsapp.replace(/\D/g, '');
-    const msg = `🐾 *PATAFORMA B2B SAAS - BEM-VINDO!* 🐾%0A%0AHolá *${cred.dono}*! O seu Pet Shop *${cred.petshop}* foi cadastrado no PataForma com sucesso!%0A%0A🔑 *SEUS DADOS DE ACESSO MASTER:*%0A🌐 Link de Acesso: https://pataforma-bkj.pages.dev/%0A📧 E-mail Login: *${cred.email}*%0A🔑 Senha Inicial: *${cred.senha}*%0A%0A Ao entrar, acesse o menu *Equipe & Comissões* para criar os acessos dos seus tosadores, banhistas e atendentes!`;
+    const msg = `🐾 *PATAFORMA B2B SAAS - BEM-VINDO!* 🐾%0A%0AHolá *${cred.dono}*! O seu Pet Shop *${cred.petshop}* foi cadastrado no PataForma com sucesso!%0A%0A🔑 *SEUS DADOS DE ACESSO:*%0A🌐 Link de Acesso: https://pataforma-bkj.pages.dev/%0A📧 E-mail: *${cred.email}*%0A🔑 Senha Inicial: *${cred.senha}*%0A%0A Ao entrar, acesse o menu *Equipe & Comissões* para criar os acessos dos seus tosadores, banhistas e atendentes!`;
 
     window.open(`https://api.whatsapp.com/send?phone=55${cleanTel}&text=${msg}`, '_blank');
 }
@@ -560,34 +560,12 @@ function logoutFuncionario() {
     State.showToast("Sessão da equipe encerrada.", "info");
 }
 
-function loginMasterSubmit(e) {
-    e.preventDefault();
-    const user = document.getElementById('input-master-user').value.trim();
-    const pass = document.getElementById('input-master-pass').value.trim();
-
-    if (user === 'pataforma' && pass === 'abc@123') {
-        State.isMasterSuperAdmin = true;
-        document.getElementById('master-top-bar').style.display = 'flex';
-        document.getElementById('nav-master-saas').style.display = 'flex';
-        closeModal('modal-login-master');
-        
-        exibirAppERP();
-        DB.logAudit(State.currentEmpresaId, 'Master Super-Admin', 'Autenticação Master', 'Login Master realizado com sucesso');
-        State.showToast("👑 Autenticado como Master Super-Admin PataForma!", "success");
-        
-        renderEmpresasSelector();
-        switchTab('master-saas');
-    } else {
-        State.showToast("❌ Credenciais Master incorretas!", "error");
-    }
-}
-
 function logoutMaster() {
     State.isMasterSuperAdmin = false;
     document.getElementById('master-top-bar').style.display = 'none';
     document.getElementById('nav-master-saas').style.display = 'none';
     voltarParaLandingPage();
-    State.showToast("Sessão Master encerrada.", "info");
+    State.showToast("Sessão de gestão encerrada.", "info");
 }
 
 function renderEmpresasSelector() {

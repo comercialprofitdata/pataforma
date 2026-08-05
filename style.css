@@ -58,7 +58,7 @@ body {
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    padding: 0.6rem 0.5rem;
+    padding: 0.65rem 0.5rem;
     border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -78,19 +78,11 @@ body {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
 }
 
-.portal-tab.master-tab.active {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.25));
-    color: var(--master-gold);
-    border: 1px solid rgba(245, 158, 11, 0.5);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-}
-
-/* Gestor Login Callout */
-.gestor-login-callout {
-    margin-top: 1.25rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--panel-border);
-    text-align: center;
+.portal-tab.gestao-tab.active {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25));
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
 }
 
 .btn-cnpj-lookup {
@@ -113,7 +105,7 @@ body {
 
 .credentials-box {
     background: rgba(15, 23, 42, 0.8);
-    border: 1px dashed var(--master-gold);
+    border: 1px dashed var(--primary);
     border-radius: 10px;
     padding: 1.25rem;
     margin: 1rem 0;
@@ -215,7 +207,7 @@ body {
     background: linear-gradient(135deg, #6366f1, #a855f7);
     color: white;
     border: none;
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 1.25rem;
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 700;
@@ -236,7 +228,7 @@ body {
 .landing-hero {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 1.5rem 3rem 1.5rem;
+    padding: 4.5rem 1.5rem 3.5rem 1.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -258,12 +250,12 @@ body {
 }
 
 .hero-title {
-    font-size: 3.2rem;
+    font-size: 3.4rem;
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.03em;
     margin-bottom: 1.25rem;
-    max-width: 900px;
+    max-width: 920px;
     background: linear-gradient(135deg, #ffffff 30%, #a855f7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -279,7 +271,7 @@ body {
 
 .hero-ctas {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     justify-content: center;
     margin-bottom: 3rem;
     flex-wrap: wrap;
@@ -289,7 +281,7 @@ body {
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     border: none;
-    padding: 0.9rem 2rem;
+    padding: 0.95rem 2.25rem;
     border-radius: 10px;
     font-size: 1.05rem;
     font-weight: 700;
@@ -310,7 +302,7 @@ body {
     background: rgba(30, 41, 59, 0.8);
     border: 1px solid var(--panel-border);
     color: var(--text-main);
-    padding: 0.9rem 2rem;
+    padding: 0.95rem 2.25rem;
     border-radius: 10px;
     font-size: 1.05rem;
     font-weight: 600;
@@ -367,10 +359,8 @@ body {
 
 .landing-footer { border-top: 1px solid var(--panel-border); padding: 2.5rem 2rem; margin-top: 4rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
 
-.master-bar { background: linear-gradient(90deg, #1e1b4b, #312e81); border-bottom: 1px solid rgba(251, 191, 36, 0.3); padding: 0.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-.master-badge { background: rgba(251, 191, 36, 0.2); color: var(--master-gold); border: 1px solid rgba(251, 191, 36, 0.4); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; }
-.btn-master { background: linear-gradient(135deg, #d97706, #b45309); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35); display: flex; align-items: center; gap: 0.5rem; }
-.btn-master:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5); }
+.master-bar { background: linear-gradient(90deg, #0f172a, #1e293b); border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding: 0.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+.master-badge { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; }
 .btn-staff-login { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .btn-staff-login:hover { filter: brightness(1.1); box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
 .user-session-widget { display: flex; align-items: center; gap: 0.5rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--panel-border); padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
