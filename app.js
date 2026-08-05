@@ -452,6 +452,15 @@ function salvarEmpresa(e) {
     const plano = document.getElementById('select-emp-plano').value;
     const status = document.getElementById('select-emp-status').value;
 
+    // ✅ SECURITY FIX: Generate a unique random password instead of fixed 'catdog123'
+    const gerarSenha = () => {
+        const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#';
+        let s = '';
+        for (let i = 0; i < 10; i++) s += chars[Math.floor(Math.random() * chars.length)];
+        return s;
+    };
+    const senhaGerada = gerarSenha();
+
     const empresas = DB.get('empresas') || [];
     const filiais = DB.get('filiais') || [];
     const usuarios = DB.get('usuarios') || [];
@@ -459,8 +468,6 @@ function salvarEmpresa(e) {
     const newEmpresaId = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
     const newFilialId = filiais.length > 0 ? Math.max(...filiais.map(f => f.id)) + 1 : 101;
     const newUsuarioId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
-
-    const senhaGerada = "catdog123";
 
     // 1. Save Empresa
     empresas.push({
@@ -1209,14 +1216,25 @@ function renderBaiasGrid() {
     if (!container) return;
     container.innerHTML = '';
 
+    if (baias.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:3rem; color:var(--text-muted);">Nenhuma baia cadastrada para esta unidade.</div>`;
+        return;
+    }
+
     baias.forEach(b => {
         const pet = pets.find(p => p.id === b.pet_id);
+        const isOcupada = b.status !== 'Livre';
         const card = document.createElement('div');
-        card.className = `baia-card ${b.status === 'Livre' ? 'livre' : 'ocupada'}`;
+        card.className = `baia-card ${isOcupada ? 'ocupada' : 'livre'}`;
+        const petIcon = pet ? (pet.especie === 'Gato' ? '🐱' : '🐶') : '🏠';
+        const petDisplay = pet ? `${petIcon} ${pet.nome}` : `—`;
+
         card.innerHTML = `
-            <div class="baia-number">🏠 ${b.numero}</div>
-            <div class="baia-status">${b.status === 'Livre' ? '🟢 Livre' : '🔴 Ocupada'}</div>
-            <div class="baia-pet">${pet ? `${pet.especie === 'Gato' ? '🐱' : '🐶'} ${pet.nome}` : '-'}</div>
+            <div class="baia-number">${b.numero}</div>
+            <div style="font-size: 2.4rem; line-height:1;">${isOcupada ? petIcon : '🏠'}</div>
+            <div class="baia-status">${isOcupada ? '🟣 Ocupada' : '🟢 Livre'}</div>
+            <div class="baia-pet">${petDisplay}</div>
+            ${b.temperatura ? `<div style="font-size:0.7rem; color:var(--text-muted);">Temp. ${b.temperatura}</div>` : ''}
         `;
         container.appendChild(card);
     });
