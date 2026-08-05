@@ -221,6 +221,36 @@ const State = {
     }
 };
 
+// LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
+function abrirAreaClientePortal() {
+    openModal('modal-login-portal');
+}
+
+function exibirAppERP() {
+    document.getElementById('public-landing-page').style.display = 'none';
+    document.getElementById('app-erp-container').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function voltarParaLandingPage() {
+    document.getElementById('app-erp-container').style.display = 'none';
+    document.getElementById('public-landing-page').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function calcularROISimulacao() {
+    const banhos = parseInt(document.getElementById('roi-input-banhos').value) || 350;
+    const economiaShampoo = banhos * 12 * 2.80;
+    const economiaEstoque = banhos * 12 * 0.60;
+    const economiaTotal = economiaShampoo + economiaEstoque;
+
+    document.getElementById('roi-result-text').innerText = `R$ ${economiaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 // Filial Switcher
 function renderFiliaisHeaderSelector() {
     const filiais = (DB.get('filiais') || []).filter(f => f.empresa_id === State.currentEmpresaId);
@@ -239,7 +269,7 @@ function trocarFilialAtiva(filialId) {
     const filial = filias.find(f => f.id === State.currentFilialId);
 
     const subtitle = document.getElementById('current-filial-subtitle');
-    if (subtitle && filial) subtitle.innerText = `${filial.nome} — B2B SaaS Multi-Filial`;
+    if (subtitle && filial) subtitle.innerText = `${filial.nome} — Área do Cliente ERP`;
 
     DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Troca de Filial', `Unidade alterada para ${filial ? filial.nome : 'Filial'}`);
     
@@ -299,11 +329,12 @@ function loginPortalSubmit(e) {
         }
 
         closeModal('modal-login-portal');
+        exibirAppERP();
         renderFiliaisHeaderSelector();
         applyRBAC(user.perfil);
 
         DB.logAudit(State.currentEmpresaId, user.nome, 'Login Portal', `Usuário ${user.nome} logou na filial #${filialId}`);
-        State.showToast(`👋 Bem-vindo(a), ${user.nome}! Sessão iniciada.`, 'success');
+        State.showToast(`👋 Bem-vindo(a), ${user.nome}! Área do cliente carregada.`, 'success');
 
         if (user.perfil === 'Entregador') switchTab('taxi');
         else if (user.perfil === 'Banhista') switchTab('kanban');
@@ -321,7 +352,7 @@ function logoutFuncionario() {
         sessionContainer.innerHTML = `<button class="btn-staff-login" onclick="openModal('modal-login-portal')">🔐 Entrar no Portal</button>`;
     }
     applyRBAC('Admin');
-    switchTab('kanban');
+    voltarParaLandingPage();
     State.showToast("Sessão da equipe encerrada.", "info");
 }
 
@@ -336,6 +367,7 @@ function loginMasterSubmit(e) {
         document.getElementById('nav-master-saas').style.display = 'flex';
         closeModal('modal-login-master');
         
+        exibirAppERP();
         DB.logAudit(State.currentEmpresaId, 'Master Super-Admin', 'Autenticação Master', 'Login Master realizado com sucesso');
         State.showToast("👑 Autenticado como Master Super-Admin PataForma!", "success");
         
@@ -350,7 +382,7 @@ function logoutMaster() {
     State.isMasterSuperAdmin = false;
     document.getElementById('master-top-bar').style.display = 'none';
     document.getElementById('nav-master-saas').style.display = 'none';
-    switchTab('kanban');
+    voltarParaLandingPage();
     State.showToast("Sessão Master encerrada.", "info");
 }
 
@@ -1463,6 +1495,7 @@ window.addEventListener('DOMContentLoaded', () => {
     renderEmpresasSelector();
     renderFiliaisHeaderSelector();
     populateSelectOptions();
+    calcularROISimulacao();
     applyRBAC('Admin');
 
     switchTab('kanban');
