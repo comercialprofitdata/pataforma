@@ -78,7 +78,7 @@
                     <ul class="feature-list">
                         <li>Baixa exata em ml por tipo de banho</li>
                         <li>Estoque operacional separado de vendas</li>
-                        <li>Custo real por serviço calculado</li>
+                        <li>Custo real por serviço calculated</li>
                     </ul>
                 </div>
 
@@ -698,7 +698,7 @@
         <section class="view-section" id="section-master-saas">
             <div class="action-header">
                 <h2 style="font-weight: 600; color: #fbbf24;">👑 Painel Master Super-Admin (PataForma B2B SaaS)</h2>
-                <button class="btn-master" onclick="openModal('modal-empresa')">🏢 Cadastrar Nova Empresa</button>
+                <button class="btn-master" onclick="openModal('modal-empresa')">🏢 Cadastrar Novo Pet Shop (CNPJ API)</button>
             </div>
 
             <h3 style="margin-bottom: 1rem; font-weight: 600;">Empresas Contratantes do SaaS (Pet Shops)</h3>
@@ -708,10 +708,9 @@
                         <tr>
                             <th>Razão Social / Fantasia</th>
                             <th>CNPJ</th>
-                            <th>Responsável</th>
+                            <th>Proprietário / E-mail Master</th>
                             <th>Plano SaaS</th>
                             <th>Status Contrato</th>
-                            <th>Módulos Liberados</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -765,6 +764,129 @@
                 </div>
                 <button type="submit" class="btn-staff-login" style="width: 100%;">Entrar na Área do Cliente ERP</button>
             </form>
+
+            <div class="gestor-login-callout">
+                <span style="font-size:0.8rem; color:var(--text-secondary);">É o Gestor PataForma e deseja cadastrar um novo Pet Shop?</span>
+                <button type="button" class="btn-master" style="width:100%; margin-top:0.5rem;" onclick="abrirCadastroPetShopGestor()">🏢 Cadastrar Novo Pet Shop (Com CNPJ API)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cadastrar Empresa SaaS com API CNPJ Grátis & Proprietário -->
+    <div class="modal-overlay" id="modal-empresa">
+        <div class="glass-panel modal-content" style="max-width:620px;">
+            <div class="modal-header">
+                <h3 style="color: #fbbf24;">🏢 Cadastrar Novo Pet Shop (Gestor PataForma)</h3>
+                <button class="modal-close" onclick="closeModal('modal-empresa')">&times;</button>
+            </div>
+            <form onsubmit="salvarEmpresa(event)">
+                <!-- CNPJ Lookup Row -->
+                <div class="form-group">
+                    <label>CNPJ do Pet Shop (Consulta Gratuita na Receita):</label>
+                    <div style="display:flex; gap:0.5rem;">
+                        <input type="text" id="input-emp-cnpj" placeholder="ex: 00.000.000/0001-91 ou 12.345.678/0001-95" required>
+                        <button type="button" class="btn-cnpj-lookup" onclick="buscarCNPJReceitaAPI()">🔍 Buscar CNPJ</button>
+                    </div>
+                    <span id="cnpj-api-status" style="font-size:0.75rem; color:var(--primary); display:block; margin-top:0.25rem;"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Razão Social / Fantasia:</label>
+                        <input type="text" id="input-emp-nome" placeholder="Preenchido via API CNPJ..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade / UF:</label>
+                        <input type="text" id="input-emp-cidade" placeholder="Preenchido via API..." required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Endereço Completo:</label>
+                    <input type="text" id="input-emp-endereco" placeholder="Preenchido via API CNPJ..." required>
+                </div>
+
+                <h4 style="color:#fbbf24; font-size:0.9rem; margin:1rem 0 0.5rem 0; border-top:1px solid var(--panel-border); padding-top:0.75rem;">
+                    👤 Dados do Proprietário (Usuário Master do Pet Shop)
+                </h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome do Proprietário / Dono:</label>
+                        <input type="text" id="input-emp-responsavel" placeholder="ex: Dr. Ricardo Mendes" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Celular / WhatsApp (Para Envio de Acesso):</label>
+                        <input type="text" id="input-emp-whatsapp" placeholder="(11) 99999-8888" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail Oficial do Proprietário (Será o Login Master):</label>
+                    <input type="email" id="input-emp-email-master" placeholder="dono@petshop.com.br" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Plano SaaS Contratado:</label>
+                        <select id="select-emp-plano">
+                            <option value="Bronze">Plano Bronze (R$ 149/mês)</option>
+                            <option value="Prata" selected>Plano Prata Profissional (R$ 279/mês)</option>
+                            <option value="Enterprise VIP">Plano Ouro Enterprise (R$ 499/mês)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Inicial:</label>
+                        <select id="select-emp-status">
+                            <option value="Ativo">Ativo (Produção)</option>
+                            <option value="Testes">Período de Testes (14 dias)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:0.5rem;">Cadastrar Pet Shop & Criar Acesso Master</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Exibição de Credenciais Master Criadas + WhatsApp -->
+    <div class="modal-overlay" id="modal-credenciais-criadas">
+        <div class="glass-panel modal-content" style="border-color: var(--master-gold);">
+            <div class="modal-header">
+                <h3 style="color: #fbbf24;">🎉 Pet Shop & Usuário Master Criados com Sucesso!</h3>
+                <button class="modal-close" onclick="closeModal('modal-credenciais-criadas')">&times;</button>
+            </div>
+            
+            <p style="font-size:0.9rem; color:var(--text-secondary);">
+                O Pet Shop foi cadastrado e o Usuário Master do Proprietário foi gerado com sucesso.
+            </p>
+
+            <div class="credentials-box">
+                <div class="credentials-item">
+                    <span>🏢 Pet Shop:</span>
+                    <strong id="created-petshop-nome">PetCare Moema</strong>
+                </div>
+                <div class="credentials-item">
+                    <span>👤 Proprietário:</span>
+                    <strong id="created-owner-nome">Dr. Ricardo Mendes</strong>
+                </div>
+                <div class="credentials-item">
+                    <span>📧 Login Master:</span>
+                    <code id="created-owner-email" style="color:#fbbf24;">dono@petshop.com.br</code>
+                </div>
+                <div class="credentials-item">
+                    <span>🔑 Senha Inicial:</span>
+                    <code id="created-owner-pass" style="color:#34d399;">pataforma123</code>
+                </div>
+            </div>
+
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
+                O proprietário já pode entrar no sistema com estas credenciais e cadastrar os demais funcionários na aba <strong>👥 Equipe & Comissões</strong>.
+            </p>
+
+            <button class="whatsapp-btn-large" id="btn-envio-whatsapp-master" onclick="enviarAcessoMasterWhatsApp()">
+                💬 Enviar Acesso Master no WhatsApp do Dono
+            </button>
         </div>
     </div>
 
@@ -975,62 +1097,6 @@
                     <textarea id="input-zootie-obs" rows="2" placeholder="ex: O Thor foi um super garoto hoje! Ficou cheiroso e ganhou biscoito."></textarea>
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%;">💬 Gerar & Enviar no WhatsApp</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Cadastrar Empresa SaaS -->
-    <div class="modal-overlay" id="modal-empresa">
-        <div class="glass-panel modal-content">
-            <div class="modal-header">
-                <h3 style="color: #fbbf24;">🏢 Cadastrar Empresa Contratante (SaaS)</h3>
-                <button class="modal-close" onclick="closeModal('modal-empresa')">&times;</button>
-            </div>
-            <form onsubmit="salvarEmpresa(event)">
-                <div class="form-group">
-                    <label>Nome Fantasia do Pet Shop:</label>
-                    <input type="text" id="input-emp-nome" placeholder="ex: PetCare Moema" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>CNPJ / CPF Responsável:</label>
-                        <input type="text" id="input-emp-cnpj" placeholder="00.000.000/0001-00" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Nome do Responsável:</label>
-                        <input type="text" id="input-emp-responsavel" placeholder="ex: Roberto Silva" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Plano SaaS Contratado:</label>
-                        <select id="select-emp-plano">
-                            <option value="Basic">Basic (Só Kanban)</option>
-                            <option value="Pro" selected>Pro (Kanban, Caixa, Estoque)</option>
-                            <option value="Enterprise VIP">Enterprise VIP (Tudo Liberado)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Status da Conta:</label>
-                        <select id="select-emp-status">
-                            <option value="Ativo">Ativo</option>
-                            <option value="Testes">Período de Testes (14 dias)</option>
-                            <option value="Suspenso">Suspenso por Inadimplência</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Módulos Liberados para esta Loja (Toggles):</label>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem;">
-                        <label><input type="checkbox" id="check-emp-kanban" checked> Kanban Operacional</label>
-                        <label><input type="checkbox" id="check-emp-taxi" checked> Módulo Táxi Dog</label>
-                        <label><input type="checkbox" id="check-emp-caixa" checked> Caixa / POS Nativo</label>
-                        <label><input type="checkbox" id="check-emp-estoque" checked> Estoque FEFO</label>
-                        <label><input type="checkbox" id="check-emp-assinaturas" checked> Assinaturas Recorrentes</label>
-                        <label><input type="checkbox" id="check-emp-analytics" checked> Dashboard Analytics</label>
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary" style="width:100%;">Salvar Empresa</button>
             </form>
         </div>
     </div>

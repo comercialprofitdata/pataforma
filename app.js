@@ -26,6 +26,8 @@ const DB = {
                     nome: "Pet Shop PataForma Matriz",
                     cnpj: "12.345.678/0001-95",
                     responsavel: "Carlos Vitorio",
+                    email_master: "carlos@pataforma.com",
+                    whatsapp: "(11) 98888-7777",
                     plano: "Enterprise VIP",
                     status: "Ativo",
                     modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true }
@@ -35,6 +37,8 @@ const DB = {
                     nome: "PetCare & Grooming Moema",
                     cnpj: "98.765.432/0001-10",
                     responsavel: "Fernando Lima",
+                    email_master: "fernando@petcaremoema.com",
+                    whatsapp: "(11) 97777-6666",
                     plano: "Pro",
                     status: "Ativo",
                     modulos: { kanban: true, taxi_dog: false, caixa: true, estoque: true, assinaturas: true, analytics: false }
@@ -206,6 +210,7 @@ const State = {
     gpsWatcher: null,
     cameraStream: null,
     posFilterQuery: '',
+    lastCreatedMasterUser: null,
     
     showToast: (message, type = 'info') => {
         const container = document.getElementById('toast-container');
@@ -224,6 +229,11 @@ const State = {
 // LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
 function abrirAreaClientePortal() {
     openModal('modal-login-portal');
+}
+
+function abrirCadastroPetShopGestor() {
+    closeModal('modal-login-portal');
+    openModal('modal-empresa');
 }
 
 function exibirAppERP() {
@@ -249,6 +259,149 @@ function calcularROISimulacao() {
     const economiaTotal = economiaShampoo + economiaEstoque;
 
     document.getElementById('roi-result-text').innerText = `R$ ${economiaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+// CNPJ API LOOKUP FREE RECEITA FEDERAL (BrasilAPI)
+async function buscarCNPJReceitaAPI() {
+    const rawCnpj = document.getElementById('input-emp-cnpj').value;
+    const cleanCnpj = rawCnpj.replace(/\D/g, '');
+    const statusSpan = document.getElementById('cnpj-api-status');
+
+    if (cleanCnpj.length !== 14) {
+        statusSpan.style.color = '#ef4444';
+        statusSpan.innerText = '❌ O CNPJ deve conter exatamente 14 dígitos numéricos.';
+        return;
+    }
+
+    statusSpan.style.color = '#38bdf8';
+    statusSpan.innerText = '⏳ Consultando Receita Federal via BrasilAPI...';
+
+    try {
+        const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cleanCnpj}`);
+        if (!response.ok) throw new Error('CNPJ não encontrado na Receita Federal.');
+
+        const data = await response.json();
+        
+        const razao = data.razao_social || data.nome_fantasia || 'Pet Shop Cadastrado';
+        const cidadeUf = `${data.municipio || 'São Paulo'} / ${data.uf || 'SP'}`;
+        const endereco = `${data.logradouro || 'Rua Principal'}, ${data.numero || '100'} - ${data.bairro || 'Centro'} (CEP: ${data.cep || '00000-000'})`;
+        const tel = data.ddd_telefone_1 ? `(${data.ddd_telefone_1.substring(0,2)}) ${data.ddd_telefone_1.substring(2)}` : '';
+
+        document.getElementById('input-emp-nome').value = razao;
+        document.getElementById('input-emp-cidade').value = cidadeUf;
+        document.getElementById('input-emp-endereco').value = endereco;
+        if (tel && !document.getElementById('input-emp-whatsapp').value) {
+            document.getElementById('input-emp-whatsapp').value = tel;
+        }
+
+        statusSpan.style.color = '#10b981';
+        statusSpan.innerText = `✅ Dados de "${razao}" auto-preenchidos com sucesso via Receita Federal!`;
+        State.showToast(`CNPJ de ${razao} encontrado!`, 'success');
+    } catch (err) {
+        statusSpan.style.color = '#f59e0b';
+        statusSpan.innerText = '⚠️ CNPJ não localizado via API. Por favor, preencha os dados manualmente.';
+        State.showToast("Preencha a Razão Social manualmente.", "warning");
+    }
+}
+
+// SAVE NEW PET SHOP TENANT & GENERATE MASTER OWNER USER
+function salvarEmpresa(e) {
+    e.preventDefault();
+    const cnpj = document.getElementById('input-emp-cnpj').value;
+    const nome = document.getElementById('input-emp-nome').value;
+    const cidade = document.getElementById('input-emp-cidade').value;
+    const endereco = document.getElementById('input-emp-endereco').value;
+    const responsavel = document.getElementById('input-emp-responsavel').value;
+    const whatsapp = document.getElementById('input-emp-whatsapp').value;
+    const email_master = document.getElementById('input-emp-email-master').value;
+    const plano = document.getElementById('select-emp-plano').value;
+    const status = document.getElementById('select-emp-status').value;
+
+    const empresas = DB.get('empresas') || [];
+    const filiais = DB.get('filiais') || [];
+    const usuarios = DB.get('usuarios') || [];
+
+    const newEmpresaId = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
+    const newFilialId = filiais.length > 0 ? Math.max(...filiais.map(f => f.id)) + 1 : 101;
+    const newUsuarioId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
+
+    const senhaGerada = "pataforma123";
+
+    // 1. Save Empresa
+    empresas.push({
+        id: newEmpresaId,
+        nome: nome,
+        cnpj: cnpj,
+        responsavel: responsavel,
+        email_master: email_master,
+        whatsapp: whatsapp,
+        plano: plano,
+        status: status,
+        modulos: { kanban: true, taxi_dog: true, caixa: true, estoque: true, assinaturas: true, analytics: true }
+    });
+
+    // 2. Save Matriz Branch
+    filiais.push({
+        id: newFilialId,
+        empresa_id: newEmpresaId,
+        nome: `${nome} (Matriz)`,
+        cidade: cidade,
+        uf: "SP",
+        gerente: responsavel,
+        status: "Ativa"
+    });
+
+    // 3. Save Master Owner User
+    const masterUser = {
+        id: newUsuarioId,
+        empresa_id: newEmpresaId,
+        filial_id: newFilialId,
+        nome: responsavel,
+        perfil: "Admin",
+        email: email_master,
+        senha: senhaGerada,
+        cargo: "Proprietário Master",
+        kanban: true, taxi_dog: true, caixa: true, qc: true,
+        comissao_banho: 10, comissao_tosa: 25, comissao_acumulada: 0
+    };
+    usuarios.push(masterUser);
+
+    DB.set('empresas', empresas);
+    DB.set('filiais', filiais);
+    DB.set('usuarios', usuarios);
+
+    DB.logAudit(newEmpresaId, 'Gestor PataForma', 'Onboarding Pet Shop', `Empresa ${nome} cadastrada com Usuário Master ${email_master}`);
+
+    State.lastCreatedMasterUser = {
+        petshop: nome,
+        dono: responsavel,
+        email: email_master,
+        senha: senhaGerada,
+        whatsapp: whatsapp
+    };
+
+    closeModal('modal-empresa');
+    populatePortalLoginOptions();
+    renderEmpresasSelector();
+
+    // Populate Created Credentials Modal
+    document.getElementById('created-petshop-nome').innerText = nome;
+    document.getElementById('created-owner-nome').innerText = responsavel;
+    document.getElementById('created-owner-email').innerText = email_master;
+    document.getElementById('created-owner-pass').innerText = senhaGerada;
+
+    openModal('modal-credenciais-criadas');
+    State.showToast(`🎉 Pet Shop ${nome} cadastrado! Usuário Master gerado.`, 'success');
+}
+
+function enviarAcessoMasterWhatsApp() {
+    const cred = State.lastCreatedMasterUser;
+    if (!cred) return;
+
+    const cleanTel = cred.whatsapp.replace(/\D/g, '');
+    const msg = `🐾 *PATAFORMA B2B SAAS - BEM-VINDO!* 🐾%0A%0AHolá *${cred.dono}*! O seu Pet Shop *${cred.petshop}* foi cadastrado no PataForma com sucesso!%0A%0A🔑 *SEUS DADOS DE ACESSO MASTER:*%0A🌐 Link de Acesso: https://pataforma-bkj.pages.dev/%0A📧 E-mail Login: *${cred.email}*%0A🔑 Senha Inicial: *${cred.senha}*%0A%0A Ao entrar, acesse o menu *Equipe & Comissões* para criar os acessos dos seus tosadores, banhistas e atendentes!`;
+
+    window.open(`https://api.whatsapp.com/send?phone=55${cleanTel}&text=${msg}`, '_blank');
 }
 
 // Filial Switcher
@@ -1448,15 +1601,13 @@ function renderEmpresasTable() {
     if (!tbody) return;
     tbody.innerHTML = '';
     empresas.forEach(emp => {
-        const modulosBadge = Object.keys(emp.modulos).filter(m => emp.modulos[m]).join(', ');
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><strong>${emp.nome}</strong></td>
             <td><code>${emp.cnpj}</code></td>
-            <td>${emp.responsavel}</td>
+            <td>${emp.responsavel} (${emp.email_master || 'dono@petshop.com'})</td>
             <td><span class="validade-badge em-dia">${emp.plano}</span></td>
             <td><span class="validade-badge ${emp.status === 'Ativo' ? 'em-dia' : 'vencido'}">${emp.status}</span></td>
-            <td style="font-size:0.75rem; color:var(--text-secondary);">${modulosBadge}</td>
             <td><button class="card-btn" onclick="trocarEmpresaAtiva(${emp.id})">🔍 Acessar PetShop</button></td>
         `;
         tbody.appendChild(tr);
