@@ -456,6 +456,74 @@ function alternarModoPortal(modo) {
     }
 }
 
+function abrirModalTrial14Dias(planoNome) {
+    if (planoNome) {
+        const select = document.getElementById('trial-plano-select');
+        if (select) {
+            for (let opt of select.options) {
+                if (opt.value.toLowerCase().includes(planoNome.toLowerCase())) {
+                    opt.selected = true;
+                    break;
+                }
+            }
+        }
+    }
+    openModal('modal-trial-14dias');
+}
+
+function solicitarTrial14DiasSubmit(e) {
+    e.preventDefault();
+    const petshop = document.getElementById('trial-petshop-nome').value.trim();
+    const responsavel = document.getElementById('trial-responsavel-nome').value.trim();
+    const whatsapp = document.getElementById('trial-whatsapp').value.trim();
+    const cidade = document.getElementById('trial-cidade').value.trim() || 'São Paulo - SP';
+    const plano = document.getElementById('trial-plano-select').value;
+    const btn = document.getElementById('btn-trial-submit');
+
+    if (!petshop || !responsavel || !whatsapp) {
+        State.showToast('Por favor, preencha todos os campos obrigatórios!', 'error');
+        return;
+    }
+
+    if (btn) btn.disabled = true;
+
+    // Send lead to DREasy API
+    notificarDREasyNovoLead(petshop, responsavel, whatsapp, `Trial 14 Dias Ativado | ${cidade} | ${plano}`);
+
+    // Register new demo company in LocalStorage so user can immediately test
+    const empresas = DB.get('empresas') || [];
+    const newEmpId = empresas.length > 0 ? Math.max(...empresas.map(emp => emp.id)) + 1 : 1;
+    const cleanCnpj = `38.490.${Math.floor(100 + Math.random() * 900)}/0001-${Math.floor(10 + Math.random() * 90)}`;
+    
+    const newEmpresa = {
+        id: newEmpId,
+        nome: `${petshop} (14 Dias Trial)`,
+        cnpj: cleanCnpj,
+        responsavel: responsavel,
+        email_master: `${responsavel.toLowerCase().replace(/\s+/g, '')}@${petshop.toLowerCase().replace(/\s+/g, '')}.com.br`,
+        whatsapp: whatsapp,
+        plano: plano,
+        status: "Trial (14 Dias)",
+        data_criacao: new Date().toISOString().split('T')[0]
+    };
+    
+    empresas.push(newEmpresa);
+    DB.set('empresas', empresas);
+    State.currentEmpresaId = newEmpId;
+
+    closeModal('modal-trial-14dias');
+    exibirAppERP();
+    switchTab('kanban');
+
+    State.showToast(`🎉 Parabéns ${responsavel}! Seu teste de 14 dias para ${petshop} foi ativado!`, 'success');
+
+    setTimeout(() => {
+        const msg = `Olá *${responsavel}*! Seu teste de 14 dias do *PataForma ERP* para o *${petshop}* (${plano}) foi ativado com sucesso!`;
+        window.open(`https://api.whatsapp.com/send?phone=5566996513050&text=${encodeURIComponent(msg)}`, '_blank');
+        if (btn) btn.disabled = false;
+    }, 1200);
+}
+
 function abrirLoginOperacionalPIN() {
     populateLoginOperacionalOptions();
     openModal('modal-login-operacional');
