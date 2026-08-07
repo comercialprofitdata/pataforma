@@ -515,6 +515,30 @@ function solicitarTrial14DiasSubmit(e) {
     exibirAppERP();
     switchTab('kanban');
 
+    // LEAD SCORING: Register lead with score in CRM
+    const deals = DB.get('crm_deals') || [];
+    deals.push({
+        id: Date.now(),
+        empresa_id: State.currentEmpresaId,
+        title: `Trial 14 Dias — ${petshop}`,
+        client_name: responsavel,
+        client_phone: whatsapp,
+        client_city: cidade,
+        deal_value: plano.includes('Ouro') ? 499 : plano.includes('Prata') ? 279 : 149,
+        stage: 'lead',
+        lead_score: 10,
+        probability: 30,
+        status: 'IN_PROGRESS',
+        interactions: [
+            { type: 'TRIAL_ACTIVATED', notes: `Trial 14 dias ativado — ${plano}`, date: new Date().toISOString(), author: 'Sistema' }
+        ],
+        tasks: [
+            { title: `Ligar para ${responsavel} em 3 dias para acompanhamento`, due_date: new Date(Date.now() + 3*86400000).toISOString(), completed: false }
+        ],
+        created_at: new Date().toISOString()
+    });
+    DB.set('crm_deals', deals);
+
     State.showToast(`🎉 Parabéns ${responsavel}! Seu teste de 14 dias para ${petshop} foi ativado!`, 'success');
 
     setTimeout(() => {
@@ -1027,6 +1051,7 @@ function applyRBAC(profileName) {
     const navEquipe = document.getElementById('nav-equipe');
     const navAssinaturas = document.getElementById('nav-assinaturas');
     const navDreasy = document.getElementById('nav-dreasy');
+    const navCrm = document.getElementById('nav-crm');
 
     if (profileName === 'Veterinario') {
         if (navKanban) navKanban.style.display = 'flex';
@@ -1042,6 +1067,7 @@ function applyRBAC(profileName) {
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
         if (navDreasy) navDreasy.style.display = 'none';
+        if (navCrm) navCrm.style.display = 'none';
     } else if (profileName === 'Entregador') {
         if (navKanban) navKanban.style.display = 'none';
         if (navProntuario) navProntuario.style.display = 'none';
@@ -1056,6 +1082,7 @@ function applyRBAC(profileName) {
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
         if (navDreasy) navDreasy.style.display = 'none';
+        if (navCrm) navCrm.style.display = 'none';
     } else if (profileName === 'Banhista') {
         if (navKanban) navKanban.style.display = 'flex';
         if (navProntuario) navProntuario.style.display = 'none';
@@ -1070,6 +1097,7 @@ function applyRBAC(profileName) {
         if (navEquipe) navEquipe.style.display = 'none';
         if (navAssinaturas) navAssinaturas.style.display = 'none';
         if (navDreasy) navDreasy.style.display = 'none';
+        if (navCrm) navCrm.style.display = 'none';
     } else {
         if (navKanban) navKanban.style.display = 'flex';
         if (navProntuario) navProntuario.style.display = 'flex';
@@ -1084,6 +1112,7 @@ function applyRBAC(profileName) {
         if (navEquipe) navEquipe.style.display = 'flex';
         if (navAssinaturas) navAssinaturas.style.display = 'flex';
         if (navDreasy) navDreasy.style.display = 'flex';
+        if (navCrm) navCrm.style.display = 'flex';
     }
 }
 
@@ -1111,6 +1140,7 @@ function switchTab(tabId) {
     if (tabId === 'assinaturas') renderAssinaturasCards();
     if (tabId === 'dreasy') sincronizarDREasyFluxoCaixa();
     if (tabId === 'financeiro') renderFinanceiro();
+    if (tabId === 'crm') renderCRM();
     if (tabId === 'master-saas') renderMasterPanel();
 }
 
@@ -2611,6 +2641,289 @@ function enviarLeadLanding(e) {
         e.target.reset();
         if (btn) btn.disabled = false;
     }, 1500);
+}
+
+// ============================================================
+// CRM DE VENDAS — PIPELINE KANBAN, TIMELINE 360° & LEAD SCORING
+// ============================================================
+
+// Seed CRM Deals if empty
+function seedCRMDeals() {
+    if ((DB.get('crm_deals') || []).length > 0) return;
+    const now = new Date();
+    const daysAgo = (d) => new Date(now.getTime() - d * 86400000).toISOString();
+    const seed = [
+        {
+            id: 9001, empresa_id: State.currentEmpresaId, title: 'Rede Pet Center 3 Filiais — Plano Ouro',
+            client_name: 'Marcos Ferreira', client_phone: '(11) 99123-4567', client_city: 'São Paulo - SP',
+            deal_value: 1497, stage: 'negociacao', lead_score: 85, probability: 75, status: 'IN_PROGRESS',
+            interactions: [
+                { type: 'WHATSAPP_SENT', notes: 'Enviado proposta comercial com desconto 15% para 3 unidades', date: daysAgo(2), author: 'Vitório' },
+                { type: 'CALL_LOG', notes: 'Ligação de 12min — Marcos confirmou interesse, pediu prazo até sexta', date: daysAgo(5), author: 'Vitório' },
+                { type: 'NOTE', notes: 'Lead capturado via Google Ads — pesquisou "software pet shop rede"', date: daysAgo(10), author: 'Sistema' }
+            ],
+            tasks: [
+                { title: 'Ligar sexta para fechar contrato', due_date: daysAgo(-1), completed: false },
+                { title: 'Enviar case de sucesso CatDog SP', due_date: daysAgo(-3), completed: false }
+            ],
+            created_at: daysAgo(10)
+        },
+        {
+            id: 9002, empresa_id: State.currentEmpresaId, title: 'Pet Shop Bichos & Carinho — Prata',
+            client_name: 'Ana Luíza Ribeiro', client_phone: '(21) 98876-5432', client_city: 'Rio de Janeiro - RJ',
+            deal_value: 279, stage: 'orcamento', lead_score: 55, probability: 50, status: 'IN_PROGRESS',
+            interactions: [
+                { type: 'RECEIPT_SENT', notes: 'Orçamento Plano Prata enviado via WhatsApp PDF', date: daysAgo(1), author: 'Vitório' },
+                { type: 'MEETING', notes: 'Reunião online de 25min — demonstração completa do Kanban e POS', date: daysAgo(3), author: 'Vitório' }
+            ],
+            tasks: [
+                { title: 'Follow-up pós orçamento em 2 dias', due_date: daysAgo(-1), completed: false }
+            ],
+            created_at: daysAgo(7)
+        },
+        {
+            id: 9003, empresa_id: State.currentEmpresaId, title: 'Clínica VetPrime Moema — Enterprise',
+            client_name: 'Dr. Thiago Ramos', client_phone: '(11) 97654-3210', client_city: 'São Paulo - SP',
+            deal_value: 499, stage: 'contato', lead_score: 35, probability: 30, status: 'IN_PROGRESS',
+            interactions: [
+                { type: 'WHATSAPP_SENT', notes: 'Primeiro contato — perguntou sobre prontuário veterinário', date: daysAgo(1), author: 'Vitório' }
+            ],
+            tasks: [
+                { title: 'Agendar demo do Prontuário Vet', due_date: daysAgo(-2), completed: false }
+            ],
+            created_at: daysAgo(3)
+        },
+        {
+            id: 9004, empresa_id: State.currentEmpresaId, title: 'Au Au Pet Jardins — Bronze Ativado',
+            client_name: 'Camila Duarte', client_phone: '(11) 95555-1234', client_city: 'São Paulo - SP',
+            deal_value: 149, stage: 'ganho', lead_score: 100, probability: 100, status: 'WON',
+            interactions: [
+                { type: 'NOTE', notes: '✅ Contrato assinado! Onboarding iniciado.', date: daysAgo(0), author: 'Vitório' },
+                { type: 'CALL_LOG', notes: 'Ligação de fechamento — escolheu Bronze para começar', date: daysAgo(1), author: 'Vitório' },
+                { type: 'MEETING', notes: 'Demo de 30min — ficou encantada com Ficha Técnica em ml', date: daysAgo(4), author: 'Vitório' }
+            ],
+            tasks: [],
+            created_at: daysAgo(8)
+        },
+        {
+            id: 9005, empresa_id: State.currentEmpresaId, title: 'Pet Glamour Alphaville — Trial Expirado',
+            client_name: 'Roberto Mendes', client_phone: '(11) 94321-8765', client_city: 'Barueri - SP',
+            deal_value: 279, stage: 'lead', lead_score: 15, probability: 10, status: 'IN_PROGRESS',
+            interactions: [
+                { type: 'TRIAL_ACTIVATED', notes: 'Trial 14 dias ativado via landing page', date: daysAgo(16), author: 'Sistema' }
+            ],
+            tasks: [
+                { title: 'Resgatar lead — trial expirou sem uso', due_date: daysAgo(0), completed: false }
+            ],
+            created_at: daysAgo(16)
+        }
+    ];
+    DB.set('crm_deals', seed);
+}
+
+function renderCRM() {
+    seedCRMDeals();
+    const deals = (DB.get('crm_deals') || []).filter(d => d.empresa_id === State.currentEmpresaId);
+
+    // KPIs
+    const ativas = deals.filter(d => d.status === 'IN_PROGRESS').length;
+    const valorTotal = deals.filter(d => d.status === 'IN_PROGRESS').reduce((s, d) => s + (d.deal_value || 0), 0);
+    const ganhos = deals.filter(d => d.status === 'WON').length;
+    const avgScore = deals.length > 0 ? Math.round(deals.reduce((s, d) => s + (d.lead_score || 0), 0) / deals.length) : 0;
+
+    const el = (id) => document.getElementById(id);
+    if (el('crm-kpi-ativas')) el('crm-kpi-ativas').textContent = ativas;
+    if (el('crm-kpi-valor')) el('crm-kpi-valor').textContent = `R$ ${valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 0})}`;
+    if (el('crm-kpi-ganhos')) el('crm-kpi-ganhos').textContent = ganhos;
+    if (el('crm-kpi-score')) el('crm-kpi-score').textContent = `${avgScore} pts`;
+
+    // Pipeline Kanban columns
+    const stages = ['lead', 'contato', 'orcamento', 'negociacao', 'ganho'];
+    const stageColors = { lead: '#64748b', contato: '#f59e0b', orcamento: '#8b5cf6', negociacao: '#3b82f6', ganho: '#10b981' };
+
+    stages.forEach(stage => {
+        const container = el(`crm-cards-${stage}`);
+        const badge = el(`crm-badge-${stage}`);
+        if (!container) return;
+
+        const stageDeals = deals.filter(d => d.stage === stage);
+        if (badge) badge.textContent = stageDeals.length;
+
+        container.innerHTML = stageDeals.map(deal => {
+            const scoreColor = deal.lead_score >= 80 ? '#10b981' : deal.lead_score >= 50 ? '#f59e0b' : '#ef4444';
+            const nextStages = stages.filter(s => s !== deal.stage && s !== 'ganho');
+            const moveOptions = stages.slice(stages.indexOf(stage) + 1).map(s =>
+                `<option value="${s}">${s === 'lead' ? '📩 Lead' : s === 'contato' ? '📞 Contato' : s === 'orcamento' ? '📋 Orçamento' : s === 'negociacao' ? '🤝 Negociação' : '🏆 Ganho'}</option>`
+            ).join('');
+
+            return `
+            <div class="kanban-card" style="border-left:3px solid ${stageColors[stage]};">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
+                    <strong style="font-size:0.85rem; color:var(--text-main);">${deal.title}</strong>
+                    <span style="font-size:0.7rem; font-weight:700; color:${scoreColor}; background:rgba(${deal.lead_score >= 80 ? '16,185,129' : deal.lead_score >= 50 ? '245,158,11' : '239,68,68'},0.15); padding:2px 6px; border-radius:4px;">${deal.lead_score} pts</span>
+                </div>
+                <div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.35rem;">👤 ${deal.client_name} — ${deal.client_city}</div>
+                <div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.35rem;">📱 ${deal.client_phone}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed rgba(255,255,255,0.08);">
+                    <strong style="font-size:0.9rem; color:#10b981;">R$ ${(deal.deal_value || 0).toLocaleString('pt-BR')}/mês</strong>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">${deal.probability}% prob.</span>
+                </div>
+                ${deal.status !== 'WON' ? `
+                <div style="margin-top:0.5rem; display:flex; gap:0.35rem;">
+                    <select onchange="handleCRMStageChange(${deal.id}, this.value)" style="flex:1; font-size:0.75rem; padding:0.3rem; background:rgba(30,41,59,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:var(--text-main);">
+                        <option value="">Mover para...</option>
+                        ${moveOptions}
+                    </select>
+                </div>` : '<div style="margin-top:0.5rem; text-align:center; font-size:0.75rem; color:#10b981; font-weight:700;">✅ CONTRATO FECHADO</div>'}
+            </div>`;
+        }).join('');
+    });
+
+    // Timeline 360°
+    renderCRMTimeline(deals);
+    // Follow-up Tasks
+    renderCRMTasks(deals);
+}
+
+function handleCRMStageChange(dealId, newStage) {
+    if (!newStage) return;
+    const deals = DB.get('crm_deals') || [];
+    const deal = deals.find(d => d.id === dealId);
+    if (!deal) return;
+
+    const oldStage = deal.stage;
+    deal.stage = newStage;
+
+    // Update lead score based on progression
+    const scoreMap = { lead: 10, contato: 30, orcamento: 55, negociacao: 80, ganho: 100 };
+    deal.lead_score = Math.max(deal.lead_score, scoreMap[newStage] || deal.lead_score);
+    deal.probability = newStage === 'ganho' ? 100 : newStage === 'negociacao' ? 75 : newStage === 'orcamento' ? 50 : newStage === 'contato' ? 30 : 15;
+
+    if (newStage === 'ganho') {
+        deal.status = 'WON';
+        deal.interactions.unshift({ type: 'NOTE', notes: '🏆 Oportunidade GANHA! Contrato fechado.', date: new Date().toISOString(), author: State.currentUserName || 'Admin' });
+    } else {
+        deal.interactions.unshift({ type: 'NOTE', notes: `Movido de "${oldStage}" para "${newStage}"`, date: new Date().toISOString(), author: State.currentUserName || 'Admin' });
+    }
+
+    DB.set('crm_deals', deals);
+    renderCRM();
+    State.showToast(`🤝 "${deal.title}" movido para ${newStage === 'ganho' ? '🏆 Ganho!' : newStage}`, newStage === 'ganho' ? 'success' : 'info');
+}
+
+function criarNovoDealCRM() {
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const clienteNome = clientes.length > 0 ? clientes[Math.floor(Math.random() * clientes.length)].nome : 'Novo Prospect';
+    const deals = DB.get('crm_deals') || [];
+    deals.push({
+        id: Date.now(),
+        empresa_id: State.currentEmpresaId,
+        title: `Interesse ${clienteNome} — Plano Prata`,
+        client_name: clienteNome,
+        client_phone: '(11) 9XXXX-XXXX',
+        client_city: 'São Paulo - SP',
+        deal_value: 279,
+        stage: 'lead',
+        lead_score: 10,
+        probability: 15,
+        status: 'IN_PROGRESS',
+        interactions: [
+            { type: 'NOTE', notes: 'Oportunidade criada manualmente pelo operador', date: new Date().toISOString(), author: State.currentUserName || 'Admin' }
+        ],
+        tasks: [
+            { title: `Fazer primeiro contato com ${clienteNome}`, due_date: new Date(Date.now() + 86400000).toISOString(), completed: false }
+        ],
+        created_at: new Date().toISOString()
+    });
+    DB.set('crm_deals', deals);
+    renderCRM();
+    State.showToast('✅ Nova oportunidade criada no CRM!', 'success');
+}
+
+function renderCRMTimeline(deals) {
+    const container = document.getElementById('crm-timeline-container');
+    if (!container) return;
+
+    const allInteractions = [];
+    deals.forEach(deal => {
+        (deal.interactions || []).forEach(interaction => {
+            allInteractions.push({ ...interaction, dealTitle: deal.title, clientName: deal.client_name });
+        });
+    });
+
+    allInteractions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const top15 = allInteractions.slice(0, 15);
+
+    const iconMap = {
+        'WHATSAPP_SENT': '💬', 'CALL_LOG': '📞', 'NOTE': '📝', 'MEETING': '🤝',
+        'RECEIPT_SENT': '📄', 'TRIAL_ACTIVATED': '🚀'
+    };
+    const colorMap = {
+        'WHATSAPP_SENT': '#25d366', 'CALL_LOG': '#f59e0b', 'NOTE': '#64748b', 'MEETING': '#8b5cf6',
+        'RECEIPT_SENT': '#38bdf8', 'TRIAL_ACTIVATED': '#10b981'
+    };
+
+    container.innerHTML = top15.length === 0
+        ? '<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">Nenhuma interação registrada ainda.</p>'
+        : top15.map(i => `
+        <div style="display:flex; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div style="font-size:1.2rem; min-width:28px; text-align:center;">${iconMap[i.type] || '📝'}</div>
+            <div style="flex:1;">
+                <div style="font-size:0.8rem; font-weight:600; color:${colorMap[i.type] || '#94a3b8'};">${i.dealTitle}</div>
+                <div style="font-size:0.78rem; color:var(--text-main); margin:0.15rem 0;">${i.notes}</div>
+                <div style="font-size:0.7rem; color:var(--text-muted); display:flex; gap:0.5rem;"><span>👤 ${i.author || 'Sistema'}</span><span>🕐 ${new Date(i.date).toLocaleDateString('pt-BR')} ${new Date(i.date).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</span></div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderCRMTasks(deals) {
+    const container = document.getElementById('crm-tasks-container');
+    if (!container) return;
+
+    const allTasks = [];
+    deals.forEach(deal => {
+        (deal.tasks || []).forEach(task => {
+            allTasks.push({ ...task, dealTitle: deal.title, dealId: deal.id });
+        });
+    });
+
+    const pendingTasks = allTasks.filter(t => !t.completed).sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+    const now = new Date();
+
+    container.innerHTML = pendingTasks.length === 0
+        ? '<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">🎉 Todas as tarefas foram concluídas!</p>'
+        : pendingTasks.map(task => {
+            const due = new Date(task.due_date);
+            const isOverdue = due < now;
+            const isToday = due.toDateString() === now.toDateString();
+            const statusColor = isOverdue ? '#ef4444' : isToday ? '#f59e0b' : '#10b981';
+            const statusLabel = isOverdue ? '⚠️ Atrasada' : isToday ? '📌 Hoje' : `📅 ${due.toLocaleDateString('pt-BR')}`;
+
+            return `
+            <div style="display:flex; gap:0.75rem; align-items:center; padding:0.6rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+                <input type="checkbox" onclick="completarTarefaCRM(${task.dealId}, '${task.title.replace(/'/g, "\\'")}')"
+                       style="width:18px; height:18px; cursor:pointer; accent-color:${statusColor};">
+                <div style="flex:1;">
+                    <div style="font-size:0.82rem; font-weight:600; color:var(--text-main);">${task.title}</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.15rem;">📋 ${task.dealTitle}</div>
+                </div>
+                <span style="font-size:0.7rem; font-weight:700; color:${statusColor}; white-space:nowrap;">${statusLabel}</span>
+            </div>`;
+        }).join('');
+}
+
+function completarTarefaCRM(dealId, taskTitle) {
+    const deals = DB.get('crm_deals') || [];
+    const deal = deals.find(d => d.id === dealId);
+    if (!deal) return;
+    const task = deal.tasks.find(t => t.title === taskTitle);
+    if (task) task.completed = true;
+    deal.interactions.unshift({ type: 'NOTE', notes: `✅ Tarefa concluída: "${taskTitle}"`, date: new Date().toISOString(), author: State.currentUserName || 'Admin' });
+    deal.lead_score = Math.min(100, (deal.lead_score || 0) + 5);
+    DB.set('crm_deals', deals);
+    renderCRM();
+    State.showToast('✅ Tarefa concluída!', 'success');
 }
 
 // Initial Load

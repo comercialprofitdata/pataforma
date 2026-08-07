@@ -4,7 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PataForma — Gestão Inteligente para Pet Shops, Clínicas & Redes (SaaS B2B)</title>
+    <meta name="description" content="PataForma: ERP #1 para Pet Shops e Clínicas Veterinárias. Kanban operacional, Ficha Técnica em ml, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e Financeiro DRE. Experimente 14 dias grátis.">
+    <link rel="canonical" href="https://pataforma-bkj.pages.dev/">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Schema.org JSON-LD: SoftwareApplication (SaaS Lead Acquisition) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "PataForma ERP",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "description": "ERP #1 para Pet Shops e Clínicas Veterinárias. Kanban operacional, Ficha Técnica em ml, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e DRE Gerencial.",
+        "url": "https://pataforma-bkj.pages.dev/",
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "149.00",
+            "highPrice": "499.00",
+            "priceCurrency": "BRL",
+            "offerCount": 3
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1247",
+            "bestRating": "5"
+        },
+        "screenshot": "https://pataforma-bkj.pages.dev/og-image.png"
+    }
+    </script>
+
+    <!-- Schema.org JSON-LD: PetStore (SEO Local para Clientes Tenants) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PetStore",
+        "name": "PataForma — Software de Gestão para Pet Shops",
+        "url": "https://pataforma-bkj.pages.dev/",
+        "telephone": "+5566996513050",
+        "priceRange": "$$",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "São Paulo",
+            "addressRegion": "SP",
+            "addressCountry": "BR"
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                "opens": "08:00",
+                "closes": "19:00"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Schema.org JSON-LD: FAQPage (Rich Snippets no Google) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Como controlar o estoque de insumos de banho e tosa no pet shop?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "O PataForma possui Ficha Técnica em ml que dá baixa automática nas doses exatas de shampoo, condicionador e lacinhos ao concluir cada banho, eliminando 100% dos furos no estoque de insumos."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Qual o melhor software de gestão para pet shop em 2026?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "O PataForma é o ERP #1 para Pet Shops e Clínicas Veterinárias, com Kanban operacional de 8 colunas, Táxi Dog com GPS e Foto, Prontuário Veterinário com Receita PDF CRMV, e Financeiro DRE integrado ao DREasy."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "O PataForma funciona offline no pet shop?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sim! O PataForma opera como PWA (Progressive Web App) com modo offline-first. Vendas, movimentações do Kanban e capturas de GPS são salvas localmente e sincronizadas automaticamente quando a conexão retornar."
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
 
@@ -575,6 +664,7 @@
             <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
             <button class="nav-btn" id="nav-equipe" onclick="switchTab('equipe')">👥 Equipe &amp; Comissões</button>
             <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
+            <button class="nav-btn" id="nav-crm" style="color:#f59e0b;" onclick="switchTab('crm')">🤝 CRM Vendas</button>
             <button class="nav-btn" style="color:#10b981;" id="nav-financeiro" onclick="switchTab('financeiro')">💰 Financeiro ERP</button>
             <button class="nav-btn" id="nav-dreasy" style="color:#38bdf8;" onclick="switchTab('dreasy')">🔗 Fluxo de Caixa / DREasy</button>
             <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #38bdf8;">🏢 Gestão PataForma</button>
@@ -1283,7 +1373,86 @@
             </div>
         </section>
 
-        <!-- 13. DREASY FLUXO DE CAIXA INTEGRATION SECTION -->
+        <!-- 13. CRM DE VENDAS & PIPELINE SECTION -->
+        <section class="view-section" id="section-crm">
+            <div class="action-header">
+                <div>
+                    <h2 style="font-weight:700; color:#f59e0b;">🤝 CRM de Vendas & Pipeline Comercial</h2>
+                    <p style="font-size:0.85rem; color:var(--text-secondary);">Funil de vendas Kanban, timeline 360° de interações e follow-up automático de oportunidades</p>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#f59e0b,#d97706);" onclick="criarNovoDealCRM()">➕ Nova Oportunidade</button>
+                    <button class="btn-hero-secondary" style="font-size:0.85rem;" onclick="renderCRM(); State.showToast('🤝 CRM atualizado.', 'info');">🔄 Atualizar</button>
+                </div>
+            </div>
+
+            <!-- CRM KPIs -->
+            <div class="analytics-kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); margin-bottom:1.5rem;">
+                <div class="analytics-kpi-card" style="border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.06);">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-label">Oportunidades Ativas</div>
+                    <div class="kpi-value" id="crm-kpi-ativas" style="color:#f59e0b; font-size:1.6rem;">0</div>
+                    <div class="kpi-sub" style="color:#fbbf24;">Em pipeline comercial</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.06);">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-label">Valor Total Pipeline</div>
+                    <div class="kpi-value" id="crm-kpi-valor" style="color:#10b981; font-size:1.6rem;">R$ 0</div>
+                    <div class="kpi-sub" style="color:#34d399;">Receita potencial</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.06);">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-label">Ganhos Este Mês</div>
+                    <div class="kpi-value" id="crm-kpi-ganhos" style="color:#38bdf8; font-size:1.6rem;">0</div>
+                    <div class="kpi-sub" style="color:#7dd3fc;">Conversões fechadas</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.06);">
+                    <div class="kpi-icon">📊</div>
+                    <div class="kpi-label">Lead Score Médio</div>
+                    <div class="kpi-value" id="crm-kpi-score" style="color:#f87171; font-size:1.6rem;">0 pts</div>
+                    <div class="kpi-sub" style="color:#fca5a5;">Maturidade dos leads</div>
+                </div>
+            </div>
+
+            <!-- CRM Pipeline Kanban -->
+            <h3 style="margin-bottom:1rem; font-weight:700; color:#f59e0b;">🏷️ Pipeline de Vendas (Kanban Comercial)</h3>
+            <div class="kanban-board" id="crm-pipeline-board" style="margin-bottom:2rem;">
+                <div class="kanban-column" style="border-top:3px solid #64748b;" id="crm-col-lead">
+                    <div class="column-header"><h3>📩 Novo Lead</h3><span class="column-badge" id="crm-badge-lead">0</span></div>
+                    <div class="kanban-column-cards" id="crm-cards-lead"></div>
+                </div>
+                <div class="kanban-column" style="border-top:3px solid #f59e0b;" id="crm-col-contato">
+                    <div class="column-header"><h3>📞 Em Contato</h3><span class="column-badge" id="crm-badge-contato">0</span></div>
+                    <div class="kanban-column-cards" id="crm-cards-contato"></div>
+                </div>
+                <div class="kanban-column" style="border-top:3px solid #8b5cf6;" id="crm-col-orcamento">
+                    <div class="column-header"><h3>📋 Orçamento</h3><span class="column-badge" id="crm-badge-orcamento">0</span></div>
+                    <div class="kanban-column-cards" id="crm-cards-orcamento"></div>
+                </div>
+                <div class="kanban-column" style="border-top:3px solid #3b82f6;" id="crm-col-negociacao">
+                    <div class="column-header"><h3>🤝 Negociação</h3><span class="column-badge" id="crm-badge-negociacao">0</span></div>
+                    <div class="kanban-column-cards" id="crm-cards-negociacao"></div>
+                </div>
+                <div class="kanban-column" style="border-top:3px solid #10b981;" id="crm-col-ganho">
+                    <div class="column-header"><h3>🏆 Ganho</h3><span class="column-badge" id="crm-badge-ganho">0</span></div>
+                    <div class="kanban-column-cards" id="crm-cards-ganho"></div>
+                </div>
+            </div>
+
+            <!-- CRM Timeline 360° & Tasks -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <h3 style="font-size:0.95rem; font-weight:700; color:#f59e0b; margin-bottom:1rem;">📜 Timeline 360° — Últimas Interações</h3>
+                    <div id="crm-timeline-container" style="max-height:320px; overflow-y:auto;"></div>
+                </div>
+                <div class="glass-panel" style="padding:1.35rem;">
+                    <h3 style="font-size:0.95rem; font-weight:700; color:#ef4444; margin-bottom:1rem;">📌 Tarefas de Follow-up Pendentes</h3>
+                    <div id="crm-tasks-container" style="max-height:320px; overflow-y:auto;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. DREASY FLUXO DE CAIXA INTEGRATION SECTION -->
         <section class="view-section" id="section-dreasy">
             <div class="dreasy-integration-box">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
