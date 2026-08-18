@@ -150,8 +150,11 @@
 
             <!-- Clean Top-Right Buttons -->
             <div style="display:flex; gap:0.5rem; align-items:center;">
+                <button class="btn-hero-primary" style="font-size:0.82rem; padding:0.45rem 0.95rem; background:linear-gradient(135deg,#6366f1,#818cf8);" onclick="exibirAppERP(); applyRBAC('Admin');">
+                    <span>🏬 Acessar ERP Demo</span>
+                </button>
                 <button class="btn-hero-secondary" style="font-size:0.82rem; padding:0.45rem 0.85rem;" onclick="abrirLoginOperacionalPIN()">
-                    <span>🔑 Login Operacional (PIN)</span>
+                    <span>🔑 Login PIN</span>
                 </button>
                 <button class="btn-area-cliente" onclick="abrirPortalTutor()">
                     <span>🐾 Portal do Tutor</span>
@@ -1937,7 +1940,7 @@
     </div>
 
     <!-- ===== PORTAL DO TUTOR — Status em Tempo Real ===== -->
-    <div class="modal-overlay" id="modal-portal-tutor" style="align-items:flex-start; overflow-y:auto; padding:0;">
+    <div class="modal-overlay" id="modal-portal-tutor" style="align-items:flex-start; overflow-y:auto; padding:1.5rem 1rem;">
         <div class="portal-tutor-shell">
 
             <!-- Header do Portal -->
@@ -1949,7 +1952,7 @@
                         <div class="portal-tutor-brand-sub" id="portal-tutor-empresa-nome">Portal do Tutor</div>
                     </div>
                 </div>
-                <button class="modal-close" onclick="closeModal('modal-portal-tutor')" style="color:#fff;">&times;</button>
+                <button class="modal-close" onclick="closeModal('modal-portal-tutor')" title="Fechar Portal do Tutor">✕</button>
             </div>
 
             <!-- Step 1: Busca do Pet -->
@@ -1966,6 +1969,7 @@
                         </button>
                     </div>
                     <div id="portal-busca-resultados" class="portal-busca-resultados"></div>
+                    <button type="button" class="btn-hero-secondary" onclick="closeModal('modal-portal-tutor')" style="margin-top:1.5rem; font-size:0.8rem; padding:0.4rem 1rem;">← Voltar ao Site</button>
                 </div>
             </div>
 

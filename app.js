@@ -3346,12 +3346,18 @@ function finalizarEntregaTaxi(jobId, currentStatus) {
 
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+    }
 }
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
 }
 
 function abrirModalPetParaCliente(clienteId) {
