@@ -1656,6 +1656,9 @@ function switchTab(tabId) {
     if (activeSection) activeSection.classList.add('active');
     if (activeBtn) activeBtn.classList.add('active');
 
+    const mobileSelect = document.getElementById('select-mobile-tab');
+    if (mobileSelect && tabId) mobileSelect.value = tabId;
+
     if (tabId === 'kanban') renderKanban();
     if (tabId === 'prontuario') renderProntuariosTable();
     if (tabId === 'baias') renderBaiasGrid();

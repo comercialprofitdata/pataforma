@@ -603,29 +603,23 @@
         </footer>
     </div>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://api.whatsapp.com/send?phone=5566996513050&text=Olá!%20Vi%20o%20PataForma%20e%20gostaria%20de%20saber%20mais." target="_blank" class="whatsapp-float" id="whatsapp-float" title="Fale conosco no WhatsApp">
-        <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.512 5.842L.057 23.1a.75.75 0 0 0 .914.914l5.284-1.46A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.712 9.712 0 0 1-4.951-1.355l-.354-.21-3.664 1.012 1.014-3.663-.213-.355A9.712 9.712 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
-        </svg>
-    </a>
-
-
-    <!-- ================= 2. CLIENT ERP SYSTEM CONTAINER ================= -->
+    <!-- ================= 2. ERP APP WORKSPACE (SPA) ================= -->
     <div id="app-erp-container" style="display: none;">
-        <!-- Top Bar for System Governance -->
-        <div class="master-bar" id="master-top-bar" style="display: none;">
-            <div>
-                <span class="master-badge">🏢 Painel de Gestão PataForma</span>
-                <span style="margin-left: 0.5rem; color: #38bdf8;">Governança de Contratações SaaS</span>
+        <!-- Top SuperAdmin Master Ribbon (Visible only for PataForma Master Admin) -->
+        <div class="master-ribbon" id="master-top-bar" style="display: none;">
+            <div class="master-ribbon-content">
+                <span class="master-badge">👑 SUPERADMIN MASTER</span>
+                <span>Visão Executiva SaaS Multitenant — Gestão Global de Pet Shops</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <span>Empresa Selecionada:</span>
-                <select id="select-empresa-ativa" onchange="trocarEmpresaAtiva(this.value)" style="background:#0f172a; color:#38bdf8; border:1px solid rgba(56,189,248,0.4); border-radius:6px; padding:0.2rem 0.5rem; font-weight:600; cursor:pointer;">
-                    <!-- Empresas loaded dynamically -->
-                </select>
-                <button onclick="logoutMaster()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem; font-weight:600;">Sair da Gestão</button>
+            <div class="master-ribbon-actions">
+                <button class="btn-master-action" onclick="abrirModalNovaEmpresa()">➕ Cadastrar Novo Pet Shop</button>
+                <div class="master-tenant-switch">
+                    <label>Empresa Ativa:</label>
+                    <select id="select-empresa-ativa" onchange="trocarEmpresaAtiva(this.value)">
+                        <!-- Populated dynamically via JS -->
+                    </select>
+                </div>
+                <button class="btn-master-logout" onclick="logoutMaster()">Sair da Gestão</button>
             </div>
         </div>
 
@@ -638,41 +632,33 @@
         <!-- Header & Controls -->
         <header class="glass-panel" id="main-header">
             <div class="logo-area">
-                <span class="logo-icon">🐾</span>
-                <div class="logo-text">
-                    <h1 id="current-company-name">🏢 CatDog Pet Center & Clínica Veterinária</h1>
-                    <p id="current-filial-subtitle">Unidade Moema (Matriz SP) — Área do Cliente ERP</p>
+                <div class="logo-brand-wrap" onclick="voltarParaLandingPage()">
+                    <span class="logo-icon">🐾</span>
+                    <div class="logo-text">
+                        <h1 id="current-company-name">🏢 CatDog Pet Center</h1>
+                        <p id="current-filial-subtitle">Unidade Moema (Matriz SP)</p>
+                    </div>
+                </div>
+                <div class="header-quick-actions">
+                    <button class="card-btn btn-header-site" onclick="voltarParaLandingPage()" title="Voltar ao Site Público">🌐 Site</button>
+                    <div class="status-indicator" id="online-status" title="Status de Conexão">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Online</span>
+                    </div>
                 </div>
             </div>
 
             <div class="header-controls">
-                <!-- Return to Public Site Button -->
-                <button class="card-btn" style="color:var(--primary);" onclick="voltarParaLandingPage()">🌐 Voltar ao Site</button>
-
                 <!-- Multi-Filial Switcher -->
                 <div class="filial-selector">
-                    <select id="select-filial-header" onchange="trocarFilialAtiva(this.value)">
+                    <select id="select-filial-header" onchange="trocarFilialAtiva(this.value)" title="Selecionar Unidade/Filial">
                         <!-- Filiais loaded dynamically -->
                     </select>
                 </div>
 
-                <!-- Connection Status -->
-                <div class="status-indicator" id="online-status">
-                    <span class="status-dot"></span>
-                    <span>ERP Online</span>
-                </div>
-
-                <!-- Staff Login & Active Session Widget -->
-                <div id="user-session-container">
-                    <button class="btn-staff-login" onclick="abrirAreaClientePortal('cliente')">🔐 Entrar no Portal</button>
-                </div>
-
-                <!-- Gestão Login Trigger -->
-                <button class="card-btn" id="btn-master-login" style="color:#38bdf8;" onclick="abrirAreaClientePortal('gestor')">🏢 Acesso Gestão</button>
-
                 <!-- Role Selector (RBAC simulation) -->
                 <div class="role-selector" id="header-role-selector">
-                    <select id="current-profile-select">
+                    <select id="current-profile-select" title="Trocar Perfil de Acesso">
                         <option value="Admin">Admin (Dra. Julia)</option>
                         <option value="Veterinario">Veterinário (Dr. Thiago)</option>
                         <option value="Supervisor">Supervisor de Estética</option>
@@ -681,26 +667,57 @@
                         <option value="Entregador">Entregador (Táxi Dog)</option>
                     </select>
                 </div>
+
+                <!-- Staff Login & Active Session Widget -->
+                <div id="user-session-container">
+                    <button class="btn-staff-login" onclick="abrirAreaClientePortal('cliente')">🔐 Login Portal</button>
+                </div>
+
+                <!-- Gestão Login Trigger -->
+                <button class="card-btn" id="btn-master-login" style="color:#38bdf8;" onclick="abrirAreaClientePortal('gestor')">🏢 Gestão</button>
             </div>
         </header>
 
+        <!-- Mobile Module Selector Dropdown (for fast 1-tap navigation on phones) -->
+        <div class="mobile-module-selector-bar" id="mobile-module-selector-bar">
+            <span class="mobile-module-label">📱 Navegar para:</span>
+            <select id="select-mobile-tab" onchange="switchTab(this.value)">
+                <option value="kanban">📋 Kanban Operacional</option>
+                <option value="prontuario">🩺 Prontuário Veterinário</option>
+                <option value="baias">🏠 Baias &amp; Gaiolas</option>
+                <option value="clientes-pets">🐾 Clientes &amp; Pets</option>
+                <option value="produtos">🏷️ Cadastros de Produtos</option>
+                <option value="estoque">📦 Gestão de Estoque FEFO</option>
+                <option value="filiais">🏢 Multi-Filiais &amp; Remessas</option>
+                <option value="assinaturas">💳 Assinaturas &amp; Pacotes</option>
+                <option value="caixa">🛒 Caixa / POS</option>
+                <option value="taxi">🚕 Táxi Dog</option>
+                <option value="equipe">👥 Equipe &amp; Comissões</option>
+                <option value="analytics">📊 Analytics</option>
+                <option value="crm">🤝 CRM Vendas</option>
+                <option value="financeiro">💰 Financeiro ERP</option>
+                <option value="dreasy">🔗 Fluxo de Caixa / DREasy</option>
+                <option value="whatsapp">📱 WhatsApp</option>
+            </select>
+        </div>
+
         <!-- Main Navigation Tabs -->
         <nav class="main-nav" id="main-nav-bar">
-            <button class="nav-btn" id="nav-kanban" onclick="switchTab('kanban')">📋 Kanban Operacional</button>
-            <button class="nav-btn" id="nav-prontuario" style="color:#14b8a6;" onclick="switchTab('prontuario')">🩺 Prontuário Veterinário</button>
-            <button class="nav-btn" id="nav-baias" onclick="switchTab('baias')">🏠 Baias &amp; Gaiolas</button>
-            <button class="nav-btn" id="nav-clientes-pets" onclick="switchTab('clientes-pets')">🐾 Clientes (20 Tutores &amp; Pets)</button>
-            <button class="nav-btn" id="nav-produtos" onclick="switchTab('produtos')">🏷️ Cadastros ERP de Produtos</button>
-            <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Gestão de Estoque FEFO</button>
-            <button class="nav-btn" id="nav-filiais" onclick="switchTab('filiais')">🏢 Multi-Filiais &amp; Remessas</button>
-            <button class="nav-btn" id="nav-assinaturas" onclick="switchTab('assinaturas')">💳 Assinaturas &amp; Pacotes</button>
-            <button class="nav-btn" id="nav-caixa" onclick="switchTab('caixa')">🛒 Caixa / POS</button>
+            <button class="nav-btn active" id="nav-kanban" onclick="switchTab('kanban')">📋 Kanban</button>
+            <button class="nav-btn" id="nav-prontuario" style="color:#14b8a6;" onclick="switchTab('prontuario')">🩺 Prontuário</button>
+            <button class="nav-btn" id="nav-baias" onclick="switchTab('baias')">🏠 Baias</button>
+            <button class="nav-btn" id="nav-clientes-pets" onclick="switchTab('clientes-pets')">🐾 Clientes &amp; Pets</button>
+            <button class="nav-btn" id="nav-produtos" onclick="switchTab('produtos')">🏷️ Produtos</button>
+            <button class="nav-btn" id="nav-estoque" onclick="switchTab('estoque')">📦 Estoque FEFO</button>
+            <button class="nav-btn" id="nav-filiais" onclick="switchTab('filiais')">🏢 Filiais</button>
+            <button class="nav-btn" id="nav-assinaturas" onclick="switchTab('assinaturas')">💳 Assinaturas</button>
+            <button class="nav-btn" id="nav-caixa" onclick="switchTab('caixa')">🛒 Caixa/PDV</button>
             <button class="nav-btn" id="nav-taxi" onclick="switchTab('taxi')">🚕 Táxi Dog</button>
-            <button class="nav-btn" id="nav-equipe" onclick="switchTab('equipe')">👥 Equipe &amp; Comissões</button>
+            <button class="nav-btn" id="nav-equipe" onclick="switchTab('equipe')">👥 Equipe</button>
             <button class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
-            <button class="nav-btn" id="nav-crm" style="color:#f59e0b;" onclick="switchTab('crm')">🤝 CRM Vendas</button>
-            <button class="nav-btn" style="color:#10b981;" id="nav-financeiro" onclick="switchTab('financeiro')">💰 Financeiro ERP</button>
-            <button class="nav-btn" id="nav-dreasy" style="color:#38bdf8;" onclick="switchTab('dreasy')">🔗 Fluxo de Caixa / DREasy</button>
+            <button class="nav-btn" id="nav-crm" style="color:#f59e0b;" onclick="switchTab('crm')">🤝 CRM</button>
+            <button class="nav-btn" style="color:#10b981;" id="nav-financeiro" onclick="switchTab('financeiro')">💰 Financeiro</button>
+            <button class="nav-btn" id="nav-dreasy" style="color:#38bdf8;" onclick="switchTab('dreasy')">🔗 DREasy</button>
             <button class="nav-btn" id="nav-whatsapp" style="color:#25d366;" onclick="switchTab('whatsapp')">📱 WhatsApp</button>
             <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #38bdf8;">🏢 Gestão PataForma</button>
         </nav>
