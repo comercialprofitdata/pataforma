@@ -1,56 +1,189 @@
-# Plano de Implementação: PataForma — Software de Gestão Inteligente para Pet Shops
+﻿# PataForma — Plano de Implementação (Benchmark ERP)
 
-> **Slogan Oficial:** *"PataForma: A plataforma inteligente que faz a operação do seu pet shop rodar com precisão do banho ao caixa."*
-
-Este documento apresenta a arquitetura técnica, o estudo comparativo contra o **SimplesVet**, os 9 fluxos operacionais interligados e a matriz de governança do **PataForma**.
-
-## 1. Análise Comparativa: PataForma vs. SimplesVet
-
-Após análise aprofundada da plataforma **SimplesVet** (líder nacional no segmento veterinário e pet shop), mapeamos suas forças e os **5 diferenciais competitivos em que o PataForma supera o mercado**:
-
-| Funcionalidade / Pilar | SimplesVet (Líder Atual) | PataForma (Inovação Superior) |
-| :--- | :--- | :--- |
-| **Workflow de Atendimento** | Agenda tradicional em tabela/lista de horários | **Kanban Operacional Interativo em Tempo Real** (`Em Rota ➔ Banho ➔ Tosa ➔ QC ➔ Pronto`) |
-| **Módulo Táxi Dog (Logística)** | Sem módulo mobile de transporte pet integrado | **App Mobile Táxi Dog com GPS HTML5 + Captura de Foto** na coleta e entrega |
-| **Controle de Qualidade (QC)** | O pet é finalizado diretamente no agendamento | **Etapa deQC Obrigatória pelo Supervisor** antes da liberação, com foto enviada ao Tutor |
-| **Venda Visual de Balcão** | Busca textual ou código de barras tradicional | **Catálogo de Produtos com Foto** para itens sem código de barras (petiscos a granel, lacinhos) |
-| **Gestão de Estoque** | Baixa de quantidade simples por produto | **Estoque FEFO (First-Expired, First-Out)** obrigatório para rações e perecíveis por lote |
-| **Arquitetura Financeira** | Monólito interno com módulos pagos | **Financeiro Nativo Completo + Webhook REST Desacoplado** (LOVI 10 e ERPs externos) |
+> **Slogan Oficial:** "PataForma: A plataforma inteligente que faz a operacao do seu pet shop rodar com precisao do banho ao caixa."
+> **Versao do Plano:** v3.0 — Sessao 2026-08-11
 
 ---
 
-## 2. Visão Geral & Arquitetura do PataForma
+## Estado Atual do Projeto
 
-### 📱 App Único Modular & Responsivo (Full-Stack Monólito PWA)
-- **Uma Única Aplicação para Todos os Telefones e Computadores**: O **PataForma** é uma aplicação web responsiva única (PWA/Mobile-First).
-- **Controle de Módulos Dinâmico (Feature Toggles & RBAC)**: O administrador habilita ou desabilita as funções conforme o perfil do usuário (Admin, Supervisor, Recepção, Operacional/Banhista, Entregador/Táxi Dog).
+### Arquivos
+| Arquivo | Linhas | Tamanho | Status |
+|:---|:---:|:---:|:---|
+| index.html | 2.469 | 153 KB | Implementado |
+| app.js | 2.953 | 156 KB | Implementado |
+| style.css | ~1.200 | 48 KB | Implementado |
 
-### 🔄 Mapeamento dos 9 Fluxos Operacionais Interligados
-1. **Agendamento & Onboarding (Cliente & Recepção)**
-2. **Logística do Táxi Dog - Coleta (Entregador & Tutor com GPS/Foto)**
-3. **Triagem, Inspeção de Entrada & Exceções (Banhista, Supervisor & Recepção)**
-4. **Execução de Banho & Tosa (Banhista & Tosador)**
-5. **Inspeção de Qualidade - QC (Supervisor de Estética)**
-6. **Logística do Táxi Dog - Devolução (Entregador & Tutor com GPS/Foto)**
-7. **Automação Financeira & Baixa de Pacotes (PataForma Core & Webhook LOVI 10)**
-8. **Gestão de Estoque FEFO & Produtos com Foto (Atendente & Supervisor de Estoque)**
-9. **Governança, Audits & Dashboards Analytics (Administrador & Gestor via Pandas)**
+### Stack Atual
+- Front-end: HTML5 + CSS3 Vanilla + JavaScript puro (Fetch API, HTML5 Geolocation, Camera API)
+- Banco de Dados (Fase Demo): LocalStorage simulando MySQL
+- Back-end (Planejado): Python Flask + MySQL + pymysql + pandas
+- Hospedagem: Cloudflare Pages (pataforma-bkj.pages.dev)
 
 ---
 
-## 2. Componentes e Entregáveis
+## Modulos Implementados (Estado Atual)
 
-### [Atualizado] `pet_shop_management_prompt_v2.md`
-Documento estratégico atualizado com:
-- Motor financeiro local no DDL SQL (`contas_receber`, `contas_pagar`, `vendas`, `itens_venda`).
-- Integração LOVI 10 refatorada como camada externa opcional/modular.
-- As 10 sugestões de nomes para o produto.
+### Landing Page Publica
+- [x] Hero Section com CTAs ("Experimente 14 Dias Gratis" + "Falar com Consultor")
+- [x] Grid de 8 Feature Cards (Ficha Tecnica, Financeiro ERP, Prontuario Vet, Kanban, Boletim Zootie, Taxi Dog, Estoque FEFO, Caixa POS)
+- [x] Comparativo vs concorrentes (SimplesVet, VetControl, Veti)
+- [x] Demo interativa da Ficha Tecnica em ml
+- [x] Demo de emissao de Receita Veterinaria PDF
+- [x] Calculadora de ROI interativa
+- [x] Secao de Planos e Precos (3 planos: Starter/Profissional/Enterprise)
+- [x] Formulario de Lead (Trial 14 dias)
+- [x] Schema.org JSON-LD (SaaS, PetStore, FAQPage)
+- [x] SEO: Meta tags, canonical, FAQ Rich Snippets
+
+### App ERP (Autenticado)
+- [x] Login Operacional por PIN (Quick Login por perfil)
+- [x] Login Gestor/Admin com validacao
+- [x] Area do Cliente/Portal (modo tutor)
+- [x] RBAC (Admin, Supervisor, Recepcao, Banhista, Tosador, Entregador)
+- [x] Feature Toggles por modulo e perfil
+
+### Abas do ERP (16 modulos)
+| Aba | Funcao | Status |
+|:---|:---|:---|
+| Kanban Operacional | 8 colunas de status, checklist QC, Boletim Zootie | Implementado |
+| Prontuario Veterinario | Ficha clinica, sinais vitais, receita com CRMV | Implementado |
+| Baias e Gaiolas | Mapa visual de ocupacao de baias | Implementado |
+| Clientes e Pets | CRM basico + cadastro de pets com temperamento/vacinas | Implementado |
+| Cadastros ERP | CRUD de produtos + Ficha Tecnica de insumos em ml | Implementado |
+| Gestao de Estoque | Lotes FEFO, alertas de vencimento, transferencias multi-filiais | Implementado |
+| Multi-Filiais | Seletor de filial, gestao de remessas entre unidades | Implementado |
+| Assinaturas | Planos recorrentes, baixa automatica de pacotes | Implementado |
+| Caixa / POS | Checkout visual por foto, cart, formas de pagamento, fidelidade | Implementado |
+| Taxi Dog | GPS HTML5, camera, comprovante de entrega, status de rota | Implementado |
+| Equipe e Comissoes | Cadastro de equipe, controle de comissoes por servico | Implementado |
+| Analytics | Dashboard com KPIs, ticket medio, taxa de positivacao | Implementado |
+| CRM Comercial | Funil de vendas Kanban, timeline, tarefas por deal | Implementado |
+| Financeiro ERP | DRE, Fluxo de Caixa, Contas a Pagar/Receber, grafico 30 dias | Implementado |
+| DREasy | Integracao com sistema contabil externo DREasy | Implementado |
+| Master SaaS | Painel Multi-Tenant (gestao de tenants, auditoria) | Implementado |
+
+### Dados Demo (Seed — Tenant CatDog Pet Center)
+- [x] 1 empresa: CatDog Pet Center e Clinica Veterinaria
+- [x] 3 filiais (Moema, Jardins, Pinheiros — Sao Paulo)
+- [x] 6 usuarios/perfis com comissoes calculadas
+- [x] 20 clientes tutores realistas (SP com enderecos reais)
+- [x] 20 pets com racas, temperamentos e observacoes clinicas
+- [x] 2 prontuarios veterinarios reais (Dr. Thiago Ramos)
+- [x] 12 baias (3 ocupadas, 9 livres)
+- [x] 3 planos de assinatura (VIP, Felino Persa, Semanal)
+- [x] 3 servicos + insumos por Ficha Tecnica (em ml)
+- [x] 4 produtos com foto SVG placeholder
+- [x] 4 lotes FEFO com datas de vencimento (1 vencendo em 8 dias)
+- [x] Transferencias entre filiais rastreadas
+- [x] 3 pacotes ativos de clientes
+- [x] 4 agendamentos Kanban ativos (Agendado, Em Rota, No Banho, Pronto)
+- [x] 10 movimentacoes de caixa (ENTRADA) — faturamento diversificado
+- [x] 10 contas a pagar (Pendente/Pago/Vencida)
+- [x] Logs de auditoria
 
 ---
 
-## 3. Plano de Verificação
+## Analise Competitiva: PataForma vs Mercado
 
-### Verificação de Regra de Negócio
-- Garantir que a finalização do Kanban grava o evento financeiro na tabela local `contas_receber` / `movimentacoes_caixa` do Pet Shop App antes de disparar o Webhook para o LOVI 10.
-- Confirmar que a desativação ou falha do LOVI 10 não impede a operação local do Pet Shop App.
+| Diferencial | PataForma | SimplesVet | MoeGo | Gingr | VetControl |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Ficha Tecnica em ml (EXCLUSIVO) | SIM | NAO | NAO | NAO | NAO |
+| Boletim Zootie pos-banho (EXCLUSIVO) | SIM | NAO | SIM | NAO | NAO |
+| Taxi Dog GPS + Camera PWA | SIM | NAO | NAO | NAO | NAO |
+| Kanban Operacional Estetica | SIM | NAO | SIM | SIM | NAO |
+| Estoque FEFO Multi-Filiais | SIM | NAO | NAO | NAO | SIM |
+| DRE Gerencial Nativo | SIM | NAO | NAO | NAO | SIM |
+| Prontuario Vet + Receita PDF | SIM | SIM | NAO | NAO | SIM |
+| CRM Funil de Vendas B2B | SIM | NAO | NAO | NAO | NAO |
+| Multi-Tenant Master SaaS | SIM | SIM | SIM | SIM | NAO |
+| Preco medio mensal | R$ 279 | R$ 397 | R$ 380 | R$ 350 | R$ 290 |
+
+---
+
+## Proximas Melhorias para Tornar Benchmark
+
+### Fase 1 — Quick Wins (Alto Impacto, Baixo Esforco)
+
+#### 1.1 UX/UI — Polimento Visual
+- [x] Animacoes de transicao de Kanban mais fluidas (CSS transitions ao arrastar card)
+- [ ] Badges de alerta de vencimento mais visiveis no Estoque (quando lote vence em < 7 dias)
+[x] Skeleton Loading nos cards do Kanban ao inicializar
+- [ ] Modo escuro/claro toggle persistente por usuario
+- [ ] Favicon e PWA manifest completo (icone 192px, 512px, theme-color)
+
+#### 1.2 Mobile-First Melhorias
+- [ ] Tela Taxi Dog refinada: botoes maiores (min 56px), zona do polegar mais acessivel
+- [ ] View exclusiva do Banhista (apenas Kanban simplificado no mobile)
+- [ ] Notificacao Push PWA (Service Worker) ao status mudar para "Pronto"
+
+#### 1.3 Analytics Expandido
+- [ ] Curva ABC de produtos no modulo de Estoque (top 20% = 80% da receita)
+- [ ] Taxa de retorno por raca (quais racas voltam mais em 30 dias)
+- [ ] Grafico de comissoes por banhista/tosador no modulo de Equipe
+- [ ] Heatmap de horarios mais movimentados (Admin otimizar a agenda)
+
+---
+
+### Fase 2 — Funcionalidades de Alto Valor
+
+#### 2.1 Portal do Tutor (Area do Cliente)
+- [ ] Status em tempo real do pet (ver etapa atual no Kanban)
+- [ ] Historico de servicos do pet (linha do tempo)
+- [ ] Aprovacao de adicionais via portal (ex: "Banho antipulgas — Aprovar R$ 45,00?")
+- [ ] Agendamento online pelo portal (tutor escolhe servico, data e horario)
+
+#### 2.2 Ficha de Anamnese Pet
+- [ ] Checklist de anamnese de entrada (avaliacao fisica: pele, ouvido, unhas, nos)
+- [ ] Registro fotografico de entrada e saida do pet (comparativo visual)
+- [ ] Assinatura digital do tutor no termo de responsabilidade (canvas HTML5)
+
+#### 2.3 Integracoes
+- [ ] Webhook LOVI 10 — lancamento assicrono de receitas no ERP LOVI
+- [ ] API WhatsApp Business — notificacao real de status do pet ao tutor
+- [ ] Importacao de clientes via CSV no modulo de CRM
+
+---
+
+### Fase 3 — Diferenciais Avancados (Lider de Mercado)
+
+#### 3.1 Inteligencia Operacional
+- [ ] Sugestao automatica de horario baseada na duracao media por raca/porte
+- [ ] Alerta de recompra inteligente (estoque vai zerar baseado na media de consumo)
+- [ ] Score de risco do pet (baseado em temperamento + historico + vacinas)
+
+#### 3.2 Documentos e Compliance
+- [ ] Termo de Responsabilidade PDF gerado automaticamente por agendamento
+- [ ] Relatorio LGPD (exportacao dos dados do cliente)
+- [ ] NFS-e integrada (nota fiscal de servico eletronica para Sao Paulo)
+
+#### 3.3 Marketplace de Fornecedores
+- [ ] Catalogo de fornecedores homologados (Premier Pet, MSD, Pet Clean)
+- [ ] Pedido de compra direto ao fornecedor com base no ponto de reposicao FEFO
+
+---
+
+## Debitos Tecnicos Mapeados
+
+| Prioridade | Descricao |
+|:---|:---|
+| ALTA | Trocar LocalStorage por backend Flask + MySQL real |
+| ALTA | Implementar Service Worker para PWA offline real |
+| MEDIA | Corrigir encoding quebrado em emojis nos botoes de navegacao |
+| MEDIA | Separar app.js em modulos ES6 (kanban.js, pos.js, etc.) |
+| MEDIA | Adicionar validacao de formularios com feedback visual inline |
+| BAIXA | Adicionar testes automatizados (Jest) para funcoes criticas |
+| BAIXA | Documentacao JSDoc nas funcoes principais |
+
+---
+
+## Proxima Sessao de Trabalho — Prioridade
+
+Com base no estado atual, sugestao de ataque na ordem:
+
+1. [CRITICO] Corrigir os emojis/encoding quebrado nos botoes de navegacao
+2. [ALTO VALOR] Implementar Portal do Tutor com status em tempo real
+3. [ALTO VALOR] Ficha de Anamnese com checklist de entrada e assinatura digital
+4. [IMPACTO VISUAL] Animacoes mais fluidas no Kanban + skeleton loading
+5. [DIFERENCIAL] Curva ABC no modulo de Estoque
 

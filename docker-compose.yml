@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  evolution-api:
+    container_name: evolution_api
+    image: evoapibr/evolution-api:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_URL=http://localhost:8080
+      - DOCKER_ENV=true
+      - LOG_LEVEL=ERROR,WARN,DEBUG,INFO,LOG,VERBOSE,DARK,WEBHOOKS
+      - LOG_COLOR=true
+      - LOG_BAILEYS=error
+      
+      # Chave de segurança Global da API (usada no PataForma)
+      - AUTHENTICATION_API_KEY=pataforma_evolution_secret_key_2026
+      
+      # Armazenamento de sessões
+      - DATABASE_ENABLED=false
+      
+      # Configurações do WhatsApp Baileys
+      - QRCODE_LIMIT=30
+      
+      # Webhooks (opcional para receber mensagens de volta)
+      - WEBHOOK_GLOBAL_ENABLED=false
+      - WEBHOOK_GLOBAL_URL=
+    volumes:
+      - evolution_instances:/evolution/instances
+
+volumes:
+  evolution_instances:
+    name: evolution_instances

@@ -54,28 +54,28 @@ const DB = {
             { id: 6, empresa_id: 1, filial_id: 101, nome: "Lucas Entregador", perfil: "Entregador", email: "lucas@catdog.com.br", senha: "123456", cargo: "Motorista Táxi Dog SP", comissao_banho: 0, comissao_tosa: 0, comissao_acumulada: 280.00 }
         ]);
 
-        // 4. 20 Realistic Clients (Tutores SP)
+        // 4. 20 Realistic Clients (Tutores SP) — com campos WhatsApp opt-in (LGPD)
         DB.set('clientes', [
-            { id: 1, empresa_id: 1, filial_id: 101, nome: "Carlos Eduardo Mendes", telefone: "(11) 98888-1111", email: "carlos.mendes@gmail.com", endereco: "Av. Moema, 780 - Apt 121, Moema - SP", lat_lng: "-23.6012,-46.6621", pontos_fidelidade: 240, ultima_visita: "2026-08-01" },
-            { id: 2, empresa_id: 1, filial_id: 101, nome: "Mariana Alcantara", telefone: "(11) 97777-2222", email: "mariana.alcantara@hotmail.com", endereco: "Alameda Lorena, 1450, Jardins - SP", lat_lng: "-23.5678,-46.6610", pontos_fidelidade: 450, ultima_visita: "2026-08-03" },
-            { id: 3, empresa_id: 1, filial_id: 101, nome: "Roberto Ferraz", telefone: "(11) 96666-3333", email: "roberto.ferraz@uol.com.br", endereco: "Rua dos Pinheiros, 600 - Pinheiros - SP", lat_lng: "-23.5634,-46.6850", pontos_fidelidade: 110, ultima_visita: "2026-07-29" },
-            { id: 4, empresa_id: 1, filial_id: 101, nome: "Fernanda Costa", telefone: "(11) 95555-4444", email: "fernanda.costa@gmail.com", endereco: "Rua Pedroso Alvarenga, 900, Itaim Bibi - SP", lat_lng: "-23.5840,-46.6780", pontos_fidelidade: 320, ultima_visita: "2026-08-02" },
-            { id: 5, empresa_id: 1, filial_id: 101, nome: "Dr. Gustavo Borges", telefone: "(11) 94444-5555", email: "gustavo.borges@adv.com.br", endereco: "Av. República do Líbano, 1100, Ibirapuera - SP", lat_lng: "-23.5910,-46.6600", pontos_fidelidade: 580, ultima_visita: "2026-08-04" },
-            { id: 6, empresa_id: 1, filial_id: 101, nome: "Beatriz Oliveira", telefone: "(11) 93333-6666", email: "beatriz.oliver@gmail.com", endereco: "Rua Domingos de Morais, 1200, Vila Mariana - SP", lat_lng: "-23.5890,-46.6340", pontos_fidelidade: 95, ultima_visita: "2026-07-28" },
-            { id: 7, empresa_id: 1, filial_id: 101, nome: "Ricardo Siqueira", telefone: "(11) 92222-7777", email: "ricardo.siqueira@outlook.com", endereco: "Rua Mato Grosso, 340, Higienópolis - SP", lat_lng: "-23.5480,-46.6540", pontos_fidelidade: 180, ultima_visita: "2026-08-02" },
-            { id: 8, empresa_id: 1, filial_id: 101, nome: "Camila Viana", telefone: "(11) 91111-8888", email: "camila.viana@yahoo.com.br", endereco: "Rua Haddock Lobo, 890, Cerqueira César - SP", lat_lng: "-23.5610,-46.6670", pontos_fidelidade: 390, ultima_visita: "2026-08-03" },
-            { id: 9, empresa_id: 1, filial_id: 101, nome: "Lucas Rodrigues", telefone: "(11) 98765-1234", email: "lucas.rodrigues@tech.com", endereco: "Rua Fradique Coutinho, 750, Vila Madalena - SP", lat_lng: "-23.5580,-46.6890", pontos_fidelidade: 70, ultima_visita: "2026-07-30" },
-            { id: 10, empresa_id: 1, filial_id: 101, nome: "Patricia Abravanel", telefone: "(11) 97654-2345", email: "patricia.ab@gmail.com", endereco: "Rua Curitiba, 500, Paraíso - SP", lat_lng: "-23.5760,-46.6500", pontos_fidelidade: 620, ultima_visita: "2026-08-04" },
-            { id: 11, empresa_id: 1, filial_id: 101, nome: "Thiago Martins", telefone: "(11) 96543-3456", email: "thiago.martins@actor.com", endereco: "Av. Macuco, 300, Moema - SP", lat_lng: "-23.6040,-46.6640", pontos_fidelidade: 140, ultima_visita: "2026-07-27" },
-            { id: 12, empresa_id: 1, filial_id: 101, nome: "Vanessa Camargo", telefone: "(11) 95432-4567", email: "vanessa.c@gmail.com", endereco: "Rua Oscar Freire, 1100, Jardins - SP", lat_lng: "-23.5620,-46.6710", pontos_fidelidade: 410, ultima_visita: "2026-08-01" },
-            { id: 13, empresa_id: 1, filial_id: 101, nome: "Marcelo Rossi", telefone: "(11) 94321-5678", email: "marcelo.rossi@ig.com.br", endereco: "Av. Faria Lima, 2200, Itaim Bibi - SP", lat_lng: "-23.5790,-46.6870", pontos_fidelidade: 230, ultima_visita: "2026-08-02" },
-            { id: 14, empresa_id: 1, filial_id: 101, nome: "Juliana Paes", telefone: "(11) 93210-6789", email: "ju.paes@globo.com", endereco: "Rua Pamplona, 950, Jardim Paulista - SP", lat_lng: "-23.5690,-46.6560", pontos_fidelidade: 510, ultima_visita: "2026-08-04" },
-            { id: 15, empresa_id: 1, filial_id: 101, nome: "Eduardo Kobra", telefone: "(11) 92109-7890", email: "kobra.art@studio.com", endereco: "Rua Harmonia, 400, Vila Madalena - SP", lat_lng: "-23.5540,-46.6910", pontos_fidelidade: 190, ultima_visita: "2026-07-31" },
-            { id: 16, empresa_id: 1, filial_id: 101, nome: "Sabrina Sato", telefone: "(11) 91098-8901", email: "sabrina.sato@japa.com", endereco: "Rua Bela Cintra, 1800, Consolação - SP", lat_lng: "-23.5590,-46.6620", pontos_fidelidade: 840, ultima_visita: "2026-08-04" },
-            { id: 17, empresa_id: 1, filial_id: 101, nome: "Otavio Mesquita", telefone: "(11) 90987-9012", email: "otavio@mesquita.com.br", endereco: "Av. Brigadeiro Luis Antonio, 3000 - SP", lat_lng: "-23.5710,-46.6490", pontos_fidelidade: 300, ultima_visita: "2026-08-03" },
-            { id: 18, empresa_id: 1, filial_id: 101, nome: "Larissa Manoela", telefone: "(11) 99876-0123", email: "lari.manoela@disney.com", endereco: "Rua Cluch, 120, Perdizes - SP", lat_lng: "-23.5350,-46.6730", pontos_fidelidade: 470, ultima_visita: "2026-08-02" },
-            { id: 19, empresa_id: 1, filial_id: 101, nome: "Caio Castro", telefone: "(11) 98765-4321", email: "caio.castro@drift.com", endereco: "Av. Europa, 650, Jardim Europa - SP", lat_lng: "-23.5750,-46.6740", pontos_fidelidade: 360, ultima_visita: "2026-08-01" },
-            { id: 20, empresa_id: 1, filial_id: 101, nome: "Giovanna Ewbank", telefone: "(11) 97654-5432", email: "gio.ewbank@gioh.com", endereco: "Rua Artur de Azevedo, 500, Pinheiros - SP", lat_lng: "-23.5640,-46.6810", pontos_fidelidade: 920, ultima_visita: "2026-08-04" }
+            { id: 1,  empresa_id: 1, filial_id: 101, nome: "Carlos Eduardo Mendes",  telefone: "(11) 98888-1111", email: "carlos.mendes@gmail.com",        endereco: "Av. Moema, 780 - Apt 121, Moema - SP",             lat_lng: "-23.6012,-46.6621", pontos_fidelidade: 240, ultima_visita: "2026-08-01", whatsapp_numero: "5511988881111", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-10T10:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 2,  empresa_id: 1, filial_id: 101, nome: "Mariana Alcantara",       telefone: "(11) 97777-2222", email: "mariana.alcantara@hotmail.com",   endereco: "Alameda Lorena, 1450, Jardins - SP",               lat_lng: "-23.5678,-46.6610", pontos_fidelidade: 450, ultima_visita: "2026-08-03", whatsapp_numero: "5511977772222", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: false, whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-15T09:30:00", whatsapp_opt_in_origem: "whatsapp" },
+            { id: 3,  empresa_id: 1, filial_id: 101, nome: "Roberto Ferraz",          telefone: "(11) 96666-3333", email: "roberto.ferraz@uol.com.br",       endereco: "Rua dos Pinheiros, 600 - Pinheiros - SP",          lat_lng: "-23.5634,-46.6850", pontos_fidelidade: 110, ultima_visita: "2026-07-29", whatsapp_numero: "5511966663333", whatsapp_opt_in: false, whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: false, whatsapp_status_pet: false, whatsapp_opt_in_data: null, whatsapp_opt_in_origem: null },
+            { id: 4,  empresa_id: 1, filial_id: 101, nome: "Fernanda Costa",          telefone: "(11) 95555-4444", email: "fernanda.costa@gmail.com",        endereco: "Rua Pedroso Alvarenga, 900, Itaim Bibi - SP",      lat_lng: "-23.5840,-46.6780", pontos_fidelidade: 320, ultima_visita: "2026-08-02", whatsapp_numero: "5511955554444", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-20T14:00:00", whatsapp_opt_in_origem: "portal" },
+            { id: 5,  empresa_id: 1, filial_id: 101, nome: "Dr. Gustavo Borges",      telefone: "(11) 94444-5555", email: "gustavo.borges@adv.com.br",       endereco: "Av. República do Líbano, 1100, Ibirapuera - SP",   lat_lng: "-23.5910,-46.6600", pontos_fidelidade: 580, ultima_visita: "2026-08-04", whatsapp_numero: "5511944445555", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-05T08:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 6,  empresa_id: 1, filial_id: 101, nome: "Beatriz Oliveira",        telefone: "(11) 93333-6666", email: "beatriz.oliver@gmail.com",        endereco: "Rua Domingos de Morais, 1200, Vila Mariana - SP",  lat_lng: "-23.5890,-46.6340", pontos_fidelidade: 95,  ultima_visita: "2026-07-28", whatsapp_numero: "5511933336666", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-28T11:00:00", whatsapp_opt_in_origem: "whatsapp" },
+            { id: 7,  empresa_id: 1, filial_id: 101, nome: "Ricardo Siqueira",        telefone: "(11) 92222-7777", email: "ricardo.siqueira@outlook.com",    endereco: "Rua Mato Grosso, 340, Higienópolis - SP",         lat_lng: "-23.5480,-46.6540", pontos_fidelidade: 180, ultima_visita: "2026-08-02", whatsapp_numero: "5511922227777", whatsapp_opt_in: false, whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: false, whatsapp_status_pet: false, whatsapp_opt_in_data: null, whatsapp_opt_in_origem: null },
+            { id: 8,  empresa_id: 1, filial_id: 101, nome: "Camila Viana",            telefone: "(11) 91111-8888", email: "camila.viana@yahoo.com.br",       endereco: "Rua Haddock Lobo, 890, Cerqueira César - SP",     lat_lng: "-23.5610,-46.6670", pontos_fidelidade: 390, ultima_visita: "2026-08-03", whatsapp_numero: "5511911118888", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-06-30T16:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 9,  empresa_id: 1, filial_id: 101, nome: "Lucas Rodrigues",         telefone: "(11) 98765-1234", email: "lucas.rodrigues@tech.com",        endereco: "Rua Fradique Coutinho, 750, Vila Madalena - SP",  lat_lng: "-23.5580,-46.6890", pontos_fidelidade: 70,  ultima_visita: "2026-07-30", whatsapp_numero: "5511987651234", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: false, whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-08-01T10:00:00", whatsapp_opt_in_origem: "portal" },
+            { id: 10, empresa_id: 1, filial_id: 101, nome: "Patricia Abravanel",      telefone: "(11) 97654-2345", email: "patricia.ab@gmail.com",           endereco: "Rua Curitiba, 500, Paraíso - SP",                 lat_lng: "-23.5760,-46.6500", pontos_fidelidade: 620, ultima_visita: "2026-08-04", whatsapp_numero: "5511976542345", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-12T09:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 11, empresa_id: 1, filial_id: 101, nome: "Thiago Martins",          telefone: "(11) 96543-3456", email: "thiago.martins@actor.com",        endereco: "Av. Macuco, 300, Moema - SP",                     lat_lng: "-23.6040,-46.6640", pontos_fidelidade: 140, ultima_visita: "2026-07-27", whatsapp_numero: "5511965433456", whatsapp_opt_in: false, whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: false, whatsapp_status_pet: false, whatsapp_opt_in_data: null, whatsapp_opt_in_origem: null },
+            { id: 12, empresa_id: 1, filial_id: 101, nome: "Vanessa Camargo",         telefone: "(11) 95432-4567", email: "vanessa.c@gmail.com",             endereco: "Rua Oscar Freire, 1100, Jardins - SP",            lat_lng: "-23.5620,-46.6710", pontos_fidelidade: 410, ultima_visita: "2026-08-01", whatsapp_numero: "5511954324567", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-18T15:00:00", whatsapp_opt_in_origem: "whatsapp" },
+            { id: 13, empresa_id: 1, filial_id: 101, nome: "Marcelo Rossi",           telefone: "(11) 94321-5678", email: "marcelo.rossi@ig.com.br",         endereco: "Av. Faria Lima, 2200, Itaim Bibi - SP",          lat_lng: "-23.5790,-46.6870", pontos_fidelidade: 230, ultima_visita: "2026-08-02", whatsapp_numero: "5511943215678", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: false, whatsapp_opt_in_data: "2026-07-25T10:30:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 14, empresa_id: 1, filial_id: 101, nome: "Juliana Paes",            telefone: "(11) 93210-6789", email: "ju.paes@globo.com",               endereco: "Rua Pamplona, 950, Jardim Paulista - SP",         lat_lng: "-23.5690,-46.6560", pontos_fidelidade: 510, ultima_visita: "2026-08-04", whatsapp_numero: "5511932106789", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-08T08:30:00", whatsapp_opt_in_origem: "portal" },
+            { id: 15, empresa_id: 1, filial_id: 101, nome: "Eduardo Kobra",           telefone: "(11) 92109-7890", email: "kobra.art@studio.com",            endereco: "Rua Harmonia, 400, Vila Madalena - SP",           lat_lng: "-23.5540,-46.6910", pontos_fidelidade: 190, ultima_visita: "2026-07-31", whatsapp_numero: "5511921097890", whatsapp_opt_in: false, whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: false, whatsapp_status_pet: false, whatsapp_opt_in_data: null, whatsapp_opt_in_origem: null },
+            { id: 16, empresa_id: 1, filial_id: 101, nome: "Sabrina Sato",            telefone: "(11) 91098-8901", email: "sabrina.sato@japa.com",           endereco: "Rua Bela Cintra, 1800, Consolação - SP",          lat_lng: "-23.5590,-46.6620", pontos_fidelidade: 840, ultima_visita: "2026-08-04", whatsapp_numero: "5511910988901", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-06-25T12:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 17, empresa_id: 1, filial_id: 101, nome: "Otavio Mesquita",         telefone: "(11) 90987-9012", email: "otavio@mesquita.com.br",          endereco: "Av. Brigadeiro Luis Antonio, 3000 - SP",          lat_lng: "-23.5710,-46.6490", pontos_fidelidade: 300, ultima_visita: "2026-08-03", whatsapp_numero: "5511909879012", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: false, whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-30T09:00:00", whatsapp_opt_in_origem: "whatsapp" },
+            { id: 18, empresa_id: 1, filial_id: 101, nome: "Larissa Manoela",         telefone: "(11) 99876-0123", email: "lari.manoela@disney.com",         endereco: "Rua Cluch, 120, Perdizes - SP",                   lat_lng: "-23.5350,-46.6730", pontos_fidelidade: 470, ultima_visita: "2026-08-02", whatsapp_numero: "5511998760123", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: false, whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-07-22T11:00:00", whatsapp_opt_in_origem: "portal" },
+            { id: 19, empresa_id: 1, filial_id: 101, nome: "Caio Castro",             telefone: "(11) 98765-4321", email: "caio.castro@drift.com",           endereco: "Av. Europa, 650, Jardim Europa - SP",             lat_lng: "-23.5750,-46.6740", pontos_fidelidade: 360, ultima_visita: "2026-08-01", whatsapp_numero: "5511987654321", whatsapp_opt_in: true,  whatsapp_marketing: false, whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: false, whatsapp_opt_in_data: "2026-08-01T08:00:00", whatsapp_opt_in_origem: "plataforma" },
+            { id: 20, empresa_id: 1, filial_id: 101, nome: "Giovanna Ewbank",         telefone: "(11) 97654-5432", email: "gio.ewbank@gioh.com",             endereco: "Rua Artur de Azevedo, 500, Pinheiros - SP",       lat_lng: "-23.5640,-46.6810", pontos_fidelidade: 920, ultima_visita: "2026-08-04", whatsapp_numero: "5511976545432", whatsapp_opt_in: true,  whatsapp_marketing: true,  whatsapp_vendas: true,  whatsapp_lembretes: true,  whatsapp_status_pet: true,  whatsapp_opt_in_data: "2026-06-20T10:00:00", whatsapp_opt_in_origem: "plataforma" }
         ]);
 
         // 5. 20+ Real Pets Linked to Tutores
@@ -242,6 +242,24 @@ const DB = {
         // 18. Audit Logs
         DB.set('logs_auditoria', [
             { id: 1, empresa_id: 1, usuario: "Dra. Julia Silveira", acao: "Inicialização CatDog SP", detalhe: "Base CatDog Pet Center & Clínica Veterinária inicializada com 20 clientes", timestamp: new Date().toISOString() }
+        ]);
+
+        // 19. Configuração WhatsApp (Evolution API) — Produção Railway Online 24/7
+        DB.set('whatsapp_config', {
+            apiUrl: 'https://evolution-api-production-ebf6.up.railway.app',
+            apiKey: '508082bd88fe3bccb52afee3220d41ff30bee226c62f3cde22caf5b7ede22f26',
+            instanceName: 'catdog-sp',
+            connected: false,
+            empresa_id: 1
+        });
+
+        // 20. Log de mensagens WhatsApp enviadas
+        DB.set('whatsapp_mensagens_log', [
+            { id: 1, empresa_id: 1, cliente_id: 1,  numero: "5511988881111", tipo: "status_pet",  mensagem: "🐾 Thor está PRONTO! Pode vir buscar na CatDog Moema. 😊", status: "enviada", timestamp: "2026-08-04T14:35:00" },
+            { id: 2, empresa_id: 1, cliente_id: 5,  numero: "5511944445555", tipo: "status_pet",  mensagem: "🐾 Zeus está PRONTO! Pode vir buscar na CatDog Moema. 😊", status: "enviada", timestamp: "2026-08-04T11:20:00" },
+            { id: 3, empresa_id: 1, cliente_id: 2,  numero: "5511977772222", tipo: "lembrete",    mensagem: "📅 Lembrete: Luna tem banho amanhã às 10h na CatDog Jardins! Confirme presença.", status: "enviada", timestamp: "2026-08-03T18:00:00" },
+            { id: 4, empresa_id: 1, cliente_id: 16, numero: "5511910988901", tipo: "marketing",   mensagem: "🎉 Sabrina! Temos um combo especial de Banho + Tosa para Pugs este mês. Interesse?", status: "enviada", timestamp: "2026-08-02T10:00:00" },
+            { id: 5, empresa_id: 1, cliente_id: 10, numero: "5511976542345", tipo: "opt_in",      mensagem: "Olá Patricia! Posso te enviar updates sobre a Mel via WhatsApp?", status: "enviada", timestamp: "2026-07-12T09:00:00" }
         ]);
     },
 
@@ -423,10 +441,413 @@ async function sincronizarDREasyFluxoCaixa() {
 }
 
 // LANDING PAGE & CLIENT AREA NAVIGATION GATEWAY
+// =====================================================================
+// FICHA DE ANAMNESE — Checklist de Entrada + Assinatura Digital
+// =====================================================================
+
+let anamneseJobId = null;
+let anamneseCanvas = null;
+let anamneseCtx = null;
+let anamneseDrawing = false;
+let anamneseLastX = 0;
+let anamneseLastY = 0;
+
+function abrirFichaAnamnese(jobId) {
+    anamneseJobId = jobId;
+
+    const kanban   = DB.get('agendamentos_kanban') || [];
+    const job      = kanban.find(k => k.id === jobId);
+    if (!job) return;
+
+    const pets     = DB.get('pets') || [];
+    const clientes = DB.get('clientes') || [];
+    const servicos = DB.get('servicos') || [];
+    const pet      = pets.find(p => p.id === job.pet_id);
+    const cliente  = clientes.find(c => c.id === job.cliente_id);
+    const servico  = servicos.find(s => s.id === job.servico_id);
+
+    // Título do modal
+    const tituloEl = document.getElementById('anamnese-titulo');
+    if (tituloEl) tituloEl.textContent = `${pet?.especie === 'Gato' ? '🐱' : '🐶'} ${pet?.nome || 'Pet'} — Ficha de Entrada #${jobId}`;
+
+    const subEl = document.getElementById('anamnese-subtitulo');
+    if (subEl) subEl.textContent = `Tutor: ${cliente?.nome || '—'} · Serviço: ${servico?.nome || '—'} · ${new Date().toLocaleDateString('pt-BR')}`;
+
+    // Se já tem anamnese salva, preenche o formulário
+    if (job.anamnese) {
+        const a = job.anamnese;
+        const setRadio = (name, val) => {
+            const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+            if (el) el.checked = true;
+        };
+        const setCheck = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+
+        setRadio('comportamento', a.comportamento);
+        setRadio('pelo_condicao', a.pelo_condicao);
+        setRadio('pele', a.pele);
+        setRadio('condicao_fisica', a.condicao_fisica);
+        setRadio('unhas', a.unhas);
+        setRadio('ouvidos', a.ouvidos);
+        setCheck('check-pulgas', a.parasitas?.pulgas);
+        setCheck('check-carrapatos', a.parasitas?.carrapatos);
+        setCheck('check-objetos-pelo', a.objetos_pelo);
+
+        // Lesões por região
+        (a.lesoes || []).forEach(r => {
+            const el = document.getElementById(`lesao-${r}`);
+            if (el) el.checked = true;
+        });
+
+        const obsEl = document.getElementById('anamnese-obs');
+        if (obsEl) obsEl.value = a.observacoes || '';
+
+        // Restaurar assinatura
+        setTimeout(() => {
+            if (a.assinatura && anamneseCtx) {
+                const img = new Image();
+                img.onload = () => anamneseCtx.drawImage(img, 0, 0);
+                img.src = a.assinatura;
+            }
+        }, 100);
+    } else {
+        // Reset form
+        document.querySelectorAll('#modal-ficha-anamnese input[type="radio"]').forEach(r => r.checked = false);
+        document.querySelectorAll('#modal-ficha-anamnese input[type="checkbox"]').forEach(c => c.checked = false);
+        const obsEl = document.getElementById('anamnese-obs');
+        if (obsEl) obsEl.value = '';
+    }
+
+    openModal('modal-ficha-anamnese');
+
+    // Inicializar canvas de assinatura
+    setTimeout(() => {
+        anamneseCanvas = document.getElementById('canvas-assinatura');
+        if (!anamneseCanvas) return;
+        anamneseCtx = anamneseCanvas.getContext('2d');
+        anamneseCanvas.width  = anamneseCanvas.offsetWidth || 340;
+        anamneseCanvas.height = 140;
+        anamneseCtx.strokeStyle = '#e2e8f0';
+        anamneseCtx.lineWidth   = 2.5;
+        anamneseCtx.lineCap     = 'round';
+        anamneseCtx.lineJoin    = 'round';
+
+        if (!job.anamnese) {
+            anamneseCtx.clearRect(0, 0, anamneseCanvas.width, anamneseCanvas.height);
+        }
+
+        // PointerEvents (funciona em touch/mouse/stylus)
+        anamneseCanvas.onpointerdown = (e) => {
+            anamneseDrawing = true;
+            const r = anamneseCanvas.getBoundingClientRect();
+            const scaleX = anamneseCanvas.width / r.width;
+            const scaleY = anamneseCanvas.height / r.height;
+            anamneseLastX = (e.clientX - r.left) * scaleX;
+            anamneseLastY = (e.clientY - r.top)  * scaleY;
+            anamneseCanvas.setPointerCapture(e.pointerId);
+        };
+        anamneseCanvas.onpointermove = (e) => {
+            if (!anamneseDrawing) return;
+            const r = anamneseCanvas.getBoundingClientRect();
+            const scaleX = anamneseCanvas.width / r.width;
+            const scaleY = anamneseCanvas.height / r.height;
+            const x = (e.clientX - r.left) * scaleX;
+            const y = (e.clientY - r.top)  * scaleY;
+            anamneseCtx.beginPath();
+            anamneseCtx.moveTo(anamneseLastX, anamneseLastY);
+            anamneseCtx.lineTo(x, y);
+            anamneseCtx.stroke();
+            anamneseLastX = x;
+            anamneseLastY = y;
+        };
+        anamneseCanvas.onpointerup   = () => { anamneseDrawing = false; };
+        anamneseCanvas.onpointerout  = () => { anamneseDrawing = false; };
+    }, 80);
+}
+
+function limparAssinaturaAnamnese() {
+    if (!anamneseCtx || !anamneseCanvas) return;
+    anamneseCtx.clearRect(0, 0, anamneseCanvas.width, anamneseCanvas.height);
+}
+
+function salvarFichaAnamnese() {
+    if (!anamneseJobId) return;
+
+    const getRadio = (name) => {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? el.value : null;
+    };
+    const getCheck = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.checked : false;
+    };
+
+    const comportamento = getRadio('comportamento');
+    if (!comportamento) {
+        State.showToast('⚠️ Informe o comportamento do pet antes de salvar.', 'warning');
+        return;
+    }
+
+    // Regiões com lesão marcadas
+    const lesoesRegioes = ['cabeca', 'pescoco', 'costas', 'barriga', 'patas-dianteiras', 'patas-traseiras', 'cauda'];
+    const lesoes = lesoesRegioes.filter(r => getCheck(`lesao-${r}`));
+
+    // Assinatura (base64)
+    let assinaturaBase64 = null;
+    if (anamneseCanvas) {
+        // Verifica se o canvas tem conteúdo (não é completamente transparente)
+        const imageData = anamneseCtx.getImageData(0, 0, anamneseCanvas.width, anamneseCanvas.height).data;
+        const hasSignature = imageData.some(v => v !== 0);
+        assinaturaBase64 = hasSignature ? anamneseCanvas.toDataURL('image/png') : null;
+    }
+
+    const anamnese = {
+        data: new Date().toISOString(),
+        responsavel: State.currentUserName || 'Equipe',
+        comportamento: comportamento,
+        pelo_condicao: getRadio('pelo_condicao'),
+        pele: getRadio('pele'),
+        condicao_fisica: getRadio('condicao_fisica'),
+        unhas: getRadio('unhas'),
+        ouvidos: getRadio('ouvidos'),
+        parasitas: {
+            pulgas: getCheck('check-pulgas'),
+            carrapatos: getCheck('check-carrapatos'),
+        },
+        objetos_pelo: getCheck('check-objetos-pelo'),
+        lesoes: lesoes,
+        observacoes: (document.getElementById('anamnese-obs')?.value || '').trim(),
+        assinatura: assinaturaBase64,
+    };
+
+    // Salva no job do Kanban
+    const kanban = DB.get('agendamentos_kanban') || [];
+    const idx = kanban.findIndex(k => k.id === anamneseJobId);
+    if (idx !== -1) {
+        kanban[idx].anamnese = anamnese;
+        // Avança para Aguardando Banho se ainda estava em Agendado
+        if (kanban[idx].status === 'Agendado') {
+            kanban[idx].status = 'Aguardando Banho';
+        }
+        DB.set('agendamentos_kanban', kanban);
+        DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Anamnese Preenchida', `Ficha de entrada do job #${anamneseJobId} registrada.`);
+    }
+
+    closeModal('modal-ficha-anamnese');
+    renderKanban();
+    State.showToast('✅ Ficha de Anamnese salva com sucesso!', 'success');
+}
+
+// =====================================================================
+// PORTAL DO TUTOR — Acompanhamento em Tempo Real
+// =====================================================================
+
+const PORTAL_ETAPAS = [
+    { id: 'Agendado',          label: 'Agendado',       emoji: '📅', desc: 'Serviço confirmado' },
+    { id: 'Em Rota de Busca',  label: 'Em Busca',       emoji: '🚕', desc: 'A caminho da sua casa' },
+    { id: 'Aguardando Banho',  label: 'Na Triagem',     emoji: '🛁', desc: 'Aguardando atendimento' },
+    { id: 'No Banho',          label: 'No Banho',       emoji: '🧼', desc: 'Tomando banho agora!' },
+    { id: 'Em Tosa',           label: 'Na Tosa',        emoji: '✂️', desc: 'Sendo tosa/escovado' },
+    { id: 'Inspecao QC',       label: 'Revisão Final',  emoji: '🔍', desc: 'Inspeção de qualidade' },
+    { id: 'Pronto',            label: 'Pronto! ✨',     emoji: '✨', desc: 'Seu pet está pronto!' },
+    { id: 'Entregue',          label: 'Entregue',       emoji: '🏡', desc: 'De volta ao lar' },
+];
+
+const PORTAL_ETA = {
+    'Agendado':         { texto: 'Serviço ainda não iniciado', cor: '#94a3b8' },
+    'Em Rota de Busca': { texto: 'Coleta em andamento — ~15–30 min', cor: '#f97316' },
+    'Aguardando Banho': { texto: 'Na fila de atendimento — ~30–60 min', cor: '#f59e0b' },
+    'No Banho':         { texto: 'Lavando agora — ~30–40 min para ficar pronto', cor: '#38bdf8' },
+    'Em Tosa':          { texto: 'Na tosa — ~20–30 min para ficar pronto', cor: '#c084fc' },
+    'Inspecao QC':      { texto: 'Quase pronto! Revisão final — ~10 min', cor: '#818cf8' },
+    'Pronto':           { texto: '🎉 Seu pet está pronto para retirada!', cor: '#10b981' },
+    'Entregue':         { texto: '✅ Serviço concluído. Até a próxima!', cor: '#34d399' },
+};
+
+let portalTutorRefreshTimer = null;
+let portalTutorJobAtivo = null;
+
+function abrirPortalTutor() {
+    // Mostra nome da empresa atual
+    const empresas = DB.get('empresas') || [];
+    const empresa = empresas.find(e => e.id === State.currentEmpresaId) || empresas[0];
+    const nomeEl = document.getElementById('portal-tutor-empresa-nome');
+    if (nomeEl && empresa) nomeEl.textContent = empresa.nome;
+
+    // Reset para step de busca
+    voltarBuscaPortalTutor();
+    document.getElementById('portal-busca-pet').value = '';
+    document.getElementById('portal-busca-resultados').innerHTML = '';
+
+    openModal('modal-portal-tutor');
+}
+
+function buscarPetPortalTutor(query) {
+    const q = (query || '').trim().toLowerCase();
+    const resultadosEl = document.getElementById('portal-busca-resultados');
+    if (!resultadosEl) return;
+
+    if (q.length < 2) {
+        resultadosEl.innerHTML = '';
+        return;
+    }
+
+    const kanban  = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
+    const pets    = DB.get('pets') || [];
+    const clientes = DB.get('clientes') || [];
+    const servicos = DB.get('servicos') || [];
+
+    // Busca por nome do pet ou telefone/nome do tutor
+    const matches = kanban.filter(job => {
+        const pet     = pets.find(p => p.id === job.pet_id);
+        const cliente = clientes.find(c => c.id === job.cliente_id);
+        if (!pet) return false;
+        const nomePet = (pet.nome || '').toLowerCase();
+        const nomeTutor = (cliente?.nome || '').toLowerCase();
+        const telTutor  = (cliente?.telefone || '').replace(/\D/g, '');
+        return nomePet.includes(q) || nomeTutor.includes(q) || telTutor.includes(q.replace(/\D/g, ''));
+    }).slice(0, 6);
+
+    if (matches.length === 0) {
+        resultadosEl.innerHTML = `<div class="portal-no-result">😔 Nenhum pet encontrado. Verifique o nome ou fale com o pet shop.</div>`;
+        return;
+    }
+
+    resultadosEl.innerHTML = matches.map(job => {
+        const pet     = pets.find(p => p.id === job.pet_id);
+        const cliente = clientes.find(c => c.id === job.cliente_id);
+        const etapa   = PORTAL_ETAPAS.find(e => e.id === job.status) || PORTAL_ETAPAS[0];
+        const especieIcon = pet?.especie === 'Gato' ? '🐱' : '🐶';
+        return `
+            <div class="portal-result-card" onclick="selecionarPetPortalTutor(${job.id})">
+                <div class="portal-result-icon">${especieIcon}</div>
+                <div class="portal-result-info">
+                    <div class="portal-result-name">${pet?.nome || '—'}</div>
+                    <div class="portal-result-tutor">Tutor: ${cliente?.nome || 'Não identificado'}</div>
+                </div>
+                <div class="portal-result-status" style="color:${PORTAL_ETA[job.status]?.cor || '#94a3b8'};">
+                    ${etapa.emoji} ${etapa.label}
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function selecionarPetPortalTutor(jobId) {
+    const kanban  = DB.get('agendamentos_kanban') || [];
+    const job = kanban.find(k => k.id === jobId);
+    if (!job) return;
+
+    portalTutorJobAtivo = jobId;
+
+    const pets     = DB.get('pets') || [];
+    const clientes = DB.get('clientes') || [];
+    const servicos = DB.get('servicos') || [];
+    const empresas = DB.get('empresas') || [];
+    const pet      = pets.find(p => p.id === job.pet_id);
+    const cliente  = clientes.find(c => c.id === job.cliente_id);
+    const servico  = servicos.find(s => s.id === job.servico_id);
+    const empresa  = empresas.find(e => e.id === job.empresa_id);
+
+    // ── Card do Pet ──────────────────────────────────────────
+    const especieIcon = pet?.especie === 'Gato' ? '🐱' : '🐶';
+    const alergias = pet?.observacoes ? `<div class="portal-pet-obs">⚠️ ${pet.observacoes}</div>` : '';
+    document.getElementById('portal-pet-card').innerHTML = `
+        <div class="portal-pet-avatar">${especieIcon}</div>
+        <div class="portal-pet-info">
+            <div class="portal-pet-name">${pet?.nome || 'Pet'}</div>
+            <div class="portal-pet-meta">${pet?.raca || ''} · ${pet?.porte || ''} · ${pet?.especie || ''}</div>
+            <div class="portal-pet-servico">✂️ ${servico?.nome || 'Serviço'}</div>
+            ${alergias}
+        </div>
+        <div class="portal-pet-id">#${job.id}</div>
+    `;
+
+    // ── Timeline ─────────────────────────────────────────────
+    const statusIdx = PORTAL_ETAPAS.findIndex(e => e.id === job.status);
+    const timelineEl = document.getElementById('portal-timeline');
+    timelineEl.innerHTML = PORTAL_ETAPAS.map((etapa, i) => {
+        let cls = 'portal-step-pending';
+        if (i < statusIdx)  cls = 'portal-step-done';
+        if (i === statusIdx) cls = 'portal-step-active';
+        return `
+            <div class="portal-step ${cls}">
+                <div class="portal-step-dot">
+                    ${i < statusIdx ? '✓' : etapa.emoji}
+                </div>
+                <div class="portal-step-line ${i === PORTAL_ETAPAS.length - 1 ? 'last' : ''}"></div>
+                <div class="portal-step-label">
+                    <span class="portal-step-name">${etapa.label}</span>
+                    ${i === statusIdx ? `<span class="portal-step-desc">${etapa.desc}</span>` : ''}
+                </div>
+            </div>`;
+    }).join('');
+
+    // ── ETA Card ──────────────────────────────────────────────
+    const eta = PORTAL_ETA[job.status] || { texto: '—', cor: '#94a3b8' };
+    document.getElementById('portal-eta-card').innerHTML = `
+        <div class="portal-eta-icon">⏱️</div>
+        <div class="portal-eta-text" style="color:${eta.cor};">${eta.texto}</div>
+    `;
+
+    // ── Histórico ─────────────────────────────────────────────
+    const historicoJobs = kanban
+        .filter(k => k.cliente_id === job.cliente_id && k.id !== job.id && k.status === 'Entregue')
+        .slice(-3)
+        .reverse();
+
+    const historicoEl = document.getElementById('portal-historico-lista');
+    if (historicoJobs.length === 0) {
+        historicoEl.innerHTML = `<p class="portal-no-result">Primeira visita 🎉</p>`;
+    } else {
+        historicoEl.innerHTML = historicoJobs.map(h => {
+            const svc = servicos.find(s => s.id === h.servico_id);
+            const petH = pets.find(p => p.id === h.pet_id);
+            return `
+                <div class="portal-historico-item">
+                    <div class="portal-historico-icon">✅</div>
+                    <div>
+                        <div style="font-size:0.82rem;font-weight:600;">${petH?.nome || '—'} — ${svc?.nome || 'Serviço'}</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Concluído · Job #${h.id}</div>
+                    </div>
+                </div>`;
+        }).join('');
+    }
+
+    // ── WhatsApp ──────────────────────────────────────────────
+    const whatsBtn = document.getElementById('portal-btn-whats');
+    const tel = empresa?.telefone ? empresa.telefone.replace(/\D/g, '') : '5566996513050';
+    const msg = encodeURIComponent(`Olá! Sou tutor do ${pet?.nome || 'meu pet'} e gostaria de saber sobre o serviço #${job.id}.`);
+    if (whatsBtn) whatsBtn.onclick = () => window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
+
+    // Transição para step de status
+    document.getElementById('portal-tutor-step-busca').style.display = 'none';
+    document.getElementById('portal-tutor-step-status').style.display = '';
+
+    // Auto-refresh a cada 30s (simula tempo real)
+    clearInterval(portalTutorRefreshTimer);
+    portalTutorRefreshTimer = setInterval(() => {
+        if (portalTutorJobAtivo) selecionarPetPortalTutor(portalTutorJobAtivo);
+    }, 30000);
+}
+
+function voltarBuscaPortalTutor() {
+    portalTutorJobAtivo = null;
+    clearInterval(portalTutorRefreshTimer);
+    document.getElementById('portal-tutor-step-status').style.display = 'none';
+    document.getElementById('portal-tutor-step-busca').style.display = '';
+}
+
+function contatoWhatsPortal() {
+    const empresas = DB.get('empresas') || [];
+    const empresa = empresas.find(e => e.id === State.currentEmpresaId) || empresas[0];
+    const tel = empresa?.telefone ? empresa.telefone.replace(/\D/g, '') : '5566996513050';
+    window.open(`https://wa.me/${tel}?text=${encodeURIComponent('Olá! Gostaria de saber sobre o meu pet.')}`, '_blank');
+}
+
 function abrirAreaClientePortal(modo = 'cliente') {
     openModal('modal-login-portal');
     alternarModoPortal(modo);
 }
+
 
 function alternarModoPortal(modo) {
     const tabCliente = document.getElementById('tab-portal-cliente');
@@ -548,84 +969,191 @@ function solicitarTrial14DiasSubmit(e) {
     }, 1200);
 }
 
+// =====================================================================
+// LOGIN OPERACIONAL — 2 PASSOS: Avatar Grid + Teclado PIN (ATM Style)
+// =====================================================================
+
+const PINLoginState = {
+    usuarioSelecionado: null,
+    pinDigitado: '',
+    maxDigitos: 4
+};
+
+const PERFIL_META = {
+    Admin:       { label: 'Administrador', emoji: '👑', colorClass: 'avatar-color-admin',       badgeClass: 'badge-color-admin' },
+    Supervisor:  { label: 'Supervisor',    emoji: '🔍', colorClass: 'avatar-color-supervisor',  badgeClass: 'badge-color-supervisor' },
+    Veterinario: { label: 'Veterinário',   emoji: '🩺', colorClass: 'avatar-color-veterinario', badgeClass: 'badge-color-veterinario' },
+    Recepcao:    { label: 'Recepção/Caixa',emoji: '🛒', colorClass: 'avatar-color-recepcao',    badgeClass: 'badge-color-recepcao' },
+    Banhista:    { label: 'Banho & Tosa',  emoji: '🧼', colorClass: 'avatar-color-banhista',    badgeClass: 'badge-color-banhista' },
+    Tosador:     { label: 'Tosador',       emoji: '✂️', colorClass: 'avatar-color-banhista',    badgeClass: 'badge-color-banhista' },
+    Entregador:  { label: 'Táxi Dog',      emoji: '🚕', colorClass: 'avatar-color-entregador',  badgeClass: 'badge-color-entregador' },
+};
+
+function getInitiais(nome) {
+    const partes = nome.trim().split(' ');
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+}
+
 function abrirLoginOperacionalPIN() {
-    populateLoginOperacionalOptions();
+    // Reset estado
+    PINLoginState.usuarioSelecionado = null;
+    PINLoginState.pinDigitado = '';
+
+    // Mostra step 1, esconde step 2
+    document.getElementById('pin-step-1').style.display = '';
+    document.getElementById('pin-step-2').style.display = 'none';
+
+    // Preenche nome da empresa
+    const empresas = DB.get('empresas') || [];
+    const empresa = empresas.find(e => e.id === State.currentEmpresaId) || empresas[0];
+    if (empresa) {
+        document.getElementById('pin-empresa-nome').textContent = empresa.nome;
+    }
+
+    // Monta grid de avatares
+    const usuarios = (DB.get('usuarios') || [])
+        .filter(u => u.empresa_id === (empresa ? empresa.id : 1));
+
+    const grid = document.getElementById('avatar-grid-funcionarios');
+    grid.innerHTML = '';
+
+    usuarios.forEach(u => {
+        const meta = PERFIL_META[u.perfil] || { label: u.perfil, emoji: '👤', colorClass: 'avatar-color-recepcao', badgeClass: 'badge-color-recepcao' };
+        const iniciais = getInitiais(u.nome);
+        const card = document.createElement('div');
+        card.className = 'avatar-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `Login como ${u.nome}`);
+        card.innerHTML = `
+            <div class="avatar-initials ${meta.colorClass}">${iniciais}</div>
+            <span class="avatar-name">${u.nome.split(' ')[0]}</span>
+            <span class="avatar-role-badge ${meta.badgeClass}">${meta.emoji} ${meta.label}</span>
+        `;
+        card.addEventListener('click', () => selecionarFuncionarioLogin(u));
+        grid.appendChild(card);
+    });
+
     openModal('modal-login-operacional');
 }
 
-function populateLoginOperacionalOptions() {
-    const empresas = DB.get('empresas') || [];
-    const empSelect = document.getElementById('login-operacional-empresa');
-    if (empSelect) {
-        empSelect.innerHTML = '';
-        empresas.forEach(e => {
-            empSelect.innerHTML += `<option value="${e.id}">${e.nome}</option>`;
-        });
-        if (State.currentEmpresaId) empSelect.value = State.currentEmpresaId;
-    }
+function selecionarFuncionarioLogin(usuario) {
+    PINLoginState.usuarioSelecionado = usuario;
+    PINLoginState.pinDigitado = '';
 
-    const perfilSelect = document.getElementById('login-operacional-perfil');
-    if (perfilSelect) {
-        atualizarOpcoesOperadorLogin(perfilSelect.value);
+    const meta = PERFIL_META[usuario.perfil] || { label: usuario.perfil, emoji: '👤', colorClass: 'avatar-color-recepcao', badgeClass: 'badge-color-recepcao' };
+    const iniciais = getInitiais(usuario.nome);
+
+    // Monta preview do usuário selecionado
+    document.getElementById('pin-user-preview').innerHTML = `
+        <div class="avatar-initials ${meta.colorClass}" style="width:68px;height:68px;font-size:1.5rem;">${iniciais}</div>
+        <span class="preview-name">${usuario.nome}</span>
+        <span class="preview-role">${meta.emoji} ${meta.label}</span>
+    `;
+
+    // Reset dots
+    atualizarDotsPIN();
+    document.getElementById('pin-hint-msg').textContent = 'Digite seu PIN de 4 dígitos';
+    document.getElementById('pin-hint-msg').style.color = '';
+
+    // Transição entre steps
+    document.getElementById('pin-step-1').style.display = 'none';
+    document.getElementById('pin-step-2').style.display = '';
+}
+
+function voltarParaAvatarGrid() {
+    PINLoginState.usuarioSelecionado = null;
+    PINLoginState.pinDigitado = '';
+    document.getElementById('pin-step-2').style.display = 'none';
+    document.getElementById('pin-step-1').style.display = '';
+}
+
+function digitarPINLogin(digito) {
+    if (PINLoginState.pinDigitado.length >= PINLoginState.maxDigitos) return;
+    PINLoginState.pinDigitado += String(digito);
+    atualizarDotsPIN();
+    // Auto-confirmar ao atingir 4 dígitos
+    if (PINLoginState.pinDigitado.length === PINLoginState.maxDigitos) {
+        setTimeout(() => confirmarPINLogin(), 180);
     }
 }
 
-function atualizarOpcoesOperadorLogin(perfil) {
-    const usuarios = DB.get('usuarios') || [];
-    const userSelect = document.getElementById('login-operacional-usuario');
-    if (!userSelect) return;
+function apagarPINLogin() {
+    PINLoginState.pinDigitado = PINLoginState.pinDigitado.slice(0, -1);
+    atualizarDotsPIN();
+}
 
-    userSelect.innerHTML = '';
-    const filtered = usuarios.filter(u => u.perfil === perfil || perfil === 'Admin');
-    
-    if (filtered.length > 0) {
-        filtered.forEach(u => {
-            userSelect.innerHTML += `<option value="${u.id}">${u.nome} (${u.perfil})</option>`;
-        });
-    } else {
-        userSelect.innerHTML = `<option value="1">Operador Padrão — ${perfil}</option>`;
+function atualizarDotsPIN() {
+    const len = PINLoginState.pinDigitado.length;
+    for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`pd-${i}`);
+        dot.classList.toggle('filled', i < len);
+        dot.classList.remove('error');
     }
 }
 
-function executarLoginOperacionalPIN(e) {
-    if (e) e.preventDefault();
-    const pin = document.getElementById('login-operacional-pin')?.value || '1234';
-    const perfil = document.getElementById('login-operacional-perfil')?.value || 'Banhista';
-    const empresaId = parseInt(document.getElementById('login-operacional-empresa')?.value) || State.currentEmpresaId;
-    const usuarioId = parseInt(document.getElementById('login-operacional-usuario')?.value) || 1;
+function confirmarPINLogin() {
+    const usuario = PINLoginState.usuarioSelecionado;
+    if (!usuario) return;
 
-    const usuarios = DB.get('usuarios') || [];
-    const userObj = usuarios.find(u => u.id === usuarioId) || { nome: 'Operador', perfil };
+    // Validação de PIN (demo: todos usam "1234")
+    const pinEsperado = usuario.pin || '1234';
+    const pinDigitado = PINLoginState.pinDigitado;
 
-    // Apply active session
-    State.currentEmpresaId = empresaId;
-    State.currentProfile = perfil;
-    State.currentUser = userObj;
+    if (pinDigitado.length < 4) {
+        document.getElementById('pin-hint-msg').textContent = 'Digite os 4 dígitos completos';
+        return;
+    }
+
+    if (pinDigitado !== pinEsperado) {
+        // Erro: shake nos dots
+        for (let i = 0; i < 4; i++) {
+            const dot = document.getElementById(`pd-${i}`);
+            dot.classList.remove('filled');
+            dot.classList.add('error');
+        }
+        document.getElementById('pin-hint-msg').textContent = '❌ PIN incorreto. Tente novamente.';
+        document.getElementById('pin-hint-msg').style.color = 'var(--danger)';
+        PINLoginState.pinDigitado = '';
+        setTimeout(() => {
+            atualizarDotsPIN();
+            document.getElementById('pin-hint-msg').textContent = 'Digite seu PIN de 4 dígitos';
+            document.getElementById('pin-hint-msg').style.color = '';
+        }, 900);
+        return;
+    }
+
+    // ✅ PIN correto — efetuar login
+    State.currentEmpresaId = usuario.empresa_id;
+    State.currentFilialId  = usuario.filial_id;
+    State.currentProfile   = usuario.perfil;
+    State.currentUser      = usuario;
 
     const profileSelector = document.getElementById('current-profile-select');
-    if (profileSelector) profileSelector.value = perfil;
+    if (profileSelector) profileSelector.value = usuario.perfil;
 
     closeModal('modal-login-operacional');
     exibirAppERP();
-    applyRBAC(perfil);
+    applyRBAC(usuario.perfil);
 
-    DB.logAudit(empresaId, perfil, 'Login PIN Operacional 🔑', `Operador ${userObj.nome} (${perfil}) logou via PIN no app operacional.`);
-    State.showToast(`🚀 Bem-vindo(a), ${userObj.nome}! Ambiente configurado para ${perfil}.`, 'success');
+    DB.logAudit(usuario.empresa_id, usuario.perfil, 'Login PIN Avatar', `${usuario.nome} (${usuario.perfil}) autenticado via PIN.`);
+    State.showToast(`🚀 Bem-vindo(a), ${usuario.nome.split(' ')[0]}!`, 'success');
 
-    // Direct Landing based on role
-    if (perfil === 'Entregador') switchTab('taxi');
-    else if (perfil === 'Banhista') switchTab('kanban');
-    else if (perfil === 'Recepcao') switchTab('caixa');
-    else if (perfil === 'Veterinario') switchTab('prontuario');
+    // Redirecionar para o módulo principal do perfil
+    if (usuario.perfil === 'Entregador')  switchTab('taxi');
+    else if (usuario.perfil === 'Banhista' || usuario.perfil === 'Tosador') switchTab('kanban');
+    else if (usuario.perfil === 'Recepcao')    switchTab('caixa');
+    else if (usuario.perfil === 'Veterinario') switchTab('prontuario');
     else switchTab('kanban');
 }
 
+// Mantida para compatibilidade com eventuais chamadas externas
 function loginRapidoPerfil(perfil) {
-    const perfilSelect = document.getElementById('login-operacional-perfil');
-    if (perfilSelect) perfilSelect.value = perfil;
-    atualizarOpcoesOperadorLogin(perfil);
-    executarLoginOperacionalPIN(null);
+    const usuarios = DB.get('usuarios') || [];
+    const u = usuarios.find(usr => usr.perfil === perfil && usr.empresa_id === State.currentEmpresaId);
+    if (u) selecionarFuncionarioLogin(u);
 }
+
 
 function loginGestorDirectSubmit(e) {
     e.preventDefault();
@@ -1052,6 +1580,7 @@ function applyRBAC(profileName) {
     const navAssinaturas = document.getElementById('nav-assinaturas');
     const navDreasy = document.getElementById('nav-dreasy');
     const navCrm = document.getElementById('nav-crm');
+    const navWhatsApp = document.getElementById('nav-whatsapp');
 
     if (profileName === 'Veterinario') {
         if (navKanban) navKanban.style.display = 'flex';
@@ -1113,6 +1642,7 @@ function applyRBAC(profileName) {
         if (navAssinaturas) navAssinaturas.style.display = 'flex';
         if (navDreasy) navDreasy.style.display = 'flex';
         if (navCrm) navCrm.style.display = 'flex';
+        if (navWhatsApp) navWhatsApp.style.display = 'flex';
     }
 }
 
@@ -1142,6 +1672,7 @@ function switchTab(tabId) {
     if (tabId === 'financeiro') renderFinanceiro();
     if (tabId === 'crm') renderCRM();
     if (tabId === 'master-saas') renderMasterPanel();
+    if (tabId === 'whatsapp') renderWhatsApp();
 }
 
 // 5. CLIENTES (20 TUTORES SP) & PETS TABLES
@@ -1296,14 +1827,37 @@ function deduzirInsumosFichaTecnica(servicoId) {
 
 const STATUS_LIST = ['Agendado', 'Em Rota de Busca', 'Aguardando Banho', 'No Banho', 'Em Tosa', 'Inspecao QC', 'Pronto', 'Entregue'];
 
-function renderKanban() {
+function renderKanbanSkeletons() {
+    const skeletonHTML = `
+        <div class="kanban-card-skeleton">
+            <div class="skeleton-line w-70"></div>
+            <div class="skeleton-line w-50 h-8"></div>
+            <div class="skeleton-line w-90 h-8"></div>
+        </div>
+        <div class="kanban-card-skeleton">
+            <div class="skeleton-line w-50"></div>
+            <div class="skeleton-line w-70 h-8"></div>
+            <div class="skeleton-line w-90 h-8"></div>
+        </div>`;
+    document.querySelectorAll('.kanban-column-cards').forEach(col => {
+        col.innerHTML = skeletonHTML;
+    });
+}
+
+function renderKanban(skipSkeleton = false) {
+    if (!skipSkeleton) {
+        renderKanbanSkeletons();
+        setTimeout(() => renderKanban(true), 320);
+        return;
+    }
+
     const kanbanData = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
     const pets = DB.get('pets') || [];
     const servicos = DB.get('servicos') || [];
     const baias = DB.get('baias') || [];
-    
+
     document.querySelectorAll('.kanban-column-cards').forEach(col => col.innerHTML = '');
-    
+
     kanbanData.forEach(item => {
         const pet = pets.find(p => p.id === item.pet_id);
         const servico = servicos.find(s => s.id === item.servico_id);
@@ -1311,10 +1865,10 @@ function renderKanban() {
         if (!pet || !servico) return;
 
         const card = document.createElement('div');
-        card.className = 'kanban-card';
+        card.className = 'kanban-card card-enter';
         card.draggable = true;
         card.dataset.id = item.id;
-        
+
         let alertHTML = '';
         if (pet.temperamento === 'Agressivo') alertHTML += `<span class="alert-badge danger">⚠️ Agressivo</span>`;
         if (!pet.vacinas_em_dia) alertHTML += `<span class="alert-badge danger">💉 Vacinas Atrasadas</span>`;
@@ -1346,26 +1900,49 @@ function renderKanban() {
             </div>
 
             <div class="card-actions">
+                ${(item.status === 'Agendado' || item.status === 'Aguardando Banho') ? `
+                    <button class="card-btn card-btn-anamnese ${item.anamnese ? 'done' : 'pending'}"
+                            onclick="abrirFichaAnamnese(${item.id})">
+                        ${item.anamnese ? '✅ Anamnese' : '📋 Anamnese'}
+                    </button>` : ''}
                 ${item.status === 'Inspecao QC' ? `<button class="card-btn" onclick="inspeccionarQC(${item.id})">🔍 QC</button>` : ''}
                 ${item.status === 'Pronto' || item.status === 'Entregue' ? `<button class="card-btn" style="color:#818cf8;" onclick="abrirZootieModal(${item.id})">🐶 Boletim</button>` : ''}
                 <button class="card-btn" onclick="verDetalhesKanban(${item.id})">ℹ️ Info</button>
             </div>
         `;
 
+        // Drag Events — melhorados com classe visual
         card.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', item.id);
-            card.style.opacity = '0.5';
+            requestAnimationFrame(() => card.classList.add('dragging'));
         });
-        
-        card.addEventListener('dragend', () => { card.style.opacity = '1'; });
+
+        card.addEventListener('dragend', () => {
+            card.classList.remove('dragging');
+        });
 
         const columnId = getColumnIdByStatus(item.status);
         const colContainer = document.querySelector(`#col-${columnId} .kanban-column-cards`);
         if (colContainer) colContainer.appendChild(card);
     });
 
+    // Drag-over highlight nas colunas
+    document.querySelectorAll('.kanban-column-cards').forEach(col => {
+        col.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            col.classList.add('drag-over');
+        });
+        col.addEventListener('dragleave', () => {
+            col.classList.remove('drag-over');
+        });
+        col.addEventListener('drop', () => {
+            col.classList.remove('drag-over');
+        });
+    });
+
     updateColumnCounts();
 }
+
 
 function toggleChecklistKanban(jobId, key, checked) {
     const kanbanData = DB.get('agendamentos_kanban');
@@ -1468,19 +2045,32 @@ function handleStatusTransition(cardId, newStatus) {
     const item = kanbanData.find(k => k.id === cardId);
     if (!item) return;
 
-    const pet = DB.get('pets').find(p => p.id === item.pet_id);
+    const pets = DB.get('pets') || [];
+    const clientes = DB.get('clientes') || [];
+    const servicos = DB.get('servicos') || [];
+    const pet = pets.find(p => p.id === item.pet_id);
+    const cliente = clientes.find(c => c.id === (pet ? pet.cliente_id : null));
+    const servico = servicos.find(s => s.id === item.servico_id);
     const oldStatus = item.status;
 
     if (newStatus === 'No Banho' && oldStatus !== 'No Banho') {
         deduzirInsumosFichaTecnica(item.servico_id);
     }
 
+    // 🤖 WhatsApp automático: avisa tutor quando pet fica PRONTO
+    if (newStatus === 'Pronto' && oldStatus !== 'Pronto' && cliente && cliente.whatsapp_opt_in && cliente.whatsapp_status_pet) {
+        const empresas = DB.get('empresas') || [];
+        const empresa = empresas.find(e => e.id === item.empresa_id) || {};
+        const msg = `🐾 *${pet ? pet.nome : 'Seu pet'}* está *PRONTO* para retirada!\n\n✅ Serviço: ${servico ? servico.nome : 'Banho & Tosa'}\n📍 Local: ${empresa.nome || 'CatDog Pet Center'}\n\nAguardamos você! 😊🐶`;
+        enviarMensagemWhatsApp(cliente.whatsapp_numero, msg, cliente.id, 'status_pet');
+    }
+
     item.status = newStatus;
     DB.set('agendamentos_kanban', kanbanData);
-    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Transição Kanban', `Pet ${pet.nome} movido de ${oldStatus} para ${newStatus}`);
-    
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Transição Kanban', `Pet ${pet ? pet.nome : '#'+cardId} movido de ${oldStatus} para ${newStatus}`);
+
     renderKanban();
-    State.showToast(`Pet ${pet.nome} movido para ${newStatus}.`, 'info');
+    State.showToast(`Pet ${pet ? pet.nome : ''} movido para ${newStatus}.`, 'info');
 }
 
 // 7. VETERINARY CLINICAL RECORDS & PRESCRIPTION ENGINE
@@ -2013,28 +2603,314 @@ function renderEstoque() {
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    lotes.forEach(l => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    // Calcular dias e nível de urgência para cada lote
+    const lotesComMeta = lotes.map(l => {
         const p = produtos.find(item => item.id === l.produto_id);
-        if (!p) return;
-
+        if (!p) return null;
         const expDate = new Date(l.data_vencimento);
-        const hoje = new Date();
+        expDate.setHours(0, 0, 0, 0);
         const diffDays = Math.ceil((expDate - hoje) / (1000 * 60 * 60 * 24));
+        let nivel = 'ok';
+        if (l.status === 'Esgotado')   nivel = 'esgotado';
+        else if (l.status === 'Vencido' || diffDays < 0) nivel = 'vencido';
+        else if (diffDays <= 7)        nivel = 'critico';
+        else if (diffDays <= 15)       nivel = 'atencao';
+        else if (diffDays <= 30)       nivel = 'monitorar';
+        return { lote: l, produto: p, diffDays, nivel };
+    }).filter(Boolean);
 
-        let badgeHTML = l.status === 'Esgotado' ? `<span class="validade-badge">Esgotado</span>` : (diffDays <= 15 ? `<span class="validade-badge vencendo">Crítico (${diffDays}d)</span>` : `<span class="validade-badge em-dia">Em dia</span>`);
+    // Ordenar: vencido/esgotado → crítico → atenção → monitorar → ok
+    const ordemNivel = { vencido: 0, esgotado: 1, critico: 2, atencao: 3, monitorar: 4, ok: 5 };
+    lotesComMeta.sort((a, b) => (ordemNivel[a.nivel] ?? 9) - (ordemNivel[b.nivel] ?? 9));
+
+    // ── Banner de alertas FEFO ──────────────────────────────────────
+    const banner = document.getElementById('estoque-alert-banner');
+    if (banner) {
+        const nCritico   = lotesComMeta.filter(x => x.nivel === 'critico').length;
+        const nAtencao   = lotesComMeta.filter(x => x.nivel === 'atencao').length;
+        const nVencido   = lotesComMeta.filter(x => x.nivel === 'vencido').length;
+        const nEsgotado  = lotesComMeta.filter(x => x.nivel === 'esgotado').length;
+
+        if (nCritico + nAtencao + nVencido + nEsgotado > 0) {
+            const pills = [];
+            if (nVencido)  pills.push(`<span class="fefo-pill fefo-vencido">❌ ${nVencido} lote${nVencido > 1 ? 's' : ''} VENCIDO${nVencido > 1 ? 'S' : ''}</span>`);
+            if (nEsgotado) pills.push(`<span class="fefo-pill fefo-esgotado">⬛ ${nEsgotado} ESGOTADO${nEsgotado > 1 ? 'S' : ''}</span>`);
+            if (nCritico)  pills.push(`<span class="fefo-pill fefo-critico">🔴 ${nCritico} CRÍTICO${nCritico > 1 ? 'S' : ''} — vence em até 7 dias</span>`);
+            if (nAtencao)  pills.push(`<span class="fefo-pill fefo-atencao">🟠 ${nAtencao} em ATENÇÃO — vence em até 15 dias</span>`);
+
+            banner.innerHTML = `
+                <div class="fefo-alert-banner">
+                    <div class="fefo-banner-icon">⚠️</div>
+                    <div class="fefo-banner-content">
+                        <strong>Alertas FEFO — Ação Necessária</strong>
+                        <div class="fefo-pills-row">${pills.join('')}</div>
+                    </div>
+                </div>`;
+        } else {
+            banner.innerHTML = `
+                <div class="fefo-alert-banner fefo-banner-ok">
+                    <div class="fefo-banner-icon">✅</div>
+                    <div><strong>Estoque FEFO em ordem</strong> — Nenhum lote crítico ou vencendo nos próximos 30 dias.</div>
+                </div>`;
+        }
+    }
+
+    // ── Linhas da tabela ───────────────────────────────────────────
+    lotesComMeta.forEach(({ lote: l, produto: p, diffDays, nivel }) => {
+        // Badge de status
+        const badgeMap = {
+            vencido:   `<span class="fefo-badge fefo-badge-vencido">❌ Vencido</span>`,
+            esgotado:  `<span class="fefo-badge fefo-badge-esgotado">⬛ Esgotado</span>`,
+            critico:   `<span class="fefo-badge fefo-badge-critico fefo-pulse">🔴 Crítico</span>`,
+            atencao:   `<span class="fefo-badge fefo-badge-atencao">🟠 Atenção</span>`,
+            monitorar: `<span class="fefo-badge fefo-badge-monitorar">🟡 Monitorar</span>`,
+            ok:        `<span class="fefo-badge fefo-badge-ok">✅ Em Dia</span>`,
+        };
+
+        // Barra de dias restantes (max referência = 30 dias)
+        let diasHTML = '';
+        if (nivel === 'vencido') {
+            diasHTML = `<span style="color:var(--danger);font-weight:700;">Vencido há ${Math.abs(diffDays)}d</span>`;
+        } else if (nivel === 'esgotado') {
+            diasHTML = `<span style="color:var(--text-muted);">—</span>`;
+        } else {
+            const pct = Math.min(100, Math.round((diffDays / 30) * 100));
+            const barColor = nivel === 'critico' ? '#ef4444' : nivel === 'atencao' ? '#f97316' : nivel === 'monitorar' ? '#f59e0b' : '#10b981';
+            diasHTML = `
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-weight:700;color:${barColor};min-width:32px;">${diffDays}d</span>
+                    <div class="fefo-bar-track">
+                        <div class="fefo-bar-fill" style="width:${pct}%;background:${barColor};"></div>
+                    </div>
+                </div>`;
+        }
 
         const tr = document.createElement('tr');
+        if (nivel === 'critico')  tr.classList.add('fefo-row-critico');
+        if (nivel === 'vencido')  tr.classList.add('fefo-row-vencido');
+
         tr.innerHTML = `
             <td><strong>${p.nome}</strong></td>
             <td><code>${l.lote}</code></td>
             <td><span class="product-category">${p.finalidade || 'Comercial'}</span></td>
             <td>${l.quantidade} un</td>
             <td>${l.data_vencimento.split('-').reverse().join('/')}</td>
-            <td>${badgeHTML}</td>
+            <td>${diasHTML}</td>
+            <td>${badgeMap[nivel] || badgeMap.ok}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    // ── Curva ABC ───────────────────────────────────────────────────────
+    renderCurvaABC();
+}
+
+// =====================================================================
+// CURVA ABC — Análise de Pareto do Estoque
+// =====================================================================
+function renderCurvaABC() {
+    const lotes    = (DB.get('lotes_estoque') || []).filter(l => l.empresa_id === State.currentEmpresaId);
+    const produtos = DB.get('produtos') || [];
+
+    // 1. Agrupa valor por produto (soma dos lotes × preço_custo)
+    const valorPorProduto = {};
+    const qtdPorProduto   = {};
+    lotes.forEach(l => {
+        const p = produtos.find(x => x.id === l.produto_id);
+        if (!p || l.status === 'Esgotado') return;
+        const val = l.quantidade * (p.preco_custo || p.preco || 0);
+        const qtd = l.quantidade;
+        valorPorProduto[p.id] = (valorPorProduto[p.id] || 0) + val;
+        qtdPorProduto[p.id]   = (qtdPorProduto[p.id]   || 0) + qtd;
+    });
+
+    // Se não há dados de lotes, usa o catálogo de produtos direto
+    if (Object.keys(valorPorProduto).length === 0) {
+        produtos.forEach(p => {
+            if (p.empresa_id !== State.currentEmpresaId) return;
+            valorPorProduto[p.id] = p.preco_custo || p.preco || 0;
+            qtdPorProduto[p.id]   = 1;
+        });
+    }
+
+    // 2. Ordena por valor decrescente
+    const ranking = Object.entries(valorPorProduto)
+        .map(([id, valor]) => {
+            const p = produtos.find(x => x.id === parseInt(id));
+            return { produto: p, valor, qtd: qtdPorProduto[id] || 0 };
+        })
+        .filter(x => x.produto)
+        .sort((a, b) => b.valor - a.valor);
+
+    if (ranking.length === 0) return;
+
+    // 3. Calcula totais e acumulado
+    const totalValor = ranking.reduce((s, x) => s + x.valor, 0);
+    let acumulado = 0;
+    const itensABC = ranking.map((item, i) => {
+        const pct = totalValor > 0 ? (item.valor / totalValor) * 100 : 0;
+        acumulado += pct;
+        let classe = 'C';
+        if (acumulado <= 80)       classe = 'A';
+        else if (acumulado <= 95)  classe = 'B';
+        return { ...item, rank: i + 1, pct, acumulado: Math.min(acumulado, 100), classe };
+    });
+
+    // 4. KPI Cards
+    const kpiRow = document.getElementById('abc-kpi-row');
+    if (kpiRow) {
+        const totA = itensABC.filter(x => x.classe === 'A');
+        const totB = itensABC.filter(x => x.classe === 'B');
+        const totC = itensABC.filter(x => x.classe === 'C');
+        const valA = totA.reduce((s, x) => s + x.valor, 0);
+        const valB = totB.reduce((s, x) => s + x.valor, 0);
+        const valC = totC.reduce((s, x) => s + x.valor, 0);
+
+        kpiRow.innerHTML = `
+            <div class="abc-kpi-card abc-kpi-a">
+                <div class="abc-kpi-class">A</div>
+                <div class="abc-kpi-count">${totA.length} produto${totA.length !== 1 ? 's' : ''}</div>
+                <div class="abc-kpi-value">R$ ${valA.toFixed(2)}</div>
+                <div class="abc-kpi-label">~80% do valor</div>
+            </div>
+            <div class="abc-kpi-card abc-kpi-b">
+                <div class="abc-kpi-class">B</div>
+                <div class="abc-kpi-count">${totB.length} produto${totB.length !== 1 ? 's' : ''}</div>
+                <div class="abc-kpi-value">R$ ${valB.toFixed(2)}</div>
+                <div class="abc-kpi-label">~15% do valor</div>
+            </div>
+            <div class="abc-kpi-card abc-kpi-c">
+                <div class="abc-kpi-class">C</div>
+                <div class="abc-kpi-count">${totC.length} produto${totC.length !== 1 ? 's' : ''}</div>
+                <div class="abc-kpi-value">R$ ${valC.toFixed(2)}</div>
+                <div class="abc-kpi-label">~5% do valor</div>
+            </div>
+        `;
+    }
+
+    // 5. Gráfico de Pareto no Canvas
+    const canvas = document.getElementById('canvas-abc-pareto');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const W = canvas.offsetWidth || 680;
+        const H = 200;
+        canvas.width  = W;
+        canvas.height = H;
+        ctx.clearRect(0, 0, W, H);
+
+        const PAD_L = 48, PAD_R = 48, PAD_T = 18, PAD_B = 40;
+        const chartW = W - PAD_L - PAD_R;
+        const chartH = H - PAD_T - PAD_B;
+        const n = itensABC.length;
+        const barW = chartW / n;
+        const maxVal = Math.max(...itensABC.map(x => x.valor), 1);
+
+        // Barras coloridas por classe
+        const classColors = { A: '#ef4444', B: '#f97316', C: '#10b981' };
+
+        itensABC.forEach((item, i) => {
+            const barH = (item.valor / maxVal) * chartH;
+            const x = PAD_L + i * barW;
+            const y = PAD_T + chartH - barH;
+            const color = classColors[item.classe];
+
+            // Gradiente da barra
+            const grad = ctx.createLinearGradient(0, y, 0, PAD_T + chartH);
+            grad.addColorStop(0, color);
+            grad.addColorStop(1, color + '40');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.roundRect(x + 3, y, barW - 6, barH, [4, 4, 0, 0]);
+            ctx.fill();
+
+            // Label do produto (abreviado)
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '10px system-ui';
+            ctx.textAlign = 'center';
+            const label = item.produto.nome.split(' ').slice(0, 2).join(' ').substring(0, 10);
+            ctx.fillText(label, x + barW / 2, H - PAD_B + 14);
+        });
+
+        // Linha de curva acumulada
+        ctx.beginPath();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        itensABC.forEach((item, i) => {
+            const x = PAD_L + i * barW + barW / 2;
+            const y = PAD_T + chartH - (item.acumulado / 100) * chartH;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Pontos na curva
+        itensABC.forEach((item, i) => {
+            const x = PAD_L + i * barW + barW / 2;
+            const y = PAD_T + chartH - (item.acumulado / 100) * chartH;
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+        });
+
+        // Linhas de referência 80% e 95%
+        [80, 95].forEach((pct, idx) => {
+            const y = PAD_T + chartH - (pct / 100) * chartH;
+            ctx.beginPath();
+            ctx.strokeStyle = idx === 0 ? 'rgba(239,68,68,0.4)' : 'rgba(249,115,22,0.4)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([6, 4]);
+            ctx.moveTo(PAD_L, y);
+            ctx.lineTo(W - PAD_R, y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = idx === 0 ? '#f87171' : '#fb923c';
+            ctx.font = 'bold 10px system-ui';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${pct}%`, PAD_L - 4, y + 4);
+        });
+    }
+
+    // 6. Tabela ABC rankeada
+    const tbody = document.getElementById('table-abc-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const badgeABC = {
+        A: `<span class="abc-badge abc-badge-a">A</span>`,
+        B: `<span class="abc-badge abc-badge-b">B</span>`,
+        C: `<span class="abc-badge abc-badge-c">C</span>`,
+    };
+
+    itensABC.forEach(item => {
+        const tr = document.createElement('tr');
+        if (item.classe === 'A') tr.classList.add('abc-row-a');
+        tr.innerHTML = `
+            <td style="color:var(--text-muted);font-size:0.8rem;">${item.rank}º</td>
+            <td><strong>${item.produto.nome}</strong></td>
+            <td><span class="product-category">${item.produto.categoria || '—'}</span></td>
+            <td>${item.qtd} un</td>
+            <td style="font-weight:700;">R$ ${item.valor.toFixed(2)}</td>
+            <td>${item.pct.toFixed(1)}%</td>
+            <td>
+                <div style="display:flex;align-items:center;gap:0.4rem;">
+                    <div class="fefo-bar-track" style="min-width:60px;">
+                        <div class="fefo-bar-fill" style="width:${item.acumulado}%;background:${item.classe === 'A' ? '#ef4444' : item.classe === 'B' ? '#f97316' : '#10b981'};"></div>
+                    </div>
+                    <span style="font-size:0.75rem;color:var(--text-muted);">${item.acumulado.toFixed(1)}%</span>
+                </div>
+            </td>
+            <td>${badgeABC[item.classe]}</td>
         `;
         tbody.appendChild(tr);
     });
 }
+
 
 function renderAnalytics() {
     const movimentacoes = (DB.get('movimentacoes_caixa') || []).filter(m => m.empresa_id === State.currentEmpresaId);
@@ -2926,6 +3802,452 @@ function completarTarefaCRM(dealId, taskTitle) {
     State.showToast('✅ Tarefa concluída!', 'success');
 }
 
+// =====================================================================
+// 📱 WHATSAPP EVOLUTION API — MOTOR MULTI-TENANT (SAAS)
+// =====================================================================
+
+const EVOLUTION_GLOBAL_URL = 'https://evolution-api-production-ebf6.up.railway.app';
+const EVOLUTION_GLOBAL_KEY = '508082bd88fe3bccb52afee3220d41ff30bee226c62f3cde22caf5b7ede22f26';
+
+/** Obtém a configuração de WhatsApp da empresa ativa (Multi-Tenant) */
+function getWhatsAppConfig(empresaId = State.currentEmpresaId) {
+    const configs = DB.get('whatsapp_configs_multitenant') || {};
+    if (!configs[empresaId]) {
+        const empresas = DB.get('empresas') || [];
+        const emp = empresas.find(e => e.id === empresaId);
+        const slug = emp ? emp.nome.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 15) : `empresa_${empresaId}`;
+        configs[empresaId] = {
+            apiUrl: EVOLUTION_GLOBAL_URL,
+            apiKey: EVOLUTION_GLOBAL_KEY,
+            instanceName: `pataforma_${slug}_${empresaId}`,
+            connected: false,
+            empresa_id: empresaId
+        };
+        DB.set('whatsapp_configs_multitenant', configs);
+    }
+    return configs[empresaId];
+}
+
+/** Salva a configuração de WhatsApp da empresa ativa */
+function setWhatsAppConfig(cfg, empresaId = State.currentEmpresaId) {
+    const configs = DB.get('whatsapp_configs_multitenant') || {};
+    configs[empresaId] = { ...getWhatsAppConfig(empresaId), ...cfg, empresa_id: empresaId };
+    DB.set('whatsapp_configs_multitenant', configs);
+    DB.set('whatsapp_config', configs[empresaId]); // retrocompatibilidade
+}
+
+/**
+ * Envia uma mensagem via Evolution API usando a instância do Pet Shop ativo.
+ */
+async function enviarMensagemWhatsApp(numero, mensagem, clienteId, tipo) {
+    const config = getWhatsAppConfig(State.currentEmpresaId);
+    const logArr = DB.get('whatsapp_mensagens_log') || [];
+    const novoId = logArr.length > 0 ? Math.max(...logArr.map(l => l.id)) + 1 : 1;
+
+    // Salva no log independentemente do modo
+    logArr.unshift({
+        id: novoId,
+        empresa_id: State.currentEmpresaId,
+        cliente_id: clienteId || null,
+        numero: numero,
+        tipo: tipo || 'manual',
+        mensagem: mensagem,
+        status: 'enviando',
+        timestamp: new Date().toISOString()
+    });
+    DB.set('whatsapp_mensagens_log', logArr);
+
+    const numLimpo = (numero || '').replace(/\D/g, '');
+
+    // Modo REAL: Evolution API configurada
+    if (config.apiUrl && config.apiKey && config.instanceName && numLimpo) {
+        try {
+            const res = await fetch(`${config.apiUrl}/message/sendText/${config.instanceName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': config.apiKey
+                },
+                body: JSON.stringify({ number: numLimpo, text: mensagem })
+            });
+            const logAtual = DB.get('whatsapp_mensagens_log') || [];
+            const idx = logAtual.findIndex(l => l.id === novoId);
+            if (idx !== -1) logAtual[idx].status = res.ok ? 'enviada' : 'erro';
+            DB.set('whatsapp_mensagens_log', logAtual);
+
+            if (res.ok) {
+                State.showToast(`💬 WhatsApp enviado para ${numLimpo}!`, 'success');
+                DB.logAudit(State.currentEmpresaId, State.currentProfile, 'WhatsApp Enviado ✅', `Tipo: ${tipo} | Número: ${numLimpo}`);
+            } else {
+                State.showToast(`⚠️ Falha ao enviar WhatsApp (HTTP ${res.status})`, 'warning');
+            }
+        } catch (err) {
+            console.warn('WhatsApp send error:', err);
+            const logAtual = DB.get('whatsapp_mensagens_log') || [];
+            const idx = logAtual.findIndex(l => l.id === novoId);
+            if (idx !== -1) logAtual[idx].status = 'erro';
+            DB.set('whatsapp_mensagens_log', logAtual);
+            State.showToast(`⚠️ Erro de conexão com Evolution API. Abrindo WhatsApp Web...`, 'warning');
+            window.open(`https://web.whatsapp.com/send?phone=${numLimpo}&text=${encodeURIComponent(mensagem)}`, '_blank');
+        }
+    } else {
+        // Modo SIMULADO: sem API configurada → abre WhatsApp Web
+        const logAtual = DB.get('whatsapp_mensagens_log') || [];
+        const idx = logAtual.findIndex(l => l.id === novoId);
+        if (idx !== -1) logAtual[idx].status = 'simulado';
+        DB.set('whatsapp_mensagens_log', logAtual);
+
+        if (numLimpo) {
+            window.open(`https://api.whatsapp.com/send?phone=${numLimpo}&text=${encodeURIComponent(mensagem)}`, '_blank');
+            State.showToast(`📱 WhatsApp aberto! Configure a Evolution API nas Configurações para envio direto.`, 'info');
+        } else {
+            State.showToast(`⚠️ Número não cadastrado para este cliente.`, 'warning');
+        }
+    }
+}
+
+/** Envia convite de opt-in para o cliente cadastrado */
+async function enviarConviteOptIn(clienteId) {
+    const clientes = DB.get('clientes') || [];
+    const cliente = clientes.find(c => c.id === clienteId);
+    if (!cliente) return;
+
+    const empresas = DB.get('empresas') || [];
+    const empresa = empresas.find(e => e.id === State.currentEmpresaId) || {};
+
+    const msg = `Olá *${cliente.nome.split(' ')[0]}*! 🐾\n\nSou o *${empresa.nome || 'Pet Shop'}*.\n\nPosso te enviar mensagens sobre o(s) seu(s) pet(s) pelo WhatsApp?\n\nResponda com o número da opção desejada:\n\n1️⃣ Status do banho/tosa em tempo real\n2️⃣ Lembretes de agendamento\n3️⃣ Promoções e novidades\n4️⃣ Todas as opções acima\n0️⃣ Não quero receber mensagens\n\n_Sua resposta ficará registrada conforme a LGPD._`;
+
+    await enviarMensagemWhatsApp(cliente.whatsapp_numero, msg, clienteId, 'opt_in');
+
+    // Marca que o convite foi enviado
+    const idx = clientes.findIndex(c => c.id === clienteId);
+    if (idx !== -1 && !clientes[idx].whatsapp_opt_in_data) {
+        clientes[idx].whatsapp_opt_in_data = new Date().toISOString();
+        clientes[idx].whatsapp_opt_in_origem = 'plataforma';
+        DB.set('clientes', clientes);
+    }
+}
+
+/** Salva configuração da Evolution API para a empresa ativa */
+function salvarConfigWhatsApp() {
+    const apiUrl   = (document.getElementById('wa-config-api-url')?.value || '').trim();
+    const apiKey   = (document.getElementById('wa-config-api-key')?.value || '').trim();
+    const instName = (document.getElementById('wa-config-instance')?.value || '').trim();
+
+    setWhatsAppConfig({ apiUrl, apiKey, instanceName: instName, connected: false });
+    State.showToast('✅ Configuração da Evolution API salva para esta empresa!', 'success');
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'Config WhatsApp Salva', `Empresa ID ${State.currentEmpresaId} | Instance: ${instName}`);
+    testarConexaoWhatsApp();
+}
+
+/** Testa conexão com Evolution API para a empresa ativa */
+async function testarConexaoWhatsApp() {
+    const config = getWhatsAppConfig(State.currentEmpresaId);
+    const statusEl = document.getElementById('wa-connection-status');
+    if (!config.apiUrl || !config.apiKey || !config.instanceName) {
+        if (statusEl) statusEl.innerHTML = `<span class="wa-status-badge disconnected">⚠️ Preencha a URL, API Key e Instance Name</span>`;
+        return;
+    }
+    if (statusEl) statusEl.innerHTML = `<span class="wa-status-badge connecting">⏳ Testando conexão...</span>`;
+    try {
+        const res = await fetch(`${config.apiUrl}/instance/fetchInstances`, {
+            headers: { 'apikey': config.apiKey }
+        });
+        const ok = res.ok;
+        setWhatsAppConfig({ connected: ok });
+        if (statusEl) statusEl.innerHTML = ok
+            ? `<span class="wa-status-badge connected">✅ Conectado — Servidor Online (Instância: ${config.instanceName})</span>`
+            : `<span class="wa-status-badge disconnected">❌ Falha (HTTP ${res.status}) — verifique URL/APIKey</span>`;
+        State.showToast(ok ? `✅ Evolution API conectada (${config.instanceName})!` : '❌ Falha na conexão — verifique as credenciais.', ok ? 'success' : 'error');
+    } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span class="wa-status-badge disconnected">❌ Sem resposta — verifique se o servidor está ativo</span>`;
+        State.showToast('⚠️ Servidor Evolution API não respondeu.', 'warning');
+    }
+}
+
+/** Cria a instância do Pet Shop ativo ou busca o QR Code na Evolution API e exibe no modal */
+async function conectarOuGerarQRCodeWhatsApp() {
+    const config = getWhatsAppConfig(State.currentEmpresaId);
+    if (!config.apiUrl || !config.apiKey || !config.instanceName) {
+        State.showToast('⚠️ Configure a URL, API Key e Instance antes de conectar.', 'warning');
+        return;
+    }
+
+    const qrContainer = document.getElementById('wa-qrcode-container');
+    const qrStatus = document.getElementById('wa-qrcode-status');
+    if (qrStatus) qrStatus.textContent = `⏳ Conectando à instância "${config.instanceName}" e gerando QR Code...`;
+    if (qrContainer) qrContainer.innerHTML = '<div style="padding:2rem; color:var(--text-muted);">Gerando QR Code...</div>';
+    openModal('modal-wa-qrcode');
+
+    try {
+        // 1. Tenta criar a instância única para esta empresa caso não exista
+        await fetch(`${config.apiUrl}/instance/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'apikey': config.apiKey },
+            body: JSON.stringify({
+                instanceName: config.instanceName,
+                qrcode: true,
+                integration: 'WHATSAPP-BAILEYS'
+            })
+        }).catch(() => {});
+
+        // 2. Busca o QR Code de conexão da instância da empresa
+        const res = await fetch(`${config.apiUrl}/instance/connect/${config.instanceName}`, {
+            headers: { 'apikey': config.apiKey }
+        });
+        const data = await res.json();
+
+        const base64 = data.base64 || data.qrcode?.base64 || data.code;
+        if (base64) {
+            const imgSrc = base64.startsWith('data:image') ? base64 : `data:image/png;base64,${base64}`;
+            if (qrContainer) {
+                qrContainer.innerHTML = `<img src="${imgSrc}" alt="QR Code WhatsApp" style="width:260px; height:260px; border-radius:12px; border:2px solid #25d366; background:white; padding:8px; box-shadow:0 8px 24px rgba(0,0,0,0.3);">`;
+            }
+            if (qrStatus) qrStatus.innerHTML = `📱 WhatsApp de <strong>${config.instanceName}</strong>: abra o WhatsApp no celular &gt; <strong>Aparelhos Conectados</strong> &gt; <strong>Conectar Aparelho</strong> e aponte para o QR Code acima.`;
+        } else if (data.instance?.state === 'open' || data.state === 'open') {
+            if (qrContainer) qrContainer.innerHTML = '<div style="font-size:3rem; margin:1rem 0;">✅</div><h4 style="color:#25d366;">WhatsApp deste Pet Shop já está Conectado!</h4>';
+            if (qrStatus) qrStatus.textContent = 'Esta unidade está pronta para enviar mensagens automáticas.';
+            setWhatsAppConfig({ connected: true });
+            renderWhatsApp();
+        } else {
+            if (qrContainer) qrContainer.innerHTML = '<div style="color:#f87171; padding:1.5rem;">⚠️ Não foi possível obter o QR Code.<br><small>Verifique se a Evolution API está ativa.</small></div>';
+            if (qrStatus) qrStatus.textContent = 'Erro ao carregar QR Code.';
+        }
+    } catch (err) {
+        if (qrContainer) qrContainer.innerHTML = '<div style="color:#f87171; padding:1.5rem;">❌ Erro de conexão com a Evolution API.<br><small>Servidor inacessível.</small></div>';
+        if (qrStatus) qrStatus.textContent = 'Servidor inacessível.';
+    }
+}
+
+/** Renderiza a seção WhatsApp completa */
+function renderWhatsApp() {
+    const config = getWhatsAppConfig(State.currentEmpresaId);
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId);
+    const logs     = (DB.get('whatsapp_mensagens_log') || []).filter(l => l.empresa_id === State.currentEmpresaId);
+
+    const totalOpt    = clientes.filter(c => c.whatsapp_opt_in).length;
+    const totalMkt    = clientes.filter(c => c.whatsapp_marketing).length;
+    const totalStatus = clientes.filter(c => c.whatsapp_status_pet).length;
+    const totalSem    = clientes.filter(c => !c.whatsapp_opt_in).length;
+
+    // KPIs
+    const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
+    setEl('wa-kpi-opt-in',     totalOpt);
+    setEl('wa-kpi-marketing',  totalMkt);
+    setEl('wa-kpi-status',     totalStatus);
+    setEl('wa-kpi-sem-opt',    totalSem);
+
+    // Preencher config
+    const urlEl = document.getElementById('wa-config-api-url');
+    const keyEl = document.getElementById('wa-config-api-key');
+    const instEl = document.getElementById('wa-config-instance');
+    if (urlEl) urlEl.value = config.apiUrl || '';
+    if (keyEl) keyEl.value = config.apiKey || '';
+    if (instEl) instEl.value = config.instanceName || '';
+
+    const statusEl = document.getElementById('wa-connection-status');
+    if (statusEl) {
+        statusEl.innerHTML = config.connected
+            ? `<span class="wa-status-badge connected">✅ Conectado</span>`
+            : (config.apiUrl ? `<span class="wa-status-badge disconnected">❌ Desconectado</span>` : `<span class="wa-status-badge disconnected">⚙️ Não configurado</span>`);
+    }
+
+    // Tabela de clientes com opt-in
+    const tbody = document.getElementById('wa-clientes-tbody');
+    if (tbody) {
+        tbody.innerHTML = clientes.map(c => {
+            const optBadge = c.whatsapp_opt_in
+                ? `<span class="wa-badge active">✅ Ativo</span>`
+                : `<span class="wa-badge inactive">❌ Sem opt-in</span>`;
+            const mktBadge   = c.whatsapp_marketing  ? `<span class="wa-badge mini mkt">📣 Mkt</span>`   : '';
+            const vendasBadge = c.whatsapp_vendas    ? `<span class="wa-badge mini vendas">🛒 Vendas</span>` : '';
+            const lemBadge   = c.whatsapp_lembretes  ? `<span class="wa-badge mini lem">📅 Lem.</span>`  : '';
+            const stsBadge   = c.whatsapp_status_pet ? `<span class="wa-badge mini sts">🐾 Status</span>` : '';
+            const origem     = c.whatsapp_opt_in_origem ? `<small class="wa-origem">${c.whatsapp_opt_in_origem}</small>` : '';
+            const numDisplay = c.whatsapp_numero ? c.whatsapp_numero.replace('55', '+55 ') : c.telefone || '—';
+            return `<tr>
+                <td><strong>${c.nome}</strong></td>
+                <td><code style="font-size:0.78rem;">${numDisplay}</code></td>
+                <td>${optBadge} ${origem}</td>
+                <td style="display:flex;flex-wrap:wrap;gap:0.25rem;padding:0.5rem 0;">${mktBadge}${vendasBadge}${lemBadge}${stsBadge}</td>
+                <td>
+                    <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+                        ${!c.whatsapp_opt_in ? `<button class="card-btn" onclick="enviarConviteOptIn(${c.id})" title="Enviar convite de opt-in">📨 Opt-in</button>` : ''}
+                        ${c.whatsapp_opt_in  ? `<button class="card-btn" onclick="abrirModalPrefsWhatsApp(${c.id})">⚙️ Prefs</button>` : ''}
+                        ${c.whatsapp_opt_in  ? `<button class="card-btn" style="color:#25d366;" onclick="abrirComposerMensagem(${c.id})">💬 Enviar</button>` : ''}
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // Log de mensagens
+    const logBody = document.getElementById('wa-log-tbody');
+    if (logBody) {
+        logBody.innerHTML = logs.slice(0, 30).map(l => {
+            const cl = (DB.get('clientes') || []).find(c => c.id === l.cliente_id);
+            const statusColor = l.status === 'enviada' ? '#10b981' : l.status === 'simulado' ? '#f59e0b' : l.status === 'enviando' ? '#38bdf8' : '#ef4444';
+            const tipoEmoji   = { status_pet: '🐾', lembrete: '📅', marketing: '📣', vendas: '🛒', opt_in: '📨', manual: '💬' }[l.tipo] || '💬';
+            return `<tr>
+                <td><small>${new Date(l.timestamp).toLocaleString('pt-BR')}</small></td>
+                <td>${cl ? cl.nome : l.numero}</td>
+                <td>${tipoEmoji} ${l.tipo}</td>
+                <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${l.mensagem}"><small>${l.mensagem}</small></td>
+                <td><span style="color:${statusColor};font-weight:700;">${l.status}</span></td>
+            </tr>`;
+        }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Nenhuma mensagem enviada ainda.</td></tr>';
+    }
+}
+
+/** Abre modal para editar preferências de opt-in do cliente */
+function abrirModalPrefsWhatsApp(clienteId) {
+    const clientes = DB.get('clientes') || [];
+    const c = clientes.find(cl => cl.id === clienteId);
+    if (!c) return;
+
+    const setCheck = (id, val) => { const el = document.getElementById(id); if (el) el.checked = !!val; };
+    const setVal   = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+
+    document.getElementById('wa-prefs-cliente-nome').textContent = c.nome;
+    document.getElementById('wa-prefs-cliente-id').value = clienteId;
+    setVal('wa-prefs-numero', c.whatsapp_numero || c.telefone?.replace(/\D/g, '') || '');
+    setCheck('wa-prefs-opt-in',     c.whatsapp_opt_in);
+    setCheck('wa-prefs-marketing',  c.whatsapp_marketing);
+    setCheck('wa-prefs-vendas',     c.whatsapp_vendas);
+    setCheck('wa-prefs-lembretes',  c.whatsapp_lembretes);
+    setCheck('wa-prefs-status-pet', c.whatsapp_status_pet);
+
+    openModal('modal-wa-prefs');
+}
+
+/** Salva preferências de opt-in do cliente */
+function salvarPrefsWhatsApp() {
+    const clienteId = parseInt(document.getElementById('wa-prefs-cliente-id')?.value);
+    const clientes  = DB.get('clientes') || [];
+    const idx = clientes.findIndex(c => c.id === clienteId);
+    if (idx === -1) return;
+
+    const getCheck = id => !!document.getElementById(id)?.checked;
+    const numero = (document.getElementById('wa-prefs-numero')?.value || '').replace(/\D/g, '');
+
+    const optIn = getCheck('wa-prefs-opt-in');
+    clientes[idx].whatsapp_numero    = numero ? (numero.startsWith('55') ? numero : '55' + numero) : clientes[idx].whatsapp_numero;
+    clientes[idx].whatsapp_opt_in    = optIn;
+    clientes[idx].whatsapp_marketing = optIn && getCheck('wa-prefs-marketing');
+    clientes[idx].whatsapp_vendas    = optIn && getCheck('wa-prefs-vendas');
+    clientes[idx].whatsapp_lembretes = optIn && getCheck('wa-prefs-lembretes');
+    clientes[idx].whatsapp_status_pet= optIn && getCheck('wa-prefs-status-pet');
+    if (optIn && !clientes[idx].whatsapp_opt_in_data) {
+        clientes[idx].whatsapp_opt_in_data   = new Date().toISOString();
+        clientes[idx].whatsapp_opt_in_origem = 'plataforma';
+    }
+    if (!optIn) {
+        clientes[idx].whatsapp_opt_in_data   = null;
+        clientes[idx].whatsapp_opt_in_origem = null;
+    }
+
+    DB.set('clientes', clientes);
+    DB.logAudit(State.currentEmpresaId, State.currentProfile, 'WhatsApp Prefs Salvas', `Cliente ${clientes[idx].nome} — opt_in: ${optIn}`);
+    State.showToast('✅ Preferências de comunicação salvas!', 'success');
+    closeModal('modal-wa-prefs');
+    renderWhatsApp();
+}
+
+/** Abre o composer para envio manual de mensagem */
+function abrirComposerMensagem(clienteId) {
+    const clientes = DB.get('clientes') || [];
+    const c = clientes.find(cl => cl.id === clienteId);
+    if (!c) return;
+
+    document.getElementById('wa-composer-cliente-id').value = clienteId;
+    document.getElementById('wa-composer-nome').textContent  = c.nome;
+    document.getElementById('wa-composer-numero').textContent = c.whatsapp_numero ? `+${c.whatsapp_numero}` : c.telefone;
+    document.getElementById('wa-composer-msg').value = '';
+    openModal('modal-wa-composer');
+}
+
+/** Usa um template pré-definido no composer */
+function usarTemplateWA(tipo) {
+    const clienteId = parseInt(document.getElementById('wa-composer-cliente-id')?.value);
+    const clientes  = DB.get('clientes') || [];
+    const pets      = DB.get('pets') || [];
+    const c = clientes.find(cl => cl.id === clienteId);
+    if (!c) return;
+
+    const pet = pets.find(p => p.cliente_id === c.id);
+    const petNome = pet ? pet.nome : 'seu pet';
+    const empresas = DB.get('empresas') || [];
+    const empresa  = empresas.find(e => e.id === State.currentEmpresaId) || {};
+    const nomePet  = petNome;
+    const nomeTutor = c.nome.split(' ')[0];
+
+    const templates = {
+        pronto:    `🐾 Olá *${nomeTutor}*! *${nomePet}* está PRONTO para retirada! 🎉\n📍 ${empresa.nome || 'CatDog Pet Center'}\n\nAté logo! 😊`,
+        lembrete:  `📅 Olá *${nomeTutor}*! Lembrete: *${nomePet}* tem agendamento amanhã!\n\nQualquer dúvida, estamos aqui. 🐾`,
+        marketing: `🎉 Olá *${nomeTutor}*! Temos uma novidade especial para *${nomePet}* esta semana.\n\nFale comigo para saber mais! 🐶`,
+        nps:       `⭐ Olá *${nomeTutor}*! Como foi a experiência do *${nomePet}* conosco?\n\nAvalie de 1 a 5 ⭐ — sua opinião é muito importante para nós! 🙏`,
+        vendas:    `🛒 Olá *${nomeTutor}*! Temos produtos especiais para *${nomePet}* disponíveis.\n\nQuer ver as novidades? 🐾`
+    };
+
+    const msgEl = document.getElementById('wa-composer-msg');
+    if (msgEl && templates[tipo]) msgEl.value = templates[tipo];
+}
+
+/** Envia mensagem do composer */
+async function enviarMensagemComposer() {
+    const clienteId = parseInt(document.getElementById('wa-composer-cliente-id')?.value);
+    const msg = (document.getElementById('wa-composer-msg')?.value || '').trim();
+    if (!msg) { State.showToast('⚠️ Digite uma mensagem antes de enviar.', 'warning'); return; }
+
+    const clientes = DB.get('clientes') || [];
+    const c = clientes.find(cl => cl.id === clienteId);
+    if (!c) return;
+
+    const btn = document.getElementById('btn-wa-composer-enviar');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Enviando...'; }
+
+    await enviarMensagemWhatsApp(c.whatsapp_numero, msg, clienteId, 'manual');
+
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Enviar'; }
+    closeModal('modal-wa-composer');
+    renderWhatsApp();
+}
+
+/** Envio em massa segmentado por categoria de opt-in */
+async function enviarMensagemSegmentada() {
+    const categoria  = document.getElementById('wa-broadcast-categoria')?.value;
+    const msg        = (document.getElementById('wa-broadcast-msg')?.value || '').trim();
+    if (!msg || !categoria) { State.showToast('⚠️ Preencha a mensagem e selecione a categoria.', 'warning'); return; }
+
+    const clientes = (DB.get('clientes') || []).filter(c => c.empresa_id === State.currentEmpresaId && c.whatsapp_opt_in);
+    const filtrados = clientes.filter(c => {
+        if (categoria === 'todos')     return true;
+        if (categoria === 'marketing') return c.whatsapp_marketing;
+        if (categoria === 'vendas')    return c.whatsapp_vendas;
+        if (categoria === 'lembretes') return c.whatsapp_lembretes;
+        if (categoria === 'status')    return c.whatsapp_status_pet;
+        return false;
+    });
+
+    if (filtrados.length === 0) { State.showToast('⚠️ Nenhum cliente elegível para esta segmentação.', 'warning'); return; }
+
+    if (!confirm(`Enviar mensagem para ${filtrados.length} cliente(s) com opt-in "${categoria}"?\n\nMensagem:\n"${msg.slice(0,80)}..."`)) return;
+
+    const btn = document.getElementById('btn-wa-broadcast-enviar');
+    if (btn) { btn.disabled = true; btn.textContent = `⏳ Enviando para ${filtrados.length}...`; }
+
+    for (const c of filtrados) {
+        const msgPersonalizada = msg.replace('{{nome}}', c.nome.split(' ')[0]).replace('{{pet}}', '');
+        await enviarMensagemWhatsApp(c.whatsapp_numero, msgPersonalizada, c.id, categoria);
+        await new Promise(r => setTimeout(r, 400)); // delay entre envios
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Enviar para Segmento'; }
+    State.showToast(`✅ Mensagem enviada para ${filtrados.length} clientes!`, 'success');
+    document.getElementById('wa-broadcast-msg').value = '';
+    renderWhatsApp();
+}
+
 // Initial Load
 window.addEventListener('DOMContentLoaded', () => {
     const profileSelector = document.getElementById('current-profile-select');
@@ -2949,4 +4271,42 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     switchTab('kanban');
+
+    // ── PWA: Registro do Service Worker ──────────────────────────
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then((reg) => {
+                console.log('[PataForma PWA] Service Worker registrado:', reg.scope);
+            })
+            .catch((err) => {
+                console.warn('[PataForma PWA] Service Worker falhou:', err);
+            });
+    }
+
+    // ── PWA: Banner "Instalar App" ────────────────────────────────
+    let deferredInstallPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+
+        // Mostra banner de instalação após 10 segundos (não intrusivo)
+        setTimeout(() => {
+            if (!deferredInstallPrompt) return;
+            State.showToast('📲 Instale o PataForma como app no seu dispositivo!', 'info', 8000, () => {
+                deferredInstallPrompt.prompt();
+                deferredInstallPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        State.showToast('🎉 PataForma instalado com sucesso!', 'success');
+                    }
+                    deferredInstallPrompt = null;
+                });
+            });
+        }, 10000);
+    });
+
+    window.addEventListener('appinstalled', () => {
+        deferredInstallPrompt = null;
+        State.showToast('✅ PataForma instalado! Acesse pelo ícone na tela inicial.', 'success');
+    });
 });

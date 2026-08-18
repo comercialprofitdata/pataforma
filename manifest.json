@@ -1,0 +1,67 @@
+{
+  "name": "PataForma ERP",
+  "short_name": "PataForma",
+  "description": "ERP completo para Pet Shops e Clínicas Veterinárias. Kanban, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e DRE.",
+  "start_url": "./",
+  "id": "pataforma-erp-v1",
+  "display": "standalone",
+  "display_fallback": ["minimal-ui", "browser"],
+  "orientation": "any",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "scope": "./",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Kanban Operacional",
+      "short_name": "Kanban",
+      "description": "Fluxo operacional de banho e tosa",
+      "url": "./#kanban",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Taxi Dog",
+      "short_name": "Taxi Dog",
+      "description": "Rastreamento de coleta e entrega",
+      "url": "./#taxi",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Estoque FEFO",
+      "short_name": "Estoque",
+      "description": "Gestao de estoque e validade",
+      "url": "./#estoque",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Financeiro",
+      "short_name": "DRE",
+      "description": "Fluxo de caixa e DRE gerencial",
+      "url": "./#financeiro",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

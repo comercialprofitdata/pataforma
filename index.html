@@ -2,10 +2,41 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PataForma — Gestão Inteligente para Pet Shops, Clínicas & Redes (SaaS B2B)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PataForma — Gestão Inteligente para Pet Shops, Clínicas &amp; Redes (SaaS B2B)</title>
     <meta name="description" content="PataForma: ERP #1 para Pet Shops e Clínicas Veterinárias. Kanban operacional, Ficha Técnica em ml, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e Financeiro DRE. Experimente 14 dias grátis.">
     <link rel="canonical" href="https://pataforma-bkj.pages.dev/">
+
+    <!-- ═══ PWA — Manifest e Ícones ═══════════════════════════════ -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PataForma">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="shortcut icon" href="./icon-192.png">
+
+    <!-- ═══ Open Graph — Compartilhamento Social ══════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PataForma — ERP #1 para Pet Shops &amp; Clínicas Veterinárias">
+    <meta property="og:description" content="Kanban operacional, Ficha Técnica em ml, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e Financeiro DRE integrado. 14 dias grátis.">
+    <meta property="og:url" content="https://pataforma-bkj.pages.dev/">
+    <meta property="og:image" content="https://pataforma-bkj.pages.dev/icon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="PataForma ERP">
+
+    <!-- ═══ Twitter / X Card ════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PataForma — ERP #1 para Pet Shops">
+    <meta name="twitter:description" content="Kanban, Ficha Técnica ml, Estoque FEFO, Táxi Dog GPS, Prontuário Vet e DRE. Experimente grátis.">
+    <meta name="twitter:image" content="https://pataforma-bkj.pages.dev/icon-512.png">
+
+    <!-- ═══ CSS ══════════════════════════════════════════════════ -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Schema.org JSON-LD: SoftwareApplication (SaaS Lead Acquisition) -->
@@ -122,8 +153,8 @@
                 <button class="btn-hero-secondary" style="font-size:0.82rem; padding:0.45rem 0.85rem;" onclick="abrirLoginOperacionalPIN()">
                     <span>🔑 Login Operacional (PIN)</span>
                 </button>
-                <button class="btn-area-cliente" onclick="abrirAreaClientePortal('cliente')">
-                    <span>🔐 Área do Cliente</span>
+                <button class="btn-area-cliente" onclick="abrirPortalTutor()">
+                    <span>🐾 Portal do Tutor</span>
                 </button>
             </div>
         </header>
@@ -667,6 +698,7 @@
             <button class="nav-btn" id="nav-crm" style="color:#f59e0b;" onclick="switchTab('crm')">🤝 CRM Vendas</button>
             <button class="nav-btn" style="color:#10b981;" id="nav-financeiro" onclick="switchTab('financeiro')">💰 Financeiro ERP</button>
             <button class="nav-btn" id="nav-dreasy" style="color:#38bdf8;" onclick="switchTab('dreasy')">🔗 Fluxo de Caixa / DREasy</button>
+            <button class="nav-btn" id="nav-whatsapp" style="color:#25d366;" onclick="switchTab('whatsapp')">📱 WhatsApp</button>
             <button class="nav-btn" id="nav-master-saas" onclick="switchTab('master-saas')" style="display: none; color: #38bdf8;">🏢 Gestão PataForma</button>
         </nav>
 
@@ -1084,9 +1116,13 @@
         <!-- 6. GESTÃO DE ESTOQUE SECTION -->
         <section class="view-section" id="section-estoque">
             <div class="action-header">
-                <h2 style="font-weight: 600;">Gestão de Estoque FEFO (Comercial vs. Insumos Internos)</h2>
+                <h2 style="font-weight: 600;">📦 Gestão de Estoque FEFO (Comercial vs. Insumos Internos)</h2>
                 <button class="btn-primary" onclick="openModal('modal-produto')">➕ Dar Entrada de Estoque</button>
             </div>
+
+            <!-- Banner dinâmico de alertas FEFO -->
+            <div id="estoque-alert-banner"></div>
+
             <div class="glass-panel table-panel">
                 <table class="data-table">
                     <thead>
@@ -1094,15 +1130,52 @@
                             <th>Produto / Insumo</th>
                             <th>Código / Lote</th>
                             <th>Finalidade</th>
-                            <th>Quantidade em Estoque</th>
-                            <th>Data de Vencimento</th>
-                            <th>Status da Validade</th>
+                            <th>Qtd em Estoque</th>
+                            <th>Vencimento</th>
+                            <th>Dias Restantes</th>
+                            <th>Status FEFO</th>
                         </tr>
                     </thead>
                     <tbody id="table-estoque-body"></tbody>
                 </table>
             </div>
+
+            <!-- ── Curva ABC de Produtos ──────────────────────────────── -->
+            <div class="abc-panel glass-panel" style="margin-top:1.5rem;">
+                <div class="abc-panel-header">
+                    <div>
+                        <h3 class="abc-panel-title">📊 Curva ABC — Análise de Pareto do Estoque</h3>
+                        <p class="abc-panel-sub">Classifica produtos pelo valor de estoque: 20% dos itens = 80% do capital investido</p>
+                    </div>
+                    <div class="abc-legend-row">
+                        <span class="abc-legend-badge abc-a">A — Críticos</span>
+                        <span class="abc-legend-badge abc-b">B — Importantes</span>
+                        <span class="abc-legend-badge abc-c">C — Secundários</span>
+                    </div>
+                </div>
+                <div class="abc-kpi-row" id="abc-kpi-row"></div>
+                <div class="abc-chart-wrapper">
+                    <canvas id="canvas-abc-pareto" class="abc-canvas"></canvas>
+                </div>
+                <table class="data-table abc-table" style="margin-top:1rem;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Produto / Insumo</th>
+                            <th>Categoria</th>
+                            <th>Qtd</th>
+                            <th>Valor Total (R$)</th>
+                            <th>% do Total</th>
+                            <th>% Acumulada</th>
+                            <th>Classe ABC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-abc-body"></tbody>
+                </table>
+            </div>
+
         </section>
+
 
         <!-- 7. MULTI-FILIAIS SECTION -->
         <section class="view-section" id="section-filiais">
@@ -1555,13 +1628,387 @@
                             <th>Detalhes da Operação</th>
                         </tr>
                     </thead>
-                    <tbody id="table-auditoria-body"></tbody>
+        <!-- 15. WHATSAPP EVOLUTION API SECTION -->
+        <section class="view-section" id="section-whatsapp">
+            <div class="action-header">
+                <h2 style="font-weight:700; color:#25d366;">📱 WhatsApp — Central de Comunicação (Evolution API)</h2>
+                <div style="display:flex;gap:0.5rem;">
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e);" onclick="openModal('modal-wa-composer'); document.getElementById('wa-composer-cliente-id').value=''; document.getElementById('wa-composer-nome').textContent='Selecionar'; document.getElementById('wa-composer-numero').textContent='—'; document.getElementById('wa-composer-msg').value=''">💬 Nova Mensagem</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="analytics-kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:1.5rem;">
+                <div class="analytics-kpi-card" style="border-color:rgba(37,211,102,0.4);">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-label">Com Opt-in</div>
+                    <div class="kpi-value" id="wa-kpi-opt-in" style="color:#25d366;">0</div>
+                    <div class="kpi-sub">clientes ativos</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(249,115,22,0.4);">
+                    <div class="kpi-icon">📣</div>
+                    <div class="kpi-label">Marketing</div>
+                    <div class="kpi-value" id="wa-kpi-marketing" style="color:#f97316;">0</div>
+                    <div class="kpi-sub">aceita promoções</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(168,85,247,0.4);">
+                    <div class="kpi-icon">🐾</div>
+                    <div class="kpi-label">Status Pet</div>
+                    <div class="kpi-value" id="wa-kpi-status" style="color:#a855f7;">0</div>
+                    <div class="kpi-sub">recebe avisos</div>
+                </div>
+                <div class="analytics-kpi-card" style="border-color:rgba(239,68,68,0.3);">
+                    <div class="kpi-icon">❌</div>
+                    <div class="kpi-label">Sem Opt-in</div>
+                    <div class="kpi-value" id="wa-kpi-sem-opt" style="color:#f87171;">0</div>
+                    <div class="kpi-sub">aguardando convite</div>
+                </div>
+            </div>
+
+            <!-- Painel de Configuração Evolution API -->
+            <div class="glass-panel" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+                <h3 style="color:#25d366;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;">⚙️ Configuração Evolution API <div id="wa-connection-status" style="margin-left:auto;"></div></h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;">
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:0.82rem;">URL da API</label>
+                        <input type="url" id="wa-config-api-url" placeholder="https://api.seuservidor.com" style="font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:0.82rem;">Global API Key</label>
+                        <input type="password" id="wa-config-api-key" placeholder="sua-apikey-aqui" style="font-size:0.85rem;">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:0.82rem;">Nome da Instance</label>
+                        <input type="text" id="wa-config-instance" placeholder="catdog-sp" style="font-size:0.85rem;">
+                    </div>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e);" onclick="salvarConfigWhatsApp()">💾 Salvar Configurações</button>
+                    <button class="btn-primary" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);" onclick="conectarOuGerarQRCodeWhatsApp()">📲 Conectar WhatsApp (QR Code)</button>
+                    <button class="card-btn" onclick="testarConexaoWhatsApp()">🔄 Testar Conexão</button>
+                    <small style="color:var(--text-muted);">Sem servidor? Funciona em modo simulado (abre WhatsApp Web)</small>
+                </div>
+            </div>
+
+            <!-- Envio em Massa (Broadcast) -->
+            <div class="glass-panel" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem;">
+                <h3 style="color:#f59e0b;margin-bottom:1rem;">📤 Envio em Massa por Segmento</h3>
+                <div style="display:grid;grid-template-columns:1fr 2fr auto;gap:1rem;align-items:end;">
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:0.82rem;">Segmento</label>
+                        <select id="wa-broadcast-categoria" style="font-size:0.85rem;">
+                            <option value="todos">Todos com opt-in</option>
+                            <option value="marketing">📣 Aceita Marketing</option>
+                            <option value="vendas">🛒 Aceita Vendas</option>
+                            <option value="lembretes">📅 Aceita Lembretes</option>
+                            <option value="status">🐾 Status do Pet</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:0.82rem;">Mensagem (use {{nome}} para o nome do tutor)</label>
+                        <textarea id="wa-broadcast-msg" placeholder="Ex: Olá {{nome}}! Temos novidades especiais esta semana 🎉" rows="2" style="font-size:0.85rem;resize:vertical;"></textarea>
+                    </div>
+                    <button id="btn-wa-broadcast-enviar" class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e);white-space:nowrap;" onclick="enviarMensagemSegmentada()">📤 Enviar para Segmento</button>
+                </div>
+            </div>
+
+            <!-- Tabela de Clientes com Opt-in -->
+            <h3 style="margin-bottom:1rem;font-weight:600;">👥 Clientes & Preferências de Comunicação</h3>
+            <div class="glass-panel table-panel" style="margin-bottom:1.5rem;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nome do Tutor</th>
+                            <th>WhatsApp</th>
+                            <th>Opt-in Status</th>
+                            <th>Preferências Ativas</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wa-clientes-tbody"></tbody>
+                </table>
+            </div>
+
+            <!-- Histórico de Mensagens Enviadas -->
+            <h3 style="margin-bottom:1rem;font-weight:600;">📋 Histórico de Mensagens Enviadas</h3>
+            <div class="glass-panel table-panel">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Mensagem</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wa-log-tbody"></tbody>
                 </table>
             </div>
         </section>
     </div>
 
     <!-- ================= MODAIS ================= -->
+
+    <!-- ===== FICHA DE ANAMNESE — Checklist de Entrada + Assinatura ===== -->
+    <div class="modal-overlay" id="modal-ficha-anamnese">
+        <div class="glass-panel modal-content" style="max-width:600px; width:100%;">
+
+            <div class="modal-header">
+                <div>
+                    <h3 id="anamnese-titulo" style="color:#818cf8; font-size:1rem; margin:0;">📋 Ficha de Anamnese</h3>
+                    <p id="anamnese-subtitulo" style="font-size:0.75rem; color:var(--text-muted); margin:0.25rem 0 0;"></p>
+                </div>
+                <button class="modal-close" onclick="closeModal('modal-ficha-anamnese')">&times;</button>
+            </div>
+
+            <div class="anamnese-body">
+
+                <!-- 1. Comportamento -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">😊 Comportamento <span class="anamnese-required">*</span></div>
+                    <div class="anamnese-radio-row">
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="comportamento" value="Docil">
+                            <span class="anamnese-opt-pill comportamento-docil">😊 Dócil</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="comportamento" value="Agitado">
+                            <span class="anamnese-opt-pill comportamento-agitado">😤 Agitado</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="comportamento" value="Ansioso">
+                            <span class="anamnese-opt-pill comportamento-ansioso">😰 Ansioso</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="comportamento" value="Agressivo">
+                            <span class="anamnese-opt-pill comportamento-agressivo">🔴 Agressivo</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2. Condição do Pelo -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">🧶 Condição do Pelo</div>
+                    <div class="anamnese-radio-row">
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pelo_condicao" value="Limpo e solto">
+                            <span class="anamnese-opt-pill pelo-ok">✅ Limpo / Solto</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pelo_condicao" value="Sujo">
+                            <span class="anamnese-opt-pill pelo-warn">⚠️ Sujo</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pelo_condicao" value="Emaranhado parcial">
+                            <span class="anamnese-opt-pill pelo-warn">🧶 Emaranhado parcial</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pelo_condicao" value="Emaranhado total">
+                            <span class="anamnese-opt-pill pelo-danger">❌ Emaranhado total</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Pele -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">🩺 Condição da Pele</div>
+                    <div class="anamnese-radio-row">
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pele" value="Normal">
+                            <span class="anamnese-opt-pill pelo-ok">✅ Normal</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pele" value="Ressecada">
+                            <span class="anamnese-opt-pill pelo-warn">🌵 Ressecada</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pele" value="Irritada">
+                            <span class="anamnese-opt-pill pelo-warn">🔸 Irritada</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="pele" value="Com ferida">
+                            <span class="anamnese-opt-pill pelo-danger">🩹 Com ferida</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 4. Condição Física Geral -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">💪 Condição Física Aparente</div>
+                    <div class="anamnese-radio-row">
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="condicao_fisica" value="Boa">
+                            <span class="anamnese-opt-pill pelo-ok">✅ Boa</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="condicao_fisica" value="Regular">
+                            <span class="anamnese-opt-pill pelo-warn">⚠️ Regular</span>
+                        </label>
+                        <label class="anamnese-radio-opt">
+                            <input type="radio" name="condicao_fisica" value="Comprometida">
+                            <span class="anamnese-opt-pill pelo-danger">🔴 Comprometida</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 5. Parasitas e Objetos -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">🔍 Parasitas / Objetos no Pelo</div>
+                    <div class="anamnese-check-row">
+                        <label class="anamnese-check-opt">
+                            <input type="checkbox" id="check-pulgas">
+                            <span>🦟 Pulgas visíveis</span>
+                        </label>
+                        <label class="anamnese-check-opt">
+                            <input type="checkbox" id="check-carrapatos">
+                            <span>🕷️ Carrapatos</span>
+                        </label>
+                        <label class="anamnese-check-opt">
+                            <input type="checkbox" id="check-objetos-pelo">
+                            <span>📌 Objetos no pelo</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 6. Lesões por Região -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">🗺️ Lesões / Machucados Pré-existentes</div>
+                    <div class="anamnese-lesoes-grid">
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-cabeca"><span>🐾 Cabeça</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-pescoco"><span>🐾 Pescoço</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-costas"><span>🐾 Costas</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-barriga"><span>🐾 Barriga</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-patas-dianteiras"><span>🐾 Patas dianteiras</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-patas-traseiras"><span>🐾 Patas traseiras</span></label>
+                        <label class="anamnese-check-opt"><input type="checkbox" id="lesao-cauda"><span>🐾 Cauda / Rabo</span></label>
+                    </div>
+                </div>
+
+                <!-- 7. Unhas e Ouvidos -->
+                <div class="anamnese-row-2col">
+                    <div class="anamnese-group" style="flex:1;">
+                        <div class="anamnese-group-label">💅 Unhas</div>
+                        <div class="anamnese-radio-row" style="flex-direction:column; gap:0.3rem;">
+                            <label class="anamnese-radio-opt"><input type="radio" name="unhas" value="Normal"><span class="anamnese-opt-pill pelo-ok">✅ Normal</span></label>
+                            <label class="anamnese-radio-opt"><input type="radio" name="unhas" value="Compridas"><span class="anamnese-opt-pill pelo-warn">⚠️ Compridas</span></label>
+                            <label class="anamnese-radio-opt"><input type="radio" name="unhas" value="Encravadas"><span class="anamnese-opt-pill pelo-danger">🔴 Encravadas</span></label>
+                        </div>
+                    </div>
+                    <div class="anamnese-group" style="flex:1;">
+                        <div class="anamnese-group-label">👂 Ouvidos</div>
+                        <div class="anamnese-radio-row" style="flex-direction:column; gap:0.3rem;">
+                            <label class="anamnese-radio-opt"><input type="radio" name="ouvidos" value="Normal"><span class="anamnese-opt-pill pelo-ok">✅ Normal</span></label>
+                            <label class="anamnese-radio-opt"><input type="radio" name="ouvidos" value="Sujos"><span class="anamnese-opt-pill pelo-warn">⚠️ Sujos</span></label>
+                            <label class="anamnese-radio-opt"><input type="radio" name="ouvidos" value="Inflamados"><span class="anamnese-opt-pill pelo-danger">🔴 Inflamados</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Observações -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label">📝 Observações do Tutor / Cuidados Especiais</div>
+                    <textarea id="anamnese-obs" class="anamnese-textarea" rows="2" placeholder="Ex: Pet não gosta de secador, sensível na barriga, usa coleira antipulgas..."></textarea>
+                </div>
+
+                <!-- 9. Assinatura Digital -->
+                <div class="anamnese-group">
+                    <div class="anamnese-group-label" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>✍️ Assinatura do Tutor <span style="font-size:0.7rem; color:var(--text-muted); font-weight:400;">(opcional)</span></span>
+                        <button type="button" class="anamnese-clear-btn" onclick="limparAssinaturaAnamnese()">🗑️ Limpar</button>
+                    </div>
+                    <div class="anamnese-canvas-wrapper">
+                        <canvas id="canvas-assinatura" class="anamnese-canvas" style="touch-action:none;"></canvas>
+                        <div class="anamnese-canvas-hint">Assine aqui com o dedo ou mouse</div>
+                    </div>
+                </div>
+
+            </div><!-- /anamnese-body -->
+
+            <!-- Rodapé com ações -->
+            <div class="anamnese-footer">
+                <button type="button" class="btn-hero-secondary" onclick="closeModal('modal-ficha-anamnese')">Cancelar</button>
+                <button type="button" class="btn-primary" onclick="salvarFichaAnamnese()" style="background:linear-gradient(135deg,#6366f1,#818cf8);">
+                    ✅ Confirmar Entrada
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== PORTAL DO TUTOR — Status em Tempo Real ===== -->
+    <div class="modal-overlay" id="modal-portal-tutor" style="align-items:flex-start; overflow-y:auto; padding:0;">
+        <div class="portal-tutor-shell">
+
+            <!-- Header do Portal -->
+            <div class="portal-tutor-header">
+                <div class="portal-tutor-brand">
+                    <span class="portal-tutor-logo">🐾</span>
+                    <div>
+                        <div class="portal-tutor-brand-name">PataForma</div>
+                        <div class="portal-tutor-brand-sub" id="portal-tutor-empresa-nome">Portal do Tutor</div>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal('modal-portal-tutor')" style="color:#fff;">&times;</button>
+            </div>
+
+            <!-- Step 1: Busca do Pet -->
+            <div id="portal-tutor-step-busca">
+                <div class="portal-tutor-search-area">
+                    <div class="portal-search-icon">🔍</div>
+                    <h2 class="portal-search-title">Acompanhe seu Pet</h2>
+                    <p class="portal-search-desc">Digite o nome do seu pet ou seu WhatsApp para ver o status do serviço em tempo real.</p>
+                    <div class="portal-search-input-group">
+                        <input type="text" id="portal-busca-pet" placeholder="Nome do pet ou seu WhatsApp..." autocomplete="off"
+                               oninput="buscarPetPortalTutor(this.value)">
+                        <button class="portal-search-btn" onclick="buscarPetPortalTutor(document.getElementById('portal-busca-pet').value)">
+                            Buscar
+                        </button>
+                    </div>
+                    <div id="portal-busca-resultados" class="portal-busca-resultados"></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Status do Pet Selecionado -->
+            <div id="portal-tutor-step-status" style="display:none;">
+
+                <!-- Card do Pet -->
+                <div class="portal-pet-card" id="portal-pet-card">
+                    <!-- Populado via JS -->
+                </div>
+
+                <!-- Timeline de Status (8 etapas) -->
+                <div class="portal-status-section">
+                    <h3 class="portal-section-title">📍 Status do Serviço</h3>
+                    <div class="portal-timeline" id="portal-timeline">
+                        <!-- Populado via JS -->
+                    </div>
+                </div>
+
+                <!-- Estimativa de Entrega -->
+                <div class="portal-eta-card" id="portal-eta-card">
+                    <!-- Populado via JS -->
+                </div>
+
+                <!-- Histórico de visitas anteriores -->
+                <div class="portal-historico-section" id="portal-historico-section">
+                    <h3 class="portal-section-title">📋 Histórico de Visitas</h3>
+                    <div id="portal-historico-lista"></div>
+                </div>
+
+                <!-- Ações -->
+                <div class="portal-actions-row">
+                    <button class="portal-action-btn portal-btn-whats" id="portal-btn-whats" onclick="contatoWhatsPortal()">
+                        💬 Falar com o Pet Shop
+                    </button>
+                    <button class="portal-action-btn portal-btn-back" onclick="voltarBuscaPortalTutor()">
+                        ← Buscar outro pet
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Login Portal Gateway com Abas Clean (Acesso Pet Shop vs Gestão PataForma) -->
     <div class="modal-overlay" id="modal-login-portal">
@@ -2404,64 +2851,215 @@
     </div>
 
     <!-- Modal Login Operacional PWA (Para Entregador, Banhista, Caixa, Vet) -->
+    <!-- ===== NOVO LOGIN OPERACIONAL — 2 PASSOS ===== -->
     <div class="modal-overlay" id="modal-login-operacional">
-        <div class="glass-panel modal-content" style="max-width:480px; padding:2rem; border-color:rgba(56,189,248,0.4);">
-            <div class="modal-header" style="margin-bottom:1rem;">
-                <div>
-                    <h3 style="color:#38bdf8; font-weight:800; font-size:1.3rem;">🔑 Login Operacional PWA</h3>
-                    <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">Acesso rápido para Entregador, Banhista, Tosador, Caixa e Vet</p>
-                </div>
-                <button class="modal-close" onclick="closeModal('modal-login-operacional')">&times;</button>
-            </div>
-            
-            <form onsubmit="executarLoginOperacionalPIN(event)">
-                <div class="form-group">
-                    <label>Unidade Pet Shop / Empresa:</label>
-                    <select id="login-operacional-empresa" style="font-weight:700; color:#38bdf8;"></select>
-                </div>
+        <div class="glass-panel modal-content pin-login-modal" style="border-color:rgba(56,189,248,0.35);">
 
-                <div class="form-group">
-                    <label>Selecione seu Perfil Operacional:</label>
-                    <select id="login-operacional-perfil" onchange="atualizarOpcoesOperadorLogin(this.value)" style="font-weight:700;">
-                        <option value="Entregador">🚚 Entregador (Táxi Dog)</option>
-                        <option value="Banhista" selected>🧼 Banhista / Tosador (Estética)</option>
-                        <option value="Recepcao">🛒 Atendente de Caixa / POS</option>
-                        <option value="Veterinario">🩺 Veterinário / Clínico</option>
-                        <option value="Admin">👑 Administrador / Gerente</option>
-                    </select>
+            <!-- STEP 1: Seleção de Avatar -->
+            <div id="pin-step-1">
+                <div class="pin-modal-header">
+                    <div>
+                        <h3 class="pin-modal-title">👋 Quem é você?</h3>
+                        <p class="pin-modal-sub" id="pin-empresa-nome">CatDog Pet Center</p>
+                    </div>
+                    <button class="modal-close" onclick="closeModal('modal-login-operacional')">&times;</button>
                 </div>
-
-                <div class="form-group">
-                    <label>Nome do Colaborador / Operador:</label>
-                    <select id="login-operacional-usuario" style="font-weight:600;"></select>
-                </div>
-
-                <div class="form-group">
-                    <label>PIN de Acesso Rápido (4 dígitos):</label>
-                    <input type="password" id="login-operacional-pin" placeholder="••••" maxlength="4" style="font-size:1.5rem; letter-spacing:0.5rem; text-align:center; font-weight:800;" value="1234" required>
-                </div>
-
-                <button type="submit" class="btn-hero-primary" style="width:100%; justify-content:center; padding:0.9rem; font-size:1.05rem; margin-top:0.5rem;">
-                    🚀 Entrar no Sistema Operacional
-                </button>
-            </form>
-
-            <div style="border-top:1px dashed rgba(255,255,255,0.1); margin-top:1.25rem; padding-top:1rem;">
-                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:0.5rem; text-align:center;">
-                    ⚡ Atalhos de 1-Clique por Função:
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-                    <button class="card-btn" style="color:#818cf8;" onclick="loginRapidoPerfil('Entregador')">🚚 Táxi Dog</button>
-                    <button class="card-btn" style="color:#34d399;" onclick="loginRapidoPerfil('Banhista')">🧼 Banho &amp; Tosa</button>
-                    <button class="card-btn" style="color:#fbbf24;" onclick="loginRapidoPerfil('Recepcao')">🛒 Caixa POS</button>
-                    <button class="card-btn" style="color:#2dd4bf;" onclick="loginRapidoPerfil('Veterinario')">🩺 Receita Vet</button>
+                <div class="avatar-grid" id="avatar-grid-funcionarios">
+                    <!-- Populado via JS -->
                 </div>
             </div>
+
+            <!-- STEP 2: Teclado PIN -->
+            <div id="pin-step-2" style="display:none;">
+                <div class="pin-modal-header">
+                    <button class="pin-back-btn" onclick="voltarParaAvatarGrid()">← Voltar</button>
+                    <button class="modal-close" onclick="closeModal('modal-login-operacional')">&times;</button>
+                </div>
+
+                <div class="pin-user-preview" id="pin-user-preview">
+                    <!-- Avatar + nome do selecionado -->
+                </div>
+
+                <!-- 4 dots de progresso -->
+                <div class="pin-dots" id="pin-dots">
+                    <span class="pin-dot" id="pd-0"></span>
+                    <span class="pin-dot" id="pd-1"></span>
+                    <span class="pin-dot" id="pd-2"></span>
+                    <span class="pin-dot" id="pd-3"></span>
+                </div>
+                <p class="pin-hint" id="pin-hint-msg">Digite seu PIN de 4 dígitos</p>
+
+                <!-- Teclado Numérico Estilo ATM -->
+                <div class="pin-keypad">
+                    <button class="pin-key" onclick="digitarPINLogin(1)">1</button>
+                    <button class="pin-key" onclick="digitarPINLogin(2)">2</button>
+                    <button class="pin-key" onclick="digitarPINLogin(3)">3</button>
+                    <button class="pin-key" onclick="digitarPINLogin(4)">4</button>
+                    <button class="pin-key" onclick="digitarPINLogin(5)">5</button>
+                    <button class="pin-key" onclick="digitarPINLogin(6)">6</button>
+                    <button class="pin-key" onclick="digitarPINLogin(7)">7</button>
+                    <button class="pin-key" onclick="digitarPINLogin(8)">8</button>
+                    <button class="pin-key" onclick="digitarPINLogin(9)">9</button>
+                    <button class="pin-key pin-key-del" onclick="apagarPINLogin()">⌫</button>
+                    <button class="pin-key" onclick="digitarPINLogin(0)">0</button>
+                    <button class="pin-key pin-key-ok" onclick="confirmarPINLogin()">OK</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <!-- Toast Popup Notifications -->
     <div id="toast-container" class="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MODAL: Preferências WhatsApp do Cliente               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-wa-prefs" onclick="closeModal('modal-wa-prefs')">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width:480px;">
+            <div class="modal-header">
+                <h3>📱 Preferências WhatsApp — <span id="wa-prefs-cliente-nome">Cliente</span></h3>
+                <button class="modal-close" onclick="closeModal('modal-wa-prefs')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="wa-prefs-cliente-id">
+
+                <div class="form-group">
+                    <label>Número WhatsApp (com DDD, sem +55)</label>
+                    <input type="tel" id="wa-prefs-numero" placeholder="11988881111">
+                </div>
+
+                <div class="wa-prefs-section">
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem;">Configure abaixo as categorias de mensagens que este cliente autorizou receber (conforme LGPD):</p>
+
+                    <label class="wa-toggle-row">
+                        <div class="wa-toggle-info">
+                            <span class="wa-toggle-icon">✅</span>
+                            <div>
+                                <strong>Opt-in geral</strong>
+                                <small>Cliente autoriza receber mensagens pelo WhatsApp</small>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="wa-prefs-opt-in" class="wa-toggle">
+                    </label>
+
+                    <label class="wa-toggle-row">
+                        <div class="wa-toggle-info">
+                            <span class="wa-toggle-icon">🐾</span>
+                            <div>
+                                <strong>Status do Pet em Tempo Real</strong>
+                                <small>Notificações automáticas do Kanban (ex: "Pet pronto!")</small>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="wa-prefs-status-pet" class="wa-toggle">
+                    </label>
+
+                    <label class="wa-toggle-row">
+                        <div class="wa-toggle-info">
+                            <span class="wa-toggle-icon">📅</span>
+                            <div>
+                                <strong>Lembretes de Agendamento</strong>
+                                <small>Avisos de banho, tosa e consultas agendadas</small>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="wa-prefs-lembretes" class="wa-toggle">
+                    </label>
+
+                    <label class="wa-toggle-row">
+                        <div class="wa-toggle-info">
+                            <span class="wa-toggle-icon">🛒</span>
+                            <div>
+                                <strong>Ofertas & Vendas</strong>
+                                <small>Produtos em promoção, novidades de loja</small>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="wa-prefs-vendas" class="wa-toggle">
+                    </label>
+
+                    <label class="wa-toggle-row">
+                        <div class="wa-toggle-info">
+                            <span class="wa-toggle-icon">📣</span>
+                            <div>
+                                <strong>Marketing & Promoções</strong>
+                                <small>Campanhas, descontos e comunicações gerais</small>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="wa-prefs-marketing" class="wa-toggle">
+                    </label>
+                </div>
+
+                <p style="font-size:0.72rem;color:var(--text-muted);margin-top:1rem;">🔒 Conformidade LGPD — Art. 7, I e IX. Consentimento registrado com data e hora.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('modal-wa-prefs')">Cancelar</button>
+                <button class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e);" onclick="salvarPrefsWhatsApp()">💾 Salvar Preferências</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MODAL: Composer de Mensagem WhatsApp                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-wa-composer" onclick="closeModal('modal-wa-composer')">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width:520px;">
+            <div class="modal-header">
+                <h3>💬 Enviar Mensagem WhatsApp</h3>
+                <button class="modal-close" onclick="closeModal('modal-wa-composer')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="wa-composer-cliente-id">
+                <div style="background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);border-radius:10px;padding:0.85rem;margin-bottom:1rem;">
+                    <div style="font-size:0.85rem;font-weight:700;" id="wa-composer-nome">—</div>
+                    <div style="font-size:0.78rem;color:#25d366;" id="wa-composer-numero">—</div>
+                </div>
+
+                <div style="margin-bottom:0.75rem;">
+                    <label style="font-size:0.82rem;margin-bottom:0.35rem;display:block;">Templates rápidos:</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+                        <button class="card-btn" onclick="usarTemplateWA('pronto')">🐾 Pet Pronto</button>
+                        <button class="card-btn" onclick="usarTemplateWA('lembrete')">📅 Lembrete</button>
+                        <button class="card-btn" onclick="usarTemplateWA('marketing')">📣 Marketing</button>
+                        <button class="card-btn" onclick="usarTemplateWA('nps')">⭐ NPS</button>
+                        <button class="card-btn" onclick="usarTemplateWA('vendas')">🛒 Venda</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mensagem</label>
+                    <textarea id="wa-composer-msg" rows="5" placeholder="Digite sua mensagem aqui... Use *negrito*, _itálico_." style="resize:vertical;font-size:0.9rem;font-family:inherit;"></textarea>
+                </div>
+                <p style="font-size:0.72rem;color:var(--text-muted);">Suporta formatação WhatsApp: *negrito*, _itálico_, ~tachado~</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('modal-wa-composer')">Cancelar</button>
+                <button id="btn-wa-composer-enviar" class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e);" onclick="enviarMensagemComposer()">📤 Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MODAL: Escanear QR Code da Evolution API              -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-wa-qrcode" onclick="closeModal('modal-wa-qrcode')">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width:420px; text-align:center;">
+            <div class="modal-header">
+                <h3>📲 Conectar WhatsApp via QR Code</h3>
+                <button class="modal-close" onclick="closeModal('modal-wa-qrcode')">✕</button>
+            </div>
+            <div class="modal-body" style="display:flex; flex-direction:column; align-items:center;">
+                <div id="wa-qrcode-container" style="min-height:260px; display:flex; align-items:center; justify-content:center;">
+                    <!-- QR Code Img or Loading inserted dynamically -->
+                </div>
+                <p id="wa-qrcode-status" style="font-size:0.82rem; color:var(--text-secondary); margin-top:1rem; line-height:1.4;">
+                    Carregando QR Code da Evolution API...
+                </p>
+            </div>
+            <div class="modal-footer" style="justify-content:center;">
+                <button class="btn-secondary" onclick="closeModal('modal-wa-qrcode')">Fechar</button>
+                <button class="card-btn" onclick="conectarOuGerarQRCodeWhatsApp()">🔄 Recarregar QR Code</button>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
