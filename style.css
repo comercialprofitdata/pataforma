@@ -622,6 +622,160 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-shrink: 0;
+}
+
+.btn-header-cta {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 3px 12px rgba(99, 102, 241, 0.3);
+}
+.btn-header-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-header-pin {
+    background: rgba(30, 41, 59, 0.8);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.btn-header-pin:hover { background: rgba(51, 65, 85, 0.9); border-color: rgba(255, 255, 255, 0.3); }
+
+.btn-header-tutor {
+    background: linear-gradient(135deg, #a855f7, #c084fc);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.btn-header-tutor:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-header-menu {
+    display: none;
+    background: rgba(30, 41, 59, 0.8);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+/* ── 📱 MOBILE DRAWER MENU ── */
+.mobile-drawer-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 999999;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.mobile-drawer-menu.active {
+    display: flex !important;
+}
+
+.mobile-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.btn-drawer-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-drawer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.drawer-link-btn {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(30, 41, 59, 0.6);
+    color: var(--text-main);
+}
+.drawer-link-btn.primary {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    border-color: transparent;
+    color: #fff;
+}
+
+.mobile-drawer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.6rem 0.5rem;
+    border-radius: 8px;
+    transition: all 0.15s;
+}
+.mobile-drawer-links a:hover {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .logo-brand-wrap {
@@ -651,101 +805,110 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
 @media (max-width: 768px) {
     /* 1. Landing Header & Hero */
     .landing-header {
-        padding: 0.55rem 0.75rem !important;
-        gap: 0.4rem !important;
+        padding: 0.5rem 0.65rem !important;
+        gap: 0.35rem !important;
     }
-    .landing-logo { gap: 0.4rem !important; }
-    .landing-logo-icon { font-size: 1.5rem !important; }
-    .landing-logo-text h1 { font-size: 1.05rem !important; }
+    .landing-logo { gap: 0.35rem !important; }
+    .landing-logo-icon { font-size: 1.4rem !important; }
+    .landing-logo-text h1 { font-size: 0.95rem !important; }
     .landing-logo-text p { display: none !important; }
     
+    .btn-header-menu {
+        display: flex !important;
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1.1rem !important;
+        padding: 0 !important;
+    }
+    .btn-header-tutor {
+        display: none !important;
+    }
     .landing-header-actions {
         display: flex !important;
-        gap: 0.25rem !important;
+        gap: 0.3rem !important;
         align-items: center !important;
     }
     .landing-header-actions .btn-header-cta {
-        padding: 0.38rem 0.55rem !important;
-        font-size: 0.72rem !important;
-        border-radius: 7px !important;
+        padding: 0.38rem 0.6rem !important;
+        font-size: 0.74rem !important;
+        border-radius: 20px !important;
         white-space: nowrap !important;
     }
-    .landing-header-actions .btn-header-pin,
-    .landing-header-actions .btn-header-tutor {
-        padding: 0.38rem 0.48rem !important;
-        font-size: 0.7rem !important;
-        border-radius: 7px !important;
+    .landing-header-actions .btn-header-pin {
+        padding: 0.38rem 0.55rem !important;
+        font-size: 0.74rem !important;
+        border-radius: 20px !important;
         white-space: nowrap !important;
     }
     
-    .landing-hero { padding: 2rem 0.85rem 1.5rem 0.85rem !important; }
-    .hero-title { font-size: 1.75rem !important; letter-spacing: -0.02em !important; }
-    .hero-subtitle { font-size: 0.9rem !important; margin-bottom: 1.5rem !important; }
-    .hero-ctas { flex-direction: column !important; width: 100% !important; gap: 0.6rem !important; }
+    .landing-hero { padding: 1.75rem 0.75rem 1.5rem 0.75rem !important; }
+    .hero-title { font-size: 1.65rem !important; line-height: 1.25 !important; letter-spacing: -0.02em !important; }
+    .hero-subtitle { font-size: 0.88rem !important; margin-bottom: 1.25rem !important; }
+    .hero-ctas { flex-direction: column !important; width: 100% !important; gap: 0.55rem !important; }
     .hero-ctas .btn-hero-primary,
-    .hero-ctas .btn-hero-secondary { width: 100% !important; justify-content: center !important; padding: 0.8rem 1rem !important; font-size: 0.9rem !important; }
-    .hero-proof { flex-direction: column !important; gap: 0.5rem !important; align-items: flex-start !important; }
+    .hero-ctas .btn-hero-secondary { width: 100% !important; justify-content: center !important; padding: 0.75rem 1rem !important; font-size: 0.88rem !important; }
+    .hero-proof { flex-direction: column !important; gap: 0.4rem !important; align-items: flex-start !important; }
     
     /* 2. ERP Main Header */
     #main-header {
         margin: 0.35rem 0.45rem 0 0.45rem !important;
-        padding: 0.65rem 0.75rem !important;
+        padding: 0.6rem 0.7rem !important;
         border-radius: 12px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.55rem !important;
+        gap: 0.5rem !important;
     }
     #main-header .logo-area {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 0.4rem !important;
+        gap: 0.35rem !important;
         width: 100% !important;
     }
     #main-header .logo-brand-wrap {
         display: flex !important;
         align-items: center !important;
-        gap: 0.4rem !important;
+        gap: 0.35rem !important;
         flex: 1 !important;
         min-width: 0 !important;
     }
-    #main-header .logo-icon { font-size: 1.4rem !important; }
+    #main-header .logo-icon { font-size: 1.3rem !important; }
     #main-header .logo-text { overflow: hidden !important; }
     #main-header .logo-text h1 {
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
         font-weight: 800 !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 160px !important;
+        max-width: 150px !important;
     }
     #main-header .logo-text p {
-        font-size: 0.68rem !important;
+        font-size: 0.65rem !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 160px !important;
+        max-width: 150px !important;
     }
     #main-header .header-quick-actions {
         display: flex !important;
         align-items: center !important;
-        gap: 0.3rem !important;
+        gap: 0.25rem !important;
     }
     #main-header .header-quick-actions .btn-header-site {
-        padding: 0.3rem 0.5rem !important;
-        font-size: 0.7rem !important;
+        padding: 0.28rem 0.45rem !important;
+        font-size: 0.68rem !important;
         border-radius: 6px !important;
     }
     #main-header .header-quick-actions .status-indicator {
-        padding: 0.25rem 0.45rem !important;
-        font-size: 0.68rem !important;
+        padding: 0.25rem 0.4rem !important;
+        font-size: 0.65rem !important;
         border-radius: 6px !important;
     }
     #main-header .header-controls {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 0.35rem !important;
+        gap: 0.3rem !important;
         width: 100% !important;
     }
     #main-header .filial-selector,
@@ -755,11 +918,11 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
     #main-header .filial-selector select,
     #main-header .role-selector select {
         width: 100% !important;
-        padding: 0.4rem 0.45rem !important;
+        padding: 0.35rem 0.4rem !important;
         font-size: 0.72rem !important;
         border-radius: 8px !important;
         background: rgba(15, 23, 42, 0.85) !important;
-        height: 34px !important;
+        height: 32px !important;
     }
     #main-header .card-btn,
     #main-header .btn-staff-login,
@@ -769,10 +932,10 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        padding: 0.35rem 0.45rem !important;
+        padding: 0.35rem 0.4rem !important;
         font-size: 0.72rem !important;
         border-radius: 8px !important;
-        height: 34px !important;
+        height: 32px !important;
         box-sizing: border-box !important;
     }
 
@@ -783,34 +946,34 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
 
     /* 4. ERP Navigation Bar (Horizontal Touch Carousel) */
     nav.main-nav {
-        margin: 0.35rem 0.45rem 0.55rem 0.45rem !important;
-        padding: 0.2rem 0.1rem 0.4rem 0.1rem !important;
+        margin: 0.3rem 0.45rem 0.5rem 0.45rem !important;
+        padding: 0.15rem 0.1rem 0.35rem 0.1rem !important;
         gap: 0.3rem !important;
     }
     .nav-btn {
-        padding: 0.4rem 0.7rem !important;
-        font-size: 0.74rem !important;
+        padding: 0.35rem 0.65rem !important;
+        font-size: 0.72rem !important;
         border-radius: 10px !important;
-        min-height: 34px !important;
+        min-height: 32px !important;
     }
 
     /* 5. ERP Views & Grids */
-    .view-section { padding: 0.35rem 0.45rem 1.5rem 0.45rem !important; }
+    .view-section { padding: 0.3rem 0.45rem 1.5rem 0.45rem !important; }
     .action-header {
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.5rem !important;
+        gap: 0.45rem !important;
     }
-    .action-header h2 { font-size: 1rem !important; }
-    .action-header .btn-primary { width: 100% !important; justify-content: center !important; padding: 0.6rem 1rem !important; }
+    .action-header h2 { font-size: 0.95rem !important; }
+    .action-header .btn-primary { width: 100% !important; justify-content: center !important; padding: 0.55rem 1rem !important; }
 
     .roi-grid { grid-template-columns: 1fr !important; }
     .pricing-grid { grid-template-columns: 1fr !important; }
     .feature-grid { grid-template-columns: 1fr !important; }
     .analytics-grid { grid-template-columns: 1fr !important; }
-    .kpi-grid { grid-template-columns: 1fr 1fr !important; gap: 0.45rem !important; }
-    .kpi-card { padding: 0.65rem !important; }
-    .kpi-value { font-size: 1.2rem !important; }
+    .kpi-grid { grid-template-columns: 1fr 1fr !important; gap: 0.4rem !important; }
+    .kpi-card { padding: 0.6rem !important; }
+    .kpi-value { font-size: 1.15rem !important; }
 
     /* 6. Modals on Mobile */
     .modal-box, .modal-content {
@@ -828,13 +991,12 @@ nav.main-nav::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: 1.6rem !important; }
+    .hero-title { font-size: 1.5rem !important; }
     .kpi-grid { grid-template-columns: 1fr !important; }
-    .landing-header { padding: 0.45rem 0.6rem !important; }
+    .landing-header { padding: 0.45rem 0.55rem !important; }
     .landing-header-actions .btn-header-cta span,
-    .landing-header-actions .btn-header-pin span,
-    .landing-header-actions .btn-header-tutor span {
-        font-size: 0.68rem !important;
+    .landing-header-actions .btn-header-pin span {
+        font-size: 0.7rem !important;
     }
 }
 

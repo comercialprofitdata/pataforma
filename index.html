@@ -136,7 +136,7 @@
                 <span class="landing-logo-icon">🐾</span>
                 <div class="landing-logo-text">
                     <h1>PataForma</h1>
-                    <p>SaaS ERP B2B Multi-Filial</p>
+                    <p>SaaS ERP B2B</p>
                 </div>
             </div>
 
@@ -149,18 +149,40 @@
             </ul>
 
             <!-- Clean Top-Right Buttons -->
-            <div style="display:flex; gap:0.5rem; align-items:center;">
-                <button class="btn-hero-primary" style="font-size:0.82rem; padding:0.45rem 0.95rem; background:linear-gradient(135deg,#6366f1,#818cf8);" onclick="exibirAppERP(); applyRBAC('Admin');">
-                    <span>🏬 Acessar ERP Demo</span>
+            <div class="landing-header-actions">
+                <button class="btn-header-cta" onclick="exibirAppERP(); applyRBAC('Admin');">
+                    <span>🏬 ERP Demo</span>
                 </button>
-                <button class="btn-hero-secondary" style="font-size:0.82rem; padding:0.45rem 0.85rem;" onclick="abrirLoginOperacionalPIN()">
-                    <span>🔑 Login PIN</span>
+                <button class="btn-header-pin" onclick="abrirLoginOperacionalPIN()">
+                    <span>🔑 PIN</span>
                 </button>
-                <button class="btn-area-cliente" onclick="abrirPortalTutor()">
-                    <span>🐾 Portal do Tutor</span>
+                <button class="btn-header-tutor" onclick="abrirPortalTutor()">
+                    <span>🐾 Tutor</span>
+                </button>
+                <button class="btn-header-menu" onclick="toggleMobileMenu()" aria-label="Abrir Menu">
+                    <span>☰</span>
                 </button>
             </div>
         </header>
+
+        <!-- Mobile Drawer Navigation -->
+        <div class="mobile-drawer-menu" id="mobile-drawer-menu">
+            <div class="mobile-drawer-header">
+                <span>🐾 Menu PataForma</span>
+                <button onclick="toggleMobileMenu()" class="btn-drawer-close">✕</button>
+            </div>
+            <div class="mobile-drawer-links">
+                <button class="drawer-link-btn primary" onclick="exibirAppERP(); applyRBAC('Admin'); toggleMobileMenu();">🏬 Acessar ERP Demo</button>
+                <button class="drawer-link-btn" onclick="abrirLoginOperacionalPIN(); toggleMobileMenu();">🔑 Login Operacional (PIN)</button>
+                <button class="drawer-link-btn" onclick="abrirPortalTutor(); toggleMobileMenu();">🐾 Acompanhe seu Pet (Portal do Tutor)</button>
+                <div style="border-top:1px solid rgba(255,255,255,0.1); margin:0.5rem 0;"></div>
+                <a href="#recursos" onclick="toggleMobileMenu()">📋 Recursos &amp; Módulos</a>
+                <a href="#ficha-tecnica" onclick="toggleMobileMenu()">🧪 Ficha Técnica em ml</a>
+                <a href="#calculadora-roi" onclick="toggleMobileMenu()">📊 Calculadora ROI</a>
+                <a href="#prontuario-vet" onclick="toggleMobileMenu()">🩺 Prontuário Veterinário</a>
+                <a href="#planos" onclick="toggleMobileMenu()">💳 Planos &amp; Preços</a>
+            </div>
+        </div>
 
         <!-- Hero Section -->
         <section class="landing-hero">

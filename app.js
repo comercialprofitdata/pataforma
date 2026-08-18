@@ -1194,6 +1194,11 @@ function voltarParaLandingPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-drawer-menu');
+    if (menu) menu.classList.toggle('active');
+}
+
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
