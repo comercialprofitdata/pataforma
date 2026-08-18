@@ -37,7 +37,7 @@
     <meta name="twitter:image" content="https://pataforma-bkj.pages.dev/icon-512.png">
 
     <!-- ═══ CSS ══════════════════════════════════════════════════ -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.5">
 
     <!-- Schema.org JSON-LD: SoftwareApplication (SaaS Lead Acquisition) -->
     <script type="application/ld+json">
@@ -3104,6 +3104,15 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=2.5"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js?v=2.5').then(reg => {
+                    reg.update();
+                }).catch(e => console.warn('SW:', e));
+            });
+        }
+    </script>
 </body>
 </html>
