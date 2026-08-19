@@ -1212,7 +1212,6 @@ function alternarModoPortal(modo) {
         if (tabCliente) tabCliente.classList.add('active');
         if (formCliente) formCliente.style.display = 'block';
         if (titleEl) titleEl.innerHTML = '🔐 Acesso ao Pet Shop — PataForma';
-        atualizarEmpresasPortalLogin();
     } else if (modo === 'gestor') {
         if (tabGestor) tabGestor.classList.add('active');
         if (formGestor) formGestor.style.display = 'block';
@@ -1242,6 +1241,9 @@ function iniciarSessaoDemo() {
     
     const sandboxBanner = document.getElementById('sandbox-banner');
     if (sandboxBanner) sandboxBanner.style.display = 'flex';
+    
+    const masterTopBar = document.getElementById('master-top-bar');
+    if (masterTopBar) masterTopBar.style.display = 'none';
     
     exibirAppERP();
 }
@@ -1308,7 +1310,33 @@ function loginPortalSubmit(e) {
     const sandboxBanner = document.getElementById('sandbox-banner');
     if (sandboxBanner) sandboxBanner.style.display = 'none';
     
+    const masterTopBar = document.getElementById('master-top-bar');
+    if (masterTopBar) masterTopBar.style.display = 'none';
+    
     exibirAppERP();
+}
+
+function abrirPainelMasterGestor() {
+    const masterTopBar = document.getElementById('master-top-bar');
+    if (masterTopBar) masterTopBar.style.display = 'flex';
+    
+    const sandboxBanner = document.getElementById('sandbox-banner');
+    if (sandboxBanner) sandboxBanner.style.display = 'none';
+    
+    popularEmpresasMasterTopBar();
+}
+
+function popularEmpresasMasterTopBar() {
+    const sel = document.getElementById('select-empresa-ativa');
+    if (!sel || !DB) return;
+    const empresas = DB.empresas || (DB.get ? DB.get('empresas') : []);
+    sel.innerHTML = empresas.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
+}
+
+function logoutMaster() {
+    const masterTopBar = document.getElementById('master-top-bar');
+    if (masterTopBar) masterTopBar.style.display = 'none';
+    voltarParaLandingPage();
 }
 
 function loginGestorDirectSubmit(e) {
@@ -1316,12 +1344,12 @@ function loginGestorDirectSubmit(e) {
     const user = (document.getElementById('input-portal-gestor-user').value || '').trim();
     const pass = (document.getElementById('input-portal-gestor-pass').value || '').trim();
     
-    // Senha Master oficial: 96726842 (ou variação 96723842)
+    // Senha Master oficial: 96726842 ou 96723842
     if (pass === '96726842' || pass === '96723842') {
         closeModal('modal-login-portal');
         abrirPainelMasterGestor();
         exibirAppERP();
-        switchTab('tab-admin-master');
+        applyRBAC('Admin');
     } else {
         alert('❌ Chave Mestra incorreta. Acesso não autorizado.');
     }
@@ -1542,7 +1570,7 @@ function salvarEmpresa(e) {
     };
 
     closeModal('modal-empresa');
-    populatePortalLoginOptions();
+    popularEmpresasMasterTopBar();
     renderEmpresasSelector();
 
     // Populate Created Credentials Modal
@@ -1605,73 +1633,6 @@ function trocarFilialAtiva(filialId) {
     
     applyRBAC(State.currentProfile);
     State.showToast(`📍 Unidade alterada para: ${filial ? filial.nome : 'Filial'}`, 'info');
-}
-
-// 3. STAFF LOGIN PORTAL & RBAC
-function populatePortalLoginOptions() {
-    const empresas = DB.get('empresas') || [];
-    const empresaSelect = document.getElementById('select-portal-empresa');
-    if (empresaSelect) {
-        empresaSelect.innerHTML = '';
-        empresas.forEach(e => empresaSelect.innerHTML += `<option value="${e.id}">${e.nome}</option>`);
-    }
-    atualizarFiliaisPortalLogin();
-}
-
-function atualizarFiliaisPortalLogin() {
-    const empresaId = parseInt(document.getElementById('select-portal-empresa').value || State.currentEmpresaId);
-    const filiais = (DB.get('filiais') || []).filter(f => f.empresa_id === empresaId);
-    const filialSelect = document.getElementById('select-portal-filial');
-    if (filialSelect) {
-        filialSelect.innerHTML = '';
-        filiais.forEach(f => filialSelect.innerHTML += `<option value="${f.id}">${f.nome}</option>`);
-    }
-    
-    const usuarios = (DB.get('usuarios') || []).filter(u => u.empresa_id === empresaId);
-    const usuarioSelect = document.getElementById('select-portal-usuario');
-    if (usuarioSelect) {
-        usuarioSelect.innerHTML = '';
-        usuarios.forEach(u => usuarioSelect.innerHTML += `<option value="${u.id}">${u.nome} (${u.cargo || u.perfil})</option>`);
-    }
-}
-
-function loginPortalSubmit(e) {
-    e.preventDefault();
-    const userId = parseInt(document.getElementById('select-portal-usuario').value);
-    const filialId = parseInt(document.getElementById('select-portal-filial').value);
-    const usuarios = DB.get('usuarios');
-    const user = usuarios.find(u => u.id === userId);
-
-    if (user) {
-        State.currentUser = user;
-        State.currentProfile = user.perfil;
-        State.currentEmpresaId = user.empresa_id;
-        State.currentFilialId = filialId;
-
-        const sessionContainer = document.getElementById('user-session-container');
-        if (sessionContainer) {
-            sessionContainer.innerHTML = `
-                <div class="user-session-widget">
-                    <span>👤 <strong>${user.nome}</strong> (${user.cargo || user.perfil})</span>
-                    <button onclick="logoutFuncionario()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#f87171; padding:0.15rem 0.4rem; border-radius:4px; cursor:pointer; font-size:0.7rem;">Sair</button>
-                </div>
-            `;
-        }
-
-        closeModal('modal-login-portal');
-        exibirAppERP();
-        renderFiliaisHeaderSelector();
-        applyRBAC(user.perfil);
-
-        DB.logAudit(State.currentEmpresaId, user.nome, 'Login Portal', `Usuário ${user.nome} logou na filial #${filialId}`);
-        State.showToast(`👋 Bem-vindo(a), ${user.nome}! Área do cliente carregada.`, 'success');
-
-        if (user.perfil === 'Entregador') switchTab('taxi');
-        else if (user.perfil === 'Banhista') switchTab('kanban');
-        else if (user.perfil === 'Recepcao') switchTab('caixa');
-        else if (user.perfil === 'Veterinario') switchTab('prontuario');
-        else switchTab('kanban');
-    }
 }
 
 function logoutFuncionario() {
@@ -3605,7 +3566,7 @@ function populateSelectOptions() {
         produtos.forEach(p => prodTransf.innerHTML += `<option value="${p.id}">${p.nome} (${p.categoria})</option>`);
     }
 
-    populatePortalLoginOptions();
+    popularEmpresasMasterTopBar();
     atualizarOrcamentoDinâmicoAgendamento();
 }
 
