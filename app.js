@@ -1246,7 +1246,6 @@ function iniciarSessaoDemo() {
     exibirAppERP();
 }
 
-function atualizarEmpresasPortalLogin() {
 function togglePasswordVisibility(inputId, btnEl) {
     const input = document.getElementById(inputId);
     if (!input) return;
