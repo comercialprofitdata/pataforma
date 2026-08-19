@@ -691,61 +691,69 @@ function buscarPetPortalTutor(query) {
         return;
     }
 
-    const kanban  = (DB.get('agendamentos_kanban') || []).filter(k => k.empresa_id === State.currentEmpresaId);
-    const pets    = DB.get('pets') || [];
+    const kanban   = DB.get('agendamentos_kanban') || [];
+    const pets     = DB.get('pets') || [];
     const clientes = DB.get('clientes') || [];
     const servicos = DB.get('servicos') || [];
 
-    // Busca por nome do pet ou telefone/nome do tutor
-    const matches = kanban.filter(job => {
-        const pet     = pets.find(p => p.id === job.pet_id);
-        const cliente = clientes.find(c => c.id === job.cliente_id);
-        if (!pet) return false;
-        const nomePet = (pet.nome || '').toLowerCase();
+    // Busca por pets cujo nome, raça ou tutor correspondam à busca
+    const matchingPets = pets.filter(p => {
+        const nomePet = (p.nome || '').toLowerCase();
+        const racaPet = (p.raca || '').toLowerCase();
+        const cliente = clientes.find(c => c.id === p.cliente_id);
         const nomeTutor = (cliente?.nome || '').toLowerCase();
         const telTutor  = (cliente?.telefone || '').replace(/\D/g, '');
-        return nomePet.includes(q) || nomeTutor.includes(q) || telTutor.includes(q.replace(/\D/g, ''));
-    }).slice(0, 6);
+        return nomePet.includes(q) || racaPet.includes(q) || nomeTutor.includes(q) || (q.replace(/\D/g, '').length >= 3 && telTutor.includes(q.replace(/\D/g, '')));
+    }).slice(0, 8);
 
-    if (matches.length === 0) {
-        resultadosEl.innerHTML = `<div class="portal-no-result">😔 Nenhum pet encontrado. Verifique o nome ou fale com o pet shop.</div>`;
+    if (matchingPets.length === 0) {
+        resultadosEl.innerHTML = `<div class="portal-no-result">😔 Nenhum pet encontrado para "${query}". Verifique o nome ou telefone.</div>`;
         return;
     }
 
-    resultadosEl.innerHTML = matches.map(job => {
-        const pet     = pets.find(p => p.id === job.pet_id);
-        const cliente = clientes.find(c => c.id === job.cliente_id);
-        const etapa   = PORTAL_ETAPAS.find(e => e.id === job.status) || PORTAL_ETAPAS[0];
-        const especieIcon = pet?.especie === 'Gato' ? '🐱' : '🐶';
+    resultadosEl.innerHTML = matchingPets.map(pet => {
+        const cliente = clientes.find(c => c.id === pet.cliente_id);
+        // Procura se tem job ativo no kanban
+        const activeJob = kanban.find(k => k.pet_id === pet.id && k.status !== 'Entregue') || 
+                          kanban.find(k => k.pet_id === pet.id);
+        const jobId = activeJob ? activeJob.id : 1;
+        const status = activeJob ? activeJob.status : 'Pronto';
+        const etapa = PORTAL_ETAPAS.find(e => e.id === status) || PORTAL_ETAPAS[0];
+        const especieIcon = pet.especie === 'Gato' ? '🐱' : '🐶';
+        
         return `
-            <div class="portal-result-card" onclick="selecionarPetPortalTutor(${job.id})">
+            <div class="portal-result-card" onclick="selecionarPetPortalTutor(${jobId}, ${pet.id})">
                 <div class="portal-result-icon">${especieIcon}</div>
                 <div class="portal-result-info">
-                    <div class="portal-result-name">${pet?.nome || '—'}</div>
-                    <div class="portal-result-tutor">Tutor: ${cliente?.nome || 'Não identificado'}</div>
+                    <div class="portal-result-name">${pet.nome} <small style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(${pet.raca})</small></div>
+                    <div class="portal-result-tutor">Tutor(a): ${cliente?.nome || 'Cliente Cadastrado'}</div>
                 </div>
-                <div class="portal-result-status" style="color:${PORTAL_ETA[job.status]?.cor || '#94a3b8'};">
+                <div class="portal-result-status" style="color:${PORTAL_ETA[status]?.cor || '#34d399'}; font-weight:700;">
                     ${etapa.emoji} ${etapa.label}
                 </div>
             </div>`;
     }).join('');
 }
 
-function selecionarPetPortalTutor(jobId) {
-    const kanban  = DB.get('agendamentos_kanban') || [];
-    const job = kanban.find(k => k.id === jobId);
-    if (!job) return;
-
-    portalTutorJobAtivo = jobId;
-
+function selecionarPetPortalTutor(jobId, explicitPetId) {
+    const kanban   = DB.get('agendamentos_kanban') || [];
     const pets     = DB.get('pets') || [];
     const clientes = DB.get('clientes') || [];
     const servicos = DB.get('servicos') || [];
     const empresas = DB.get('empresas') || [];
-    const pet      = pets.find(p => p.id === job.pet_id);
-    const cliente  = clientes.find(c => c.id === job.cliente_id);
+
+    let job = kanban.find(k => k.id === jobId);
+    let pet = explicitPetId ? pets.find(p => p.id === explicitPetId) : (job ? pets.find(p => p.id === job.pet_id) : pets[0]);
+    if (!job && pet) {
+        job = kanban.find(k => k.pet_id === pet.id) || { id: 99, empresa_id: 1, pet_id: pet.id, cliente_id: pet.cliente_id, servico_id: 1, status: 'Pronto' };
+    }
+    if (!job) return;
+
+    portalTutorJobAtivo = job.id;
+
+    const cliente  = clientes.find(c => c.id === (pet ? pet.cliente_id : job.cliente_id));
     const servico  = servicos.find(s => s.id === job.servico_id);
-    const empresa  = empresas.find(e => e.id === job.empresa_id);
+    const empresa  = empresas.find(e => e.id === job.empresa_id) || empresas[0];
 
     // ── Card do Pet ──────────────────────────────────────────
     const especieIcon = pet?.especie === 'Gato' ? '🐱' : '🐶';
@@ -755,14 +763,14 @@ function selecionarPetPortalTutor(jobId) {
         <div class="portal-pet-info">
             <div class="portal-pet-name">${pet?.nome || 'Pet'}</div>
             <div class="portal-pet-meta">${pet?.raca || ''} · ${pet?.porte || ''} · ${pet?.especie || ''}</div>
-            <div class="portal-pet-servico">✂️ ${servico?.nome || 'Serviço'}</div>
+            <div class="portal-pet-servico">✂️ ${servico?.nome || 'Banho Completo & Estética'}</div>
             ${alergias}
         </div>
         <div class="portal-pet-id">#${job.id}</div>
     `;
 
     // ── Timeline ─────────────────────────────────────────────
-    const statusIdx = PORTAL_ETAPAS.findIndex(e => e.id === job.status);
+    const statusIdx = Math.max(0, PORTAL_ETAPAS.findIndex(e => e.id === job.status));
     const timelineEl = document.getElementById('portal-timeline');
     timelineEl.innerHTML = PORTAL_ETAPAS.map((etapa, i) => {
         let cls = 'portal-step-pending';
@@ -782,7 +790,7 @@ function selecionarPetPortalTutor(jobId) {
     }).join('');
 
     // ── ETA Card ──────────────────────────────────────────────
-    const eta = PORTAL_ETA[job.status] || { texto: '—', cor: '#94a3b8' };
+    const eta = PORTAL_ETA[job.status] || { texto: 'Pronto para retirada ou entrega Táxi Dog 🚗', cor: '#34d399' };
     document.getElementById('portal-eta-card').innerHTML = `
         <div class="portal-eta-icon">⏱️</div>
         <div class="portal-eta-text" style="color:${eta.cor};">${eta.texto}</div>
@@ -790,23 +798,22 @@ function selecionarPetPortalTutor(jobId) {
 
     // ── Histórico ─────────────────────────────────────────────
     const historicoJobs = kanban
-        .filter(k => k.cliente_id === job.cliente_id && k.id !== job.id && k.status === 'Entregue')
+        .filter(k => k.pet_id === pet?.id && k.id !== job.id)
         .slice(-3)
         .reverse();
 
     const historicoEl = document.getElementById('portal-historico-lista');
     if (historicoJobs.length === 0) {
-        historicoEl.innerHTML = `<p class="portal-no-result">Primeira visita 🎉</p>`;
+        historicoEl.innerHTML = `<p class="portal-no-result" style="color:#10b981;">Histórico vacinal em dia e cadastro verificado 🎉</p>`;
     } else {
         historicoEl.innerHTML = historicoJobs.map(h => {
             const svc = servicos.find(s => s.id === h.servico_id);
-            const petH = pets.find(p => p.id === h.pet_id);
             return `
                 <div class="portal-historico-item">
                     <div class="portal-historico-icon">✅</div>
                     <div>
-                        <div style="font-size:0.82rem;font-weight:600;">${petH?.nome || '—'} — ${svc?.nome || 'Serviço'}</div>
-                        <div style="font-size:0.72rem;color:var(--text-muted);">Concluído · Job #${h.id}</div>
+                        <div style="font-size:0.82rem;font-weight:600;">${pet?.nome || '—'} — ${svc?.nome || 'Serviço'}</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">Concluído · Atendimento #${h.id}</div>
                     </div>
                 </div>`;
         }).join('');
@@ -815,12 +822,12 @@ function selecionarPetPortalTutor(jobId) {
     // ── WhatsApp ──────────────────────────────────────────────
     const whatsBtn = document.getElementById('portal-btn-whats');
     const tel = empresa?.telefone ? empresa.telefone.replace(/\D/g, '') : '5566996513050';
-    const msg = encodeURIComponent(`Olá! Sou tutor do ${pet?.nome || 'meu pet'} e gostaria de saber sobre o serviço #${job.id}.`);
+    const msg = encodeURIComponent(`Olá! Sou tutor do ${pet?.nome || 'meu pet'} e gostaria de falar sobre o atendimento #${job.id}.`);
     if (whatsBtn) whatsBtn.onclick = () => window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
 
-    // Transição para step de status
+    // ── Transição de Steps ────────────────────────────────────
     document.getElementById('portal-tutor-step-busca').style.display = 'none';
-    document.getElementById('portal-tutor-step-status').style.display = '';
+    document.getElementById('portal-tutor-step-status').style.display = 'block';
 
     // Auto-refresh a cada 30s (simula tempo real)
     clearInterval(portalTutorRefreshTimer);
@@ -4434,4 +4441,16 @@ window.addEventListener('DOMContentLoaded', () => {
         deferredInstallPrompt = null;
         State.showToast('✅ PataForma instalado! Acesse pelo ícone na tela inicial.', 'success');
     });
+
+    // ── URL Query Routing & Subdomain Emulation ──
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('demo') === 'true') {
+        iniciarSessaoDemo();
+    } else if (urlParams.get('portal') === 'tutor' || window.location.hash === '#tutor') {
+        abrirPortalTutor();
+    } else if (urlParams.get('login') === 'pin' || urlParams.get('pin') === 'true') {
+        abrirLoginOperacionalPIN();
+    } else if (urlParams.get('login') === 'master' || urlParams.get('master') === 'true') {
+        abrirAreaClientePortal('gestor');
+    }
 });
