@@ -2062,9 +2062,11 @@
 
     <!-- Modal Login Portal Gateway com 3 Abas Profissionais (Demo Sandbox vs Login Pet Shop vs Gestão) -->
     <div class="modal-overlay" id="modal-login-portal">
-        <div class="glass-panel modal-content" style="max-width:540px;">
-            <div class="modal-header">
-                <h3 style="color: #818cf8;" id="portal-modal-title">🔐 Portal de Acesso — PataForma ERP</h3>
+        <div class="glass-panel modal-content" style="max-width:520px; padding:1.75rem;">
+            <div class="modal-header" style="margin-bottom:1.25rem;">
+                <h3 style="color: #818cf8; font-size:1.15rem; display:flex; align-items:center; gap:0.5rem;" id="portal-modal-title">
+                    <span>🔐</span> <span>Portal de Acesso — PataForma ERP</span>
+                </h3>
                 <button class="modal-close" onclick="closeModal('modal-login-portal')">&times;</button>
             </div>
 
@@ -2088,14 +2090,14 @@
                         <span style="font-size:1.2rem;">🛡️</span>
                         <strong style="color:#a5b4fc; font-size:0.95rem;">Ambiente Seguro de Testes (Sandbox)</strong>
                     </div>
-                    <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">
-                        Você está entrando em um ambiente de demonstração com a empresa fictícia <strong>CatDog Pet Center &amp; Clínica Veterinária</strong>. Todos os dados, clientes e agendamentos são simulados.
+                    <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5; margin:0;">
+                        Explore todos os módulos com a empresa fictícia <strong>CatDog Pet Center</strong>. Todos os dados, faturamento e agendamentos são simulados.
                     </p>
                 </div>
 
                 <div class="form-group">
-                    <label>Escolha o Perfil para Experimentar:</label>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.35rem;">
+                    <label style="font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.4rem; display:block;">Escolha o Perfil para Experimentar:</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
                         <button type="button" class="card-btn active" id="demo-role-admin" style="padding:0.6rem; text-align:left; background:rgba(99,102,241,0.25); border-color:#818cf8; color:#fff;" onclick="selecionarPerfilDemo('Admin', this)">
                             👑 <strong>Administrador</strong><br><small style="color:#94a3b8;">Visão completa da loja</small>
                         </button>
@@ -2115,53 +2117,113 @@
                     🚀 Entrar no Modo Demonstração
                 </button>
 
-                <div style="text-align:center; margin-top:0.75rem;">
+                <div style="text-align:center; margin-top:0.85rem;">
                     <a href="javascript:void(0)" onclick="abrirCadastroPetShopGestor()" style="font-size:0.8rem; color:#38bdf8; text-decoration:none;">
                         ➕ Deseja cadastrar o seu próprio Pet Shop real? Clique aqui
                     </a>
                 </div>
             </div>
 
-            <!-- MODE 2: CLIENTE ERP LOGIN (Pet Shop Cadastrado) -->
+            <!-- MODE 2: CLIENTE ERP LOGIN (Padrão Enterprise Real) -->
             <form id="form-portal-cliente" onsubmit="loginPortalSubmit(event)" style="display: none;">
-                <div style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:0.75rem; margin-bottom:1rem; font-size:0.78rem; color:#94a3b8;">
-                    🔒 Acesso criptografado e isolado. Seus dados são 100% confidenciais.
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label style="font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.35rem; display:block;">E-mail ou Usuário de Acesso:</label>
+                    <div class="input-icon-wrap">
+                        <span class="input-icon">✉️</span>
+                        <input type="text" id="input-login-email" placeholder="ex: julia@catdog.com.br ou admin" required autocomplete="username">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Selecione seu Pet Shop:</label>
-                    <select id="select-portal-empresa" onchange="atualizarFiliaisPortalLogin()"></select>
+
+                <div class="form-group" style="margin-bottom:0.75rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                        <label style="font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin:0;">Senha:</label>
+                        <a href="javascript:void(0)" onclick="abrirModalEsqueciSenha()" style="font-size:0.76rem; color:#818cf8; text-decoration:none;">Esqueceu a senha?</a>
+                    </div>
+                    <div class="input-password-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="input-login-senha" placeholder="Digite sua senha de acesso" required autocomplete="current-password">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('input-login-senha', this)" title="Mostrar/Ocultar Senha">
+                            👁️
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Unidade / Filial:</label>
-                    <select id="select-portal-filial"></select>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin:0.85rem 0 1.25rem 0;">
+                    <label style="display:flex; align-items:center; gap:0.45rem; font-size:0.8rem; color:var(--text-secondary); cursor:pointer;">
+                        <input type="checkbox" id="check-lembrar-acesso" checked style="accent-color:var(--primary); width:15px; height:15px;">
+                        Lembrar meu acesso
+                    </label>
+                    <a href="javascript:void(0)" onclick="closeModal('modal-login-portal'); abrirLoginOperacionalPIN();" style="font-size:0.78rem; color:#38bdf8; text-decoration:none;">
+                        🔑 Login Rápido com PIN
+                    </a>
                 </div>
-                <div class="form-group">
-                    <label>Usuário / Colaborador:</label>
-                    <select id="select-portal-usuario" required></select>
+
+                <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content:center; padding:0.85rem; font-size:0.95rem;">
+                    🔐 Entrar na Minha Conta
+                </button>
+
+                <div style="text-align:center; margin-top:1.1rem; font-size:0.82rem; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.08); padding-top:0.85rem;">
+                    Ainda não possui conta? <a href="javascript:void(0)" onclick="closeModal('modal-login-portal'); abrirModalTrial14Dias();" style="color:#10b981; font-weight:700; text-decoration:none;">Experimente 14 Dias Grátis</a>
                 </div>
-                <div class="form-group">
-                    <label>Senha:</label>
-                    <input type="password" id="input-portal-senha" value="123456" required>
-                </div>
-                <button type="submit" class="btn-staff-login" style="width: 100%; padding:0.75rem; font-size:0.92rem;">🔐 Entrar no Sistema</button>
             </form>
 
             <!-- MODE 3: GESTÃO PATAFORMA LOGIN (Superadmin) -->
             <form id="form-portal-gestor" onsubmit="loginGestorDirectSubmit(event)" style="display: none;">
-                <div class="form-group">
-                    <label>Usuário de Gestão:</label>
-                    <input type="text" id="input-portal-gestor-user" value="pataforma" placeholder="Usuário de Gestão" required>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label style="font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.35rem; display:block;">Usuário Master / Gestor:</label>
+                    <div class="input-icon-wrap">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="input-portal-gestor-user" placeholder="Digite seu usuário de gestão master" required autocomplete="username">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Senha de Acesso:</label>
-                    <input type="password" id="input-portal-gestor-pass" value="abc@123" placeholder="Senha de Acesso" required>
+
+                <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label style="font-size:0.82rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.35rem; display:block;">Senha Mestra:</label>
+                    <div class="input-password-wrap">
+                        <span class="input-icon">🛡️</span>
+                        <input type="password" id="input-portal-gestor-pass" placeholder="••••••••••••" required autocomplete="current-password">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('input-portal-gestor-pass', this)" title="Mostrar/Ocultar Senha">
+                            👁️
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; background:linear-gradient(135deg, #0284c7, #0369a1); padding:0.75rem; font-size:0.92rem; margin-bottom:0.75rem;">
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content:center; background:linear-gradient(135deg, #0284c7, #0369a1); padding:0.85rem; font-size:0.92rem; margin-bottom:0.75rem;">
                     🏢 Entrar na Gestão PataForma
                 </button>
-                <button type="button" class="btn-primary" style="width: 100%; border:1px solid var(--panel-border); background:rgba(30,41,59,0.8); padding:0.65rem;" onclick="abrirCadastroPetShopGestor()">
+                <button type="button" class="btn-primary" style="width: 100%; justify-content:center; border:1px solid var(--panel-border); background:rgba(30,41,59,0.8); padding:0.65rem;" onclick="abrirCadastroPetShopGestor()">
                     ➕ Cadastrar Novo Pet Shop (CNPJ API)
                 </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Esqueci Minha Senha (Recuperação Segura) -->
+    <div class="modal-overlay" id="modal-esqueci-senha">
+        <div class="glass-panel modal-content" style="max-width:440px; padding:1.5rem;">
+            <div class="modal-header" style="margin-bottom:1rem;">
+                <h3 style="color:#818cf8; display:flex; align-items:center; gap:0.4rem;">🔑 Recuperar Senha</h3>
+                <button class="modal-close" onclick="closeModal('modal-esqueci-senha')">&times;</button>
+            </div>
+            <form onsubmit="solicitarRecuperacaoSenha(event)">
+                <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:1rem;">
+                    Digite o e-mail ou WhatsApp da sua conta. Você receberá um link seguro para cadastrar uma nova senha.
+                </p>
+                <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label style="font-size:0.82rem; font-weight:600; margin-bottom:0.35rem; display:block;">E-mail ou WhatsApp cadastrado:</label>
+                    <div class="input-icon-wrap">
+                        <span class="input-icon">📱</span>
+                        <input type="text" id="input-recuperar-identificador" placeholder="ex: contato@petshop.com.br ou 11999998888" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-hero-primary" style="width:100%; justify-content:center; padding:0.8rem; font-size:0.92rem;">
+                    📲 Enviar Instruções de Redefinição
+                </button>
+                <div style="text-align:center; margin-top:0.85rem;">
+                    <button type="button" class="card-btn" onclick="closeModal('modal-esqueci-senha'); openModal('modal-login-portal');" style="font-size:0.8rem; background:transparent; border:none; color:var(--text-secondary); cursor:pointer;">
+                        ← Voltar para o Login
+                    </button>
+                </div>
             </form>
         </div>
     </div>

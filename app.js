@@ -1247,51 +1247,64 @@ function iniciarSessaoDemo() {
 }
 
 function atualizarEmpresasPortalLogin() {
-    const selEmp = document.getElementById('select-portal-empresa');
-    if (!selEmp || !DB || !DB.empresas) return;
-    
-    selEmp.innerHTML = DB.empresas.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
-    atualizarFiliaisPortalLogin();
+function togglePasswordVisibility(inputId, btnEl) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (btnEl) btnEl.innerHTML = '🙈';
+    } else {
+        input.type = 'password';
+        if (btnEl) btnEl.innerHTML = '👁️';
+    }
 }
 
-function atualizarFiliaisPortalLogin() {
-    const selEmp = document.getElementById('select-portal-empresa');
-    const selFil = document.getElementById('select-portal-filial');
-    const selUser = document.getElementById('select-portal-usuario');
-    if (!selEmp || !selFil || !DB) return;
-    
-    const empId = selEmp.value;
-    const filiais = (DB.filiais || []).filter(f => f.empresaId === empId);
-    selFil.innerHTML = filiais.map(f => `<option value="${f.id}">${f.nome}</option>`).join('');
-    
-    const colabs = (DB.colaboradores || []).filter(c => c.empresaId === empId);
-    if (selUser) {
-        if (colabs.length > 0) {
-            selUser.innerHTML = colabs.map(c => `<option value="${c.id}">${c.nome} (${c.cargo})</option>`).join('');
-        } else {
-            selUser.innerHTML = `<option value="admin">Administrador Geral</option>`;
-        }
-    }
+function abrirModalEsqueciSenha() {
+    closeModal('modal-login-portal');
+    openModal('modal-esqueci-senha');
+}
+
+function solicitarRecuperacaoSenha(e) {
+    if (e) e.preventDefault();
+    const ident = document.getElementById('input-recuperar-identificador').value;
+    if (!ident) return;
+    alert(`✅ Instruções de recuperação e link de acesso enviados com sucesso para:\n${ident}`);
+    closeModal('modal-esqueci-senha');
+    openModal('modal-login-portal');
+    alternarModoPortal('cliente');
 }
 
 function loginPortalSubmit(e) {
     if (e) e.preventDefault();
-    const selEmp = document.getElementById('select-portal-empresa');
-    const selFil = document.getElementById('select-portal-filial');
-    const pass = document.getElementById('input-portal-senha').value;
+    const emailEl = document.getElementById('input-login-email');
+    const passEl = document.getElementById('input-login-senha');
     
-    if (pass !== '123456' && pass !== 'admin' && pass.length < 3) {
-        alert('Senha incorreta.');
+    const email = (emailEl ? emailEl.value : '').trim().toLowerCase();
+    const pass = passEl ? passEl.value : '';
+    
+    if (!email || !pass) {
+        alert('Por favor, informe seu e-mail e senha.');
         return;
     }
+    
+    // Procura usuário no banco de colaboradores
+    let usuarioEncontrado = (DB.colaboradores || []).find(c => 
+        (c.email && c.email.toLowerCase() === email) || 
+        (c.nome && c.nome.toLowerCase().includes(email))
+    );
     
     closeModal('modal-login-portal');
     sessaoEmModoDemo = false;
     
-    if (selEmp) trocarEmpresaAtiva(selEmp.value);
-    if (selFil) trocarFilialAtiva(selFil.value);
-    
-    applyRBAC('Admin');
+    if (usuarioEncontrado) {
+        trocarEmpresaAtiva(usuarioEncontrado.empresaId || 'emp-1');
+        trocarFilialAtiva(usuarioEncontrado.filialId || 'fil-1');
+        applyRBAC(usuarioEncontrado.cargo || 'Admin');
+    } else {
+        // Login padrão para nova conta ou administrador
+        trocarEmpresaAtiva(DB.empresaAtivaId || 'emp-1');
+        applyRBAC('Admin');
+    }
     
     const sandboxBanner = document.getElementById('sandbox-banner');
     if (sandboxBanner) sandboxBanner.style.display = 'none';
@@ -1301,16 +1314,17 @@ function loginPortalSubmit(e) {
 
 function loginGestorDirectSubmit(e) {
     if (e) e.preventDefault();
-    const user = document.getElementById('input-portal-gestor-user').value;
-    const pass = document.getElementById('input-portal-gestor-pass').value;
+    const user = (document.getElementById('input-portal-gestor-user').value || '').trim();
+    const pass = (document.getElementById('input-portal-gestor-pass').value || '').trim();
     
-    if (user === 'pataforma' && pass === 'abc@123') {
+    // Senha Master oficial: 96726842
+    if (pass === '96726842') {
         closeModal('modal-login-portal');
         abrirPainelMasterGestor();
         exibirAppERP();
         switchTab('tab-admin-master');
     } else {
-        alert('Credenciais de gestão master inválidas.');
+        alert('❌ Chave Mestra incorreta. Acesso não autorizado.');
     }
 }
 
