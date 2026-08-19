@@ -150,14 +150,14 @@
 
             <!-- Clean Top-Right Buttons -->
             <div class="landing-header-actions">
-                <button class="btn-header-cta" onclick="exibirAppERP(); applyRBAC('Admin');">
-                    <span>🏬 ERP Demo</span>
+                <button class="btn-header-cta" onclick="abrirAreaClientePortal('demo')">
+                    <span>✨ Testar Demo</span>
                 </button>
-                <button class="btn-header-pin" onclick="abrirLoginOperacionalPIN()">
-                    <span>🔑 PIN</span>
+                <button class="btn-header-pin" onclick="abrirAreaClientePortal('cliente')">
+                    <span>🔐 Entrar</span>
                 </button>
                 <button class="btn-header-tutor" onclick="abrirPortalTutor()">
-                    <span>🐾 Tutor</span>
+                    <span>🐾 Acompanhar Pet</span>
                 </button>
                 <button class="btn-header-menu" onclick="toggleMobileMenu()" aria-label="Abrir Menu">
                     <span>☰</span>
@@ -172,8 +172,9 @@
                 <button onclick="toggleMobileMenu()" class="btn-drawer-close">✕</button>
             </div>
             <div class="mobile-drawer-links">
-                <button class="drawer-link-btn primary" onclick="exibirAppERP(); applyRBAC('Admin'); toggleMobileMenu();">🏬 Acessar ERP Demo</button>
-                <button class="drawer-link-btn" onclick="abrirLoginOperacionalPIN(); toggleMobileMenu();">🔑 Login Operacional (PIN)</button>
+                <button class="drawer-link-btn primary" onclick="abrirAreaClientePortal('demo'); toggleMobileMenu();">✨ Acessar Demonstração (Sandbox)</button>
+                <button class="drawer-link-btn" onclick="abrirAreaClientePortal('cliente'); toggleMobileMenu();">🔐 Entrar no Sistema (Login)</button>
+                <button class="drawer-link-btn" onclick="abrirLoginOperacionalPIN(); toggleMobileMenu();">🔑 Login com PIN da Equipe</button>
                 <button class="drawer-link-btn" onclick="abrirPortalTutor(); toggleMobileMenu();">🐾 Acompanhe seu Pet (Portal do Tutor)</button>
                 <div style="border-top:1px solid rgba(255,255,255,0.1); margin:0.5rem 0;"></div>
                 <a href="#recursos" onclick="toggleMobileMenu()">📋 Recursos &amp; Módulos</a>
@@ -645,10 +646,16 @@
             </div>
         </div>
 
-        <!-- Role Focused Banner -->
-        <div class="role-focused-banner" id="role-focused-banner" style="display: none;">
-            <span id="role-focused-text">📌 Modo Focado: Visão Específica por Função</span>
-            <button onclick="voltarParaLandingPage()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.75rem;">🌐 Voltar ao Site</button>
+        <!-- Sandbox Demo Banner (Alerta transparente de ambiente de teste) -->
+        <div class="sandbox-banner" id="sandbox-banner" style="display: none;">
+            <div class="sandbox-banner-left">
+                <span class="sandbox-pill">🟡 MODO DEMONSTRAÇÃO (SANDBOX)</span>
+                <span class="sandbox-text">Ambiente de testes com a empresa <strong>CatDog Pet Center</strong> (dados simulados).</span>
+            </div>
+            <div class="sandbox-banner-actions">
+                <button class="btn-sandbox-cta" onclick="abrirCadastroPetShopGestor()">➕ Criar Meu Pet Shop Real</button>
+                <button class="btn-sandbox-exit" onclick="voltarParaLandingPage()">🚪 Sair da Demo</button>
+            </div>
         </div>
 
         <!-- Header & Controls -->
@@ -2053,46 +2060,93 @@
         </div>
     </div>
 
-    <!-- Modal Login Portal Gateway com Abas Clean (Acesso Pet Shop vs Gestão PataForma) -->
+    <!-- Modal Login Portal Gateway com 3 Abas Profissionais (Demo Sandbox vs Login Pet Shop vs Gestão) -->
     <div class="modal-overlay" id="modal-login-portal">
-        <div class="glass-panel modal-content">
+        <div class="glass-panel modal-content" style="max-width:540px;">
             <div class="modal-header">
-                <h3 style="color: #3b82f6;" id="portal-modal-title">🔐 Portal de Entrada — PataForma</h3>
+                <h3 style="color: #818cf8;" id="portal-modal-title">🔐 Portal de Acesso — PataForma ERP</h3>
                 <button class="modal-close" onclick="closeModal('modal-login-portal')">&times;</button>
             </div>
 
-            <!-- Clean Portal Mode Selector Tabs -->
-            <div class="portal-tab-group">
-                <button type="button" class="portal-tab active" id="tab-portal-cliente" onclick="alternarModoPortal('cliente')">
-                    🏬 Acesso Pet Shop
+            <!-- Clean Portal Mode Selector Tabs (3 Abas) -->
+            <div class="portal-tab-group" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom: 1.25rem;">
+                <button type="button" class="portal-tab active" id="tab-portal-demo" onclick="alternarModoPortal('demo')">
+                    ✨ Demonstração
+                </button>
+                <button type="button" class="portal-tab" id="tab-portal-cliente" onclick="alternarModoPortal('cliente')">
+                    🔐 Login Pet Shop
                 </button>
                 <button type="button" class="portal-tab gestao-tab" id="tab-portal-gestor" onclick="alternarModoPortal('gestor')">
-                    🏢 Gestão PataForma
+                    🏢 Gestão Master
                 </button>
             </div>
 
-            <!-- FORM 1: CLIENTE ERP LOGIN -->
-            <form id="form-portal-cliente" onsubmit="loginPortalSubmit(event)">
+            <!-- MODE 1: DEMO SANDBOX (Transparente e Seguro) -->
+            <div id="form-portal-demo" style="display: block;">
+                <div style="background:rgba(99,102,241,0.1); border:1px solid rgba(129,140,248,0.3); border-radius:12px; padding:1.1rem; margin-bottom:1.25rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+                        <span style="font-size:1.2rem;">🛡️</span>
+                        <strong style="color:#a5b4fc; font-size:0.95rem;">Ambiente Seguro de Testes (Sandbox)</strong>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">
+                        Você está entrando em um ambiente de demonstração com a empresa fictícia <strong>CatDog Pet Center &amp; Clínica Veterinária</strong>. Todos os dados, clientes e agendamentos são simulados.
+                    </p>
+                </div>
+
                 <div class="form-group">
-                    <label>Empresa / Tenant:</label>
+                    <label>Escolha o Perfil para Experimentar:</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.35rem;">
+                        <button type="button" class="card-btn active" id="demo-role-admin" style="padding:0.6rem; text-align:left; background:rgba(99,102,241,0.25); border-color:#818cf8; color:#fff;" onclick="selecionarPerfilDemo('Admin', this)">
+                            👑 <strong>Administrador</strong><br><small style="color:#94a3b8;">Visão completa da loja</small>
+                        </button>
+                        <button type="button" class="card-btn" id="demo-role-vet" style="padding:0.6rem; text-align:left;" onclick="selecionarPerfilDemo('Veterinario', this)">
+                            🩺 <strong>Veterinário</strong><br><small style="color:#94a3b8;">Prontuários e receitas</small>
+                        </button>
+                        <button type="button" class="card-btn" id="demo-role-banho" style="padding:0.6rem; text-align:left;" onclick="selecionarPerfilDemo('Banhista', this)">
+                            ✂️ <strong>Banhista/Tosador</strong><br><small style="color:#94a3b8;">Kanban e ficha técnica</small>
+                        </button>
+                        <button type="button" class="card-btn" id="demo-role-caixa" style="padding:0.6rem; text-align:left;" onclick="selecionarPerfilDemo('Recepcao', this)">
+                            🛒 <strong>Recepção / Caixa</strong><br><small style="color:#94a3b8;">Vendas PDV e agendamento</small>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-hero-primary" style="width:100%; justify-content:center; padding:0.85rem; font-size:0.95rem; margin-top:1rem;" onclick="iniciarSessaoDemo()">
+                    🚀 Entrar no Modo Demonstração
+                </button>
+
+                <div style="text-align:center; margin-top:0.75rem;">
+                    <a href="javascript:void(0)" onclick="abrirCadastroPetShopGestor()" style="font-size:0.8rem; color:#38bdf8; text-decoration:none;">
+                        ➕ Deseja cadastrar o seu próprio Pet Shop real? Clique aqui
+                    </a>
+                </div>
+            </div>
+
+            <!-- MODE 2: CLIENTE ERP LOGIN (Pet Shop Cadastrado) -->
+            <form id="form-portal-cliente" onsubmit="loginPortalSubmit(event)" style="display: none;">
+                <div style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:0.75rem; margin-bottom:1rem; font-size:0.78rem; color:#94a3b8;">
+                    🔒 Acesso criptografado e isolado. Seus dados são 100% confidenciais.
+                </div>
+                <div class="form-group">
+                    <label>Selecione seu Pet Shop:</label>
                     <select id="select-portal-empresa" onchange="atualizarFiliaisPortalLogin()"></select>
                 </div>
                 <div class="form-group">
-                    <label>Filial de Acesso:</label>
+                    <label>Unidade / Filial:</label>
                     <select id="select-portal-filial"></select>
                 </div>
                 <div class="form-group">
-                    <label>Selecione seu Usuário / E-mail:</label>
+                    <label>Usuário / Colaborador:</label>
                     <select id="select-portal-usuario" required></select>
                 </div>
                 <div class="form-group">
-                    <label>Senha de Acesso:</label>
+                    <label>Senha:</label>
                     <input type="password" id="input-portal-senha" value="123456" required>
                 </div>
-                <button type="submit" class="btn-staff-login" style="width: 100%; padding:0.7rem; font-size:0.9rem;">Entrar na Área do Cliente ERP</button>
+                <button type="submit" class="btn-staff-login" style="width: 100%; padding:0.75rem; font-size:0.92rem;">🔐 Entrar no Sistema</button>
             </form>
 
-            <!-- FORM 2: GESTÃO PATAFORMA LOGIN -->
+            <!-- MODE 3: GESTÃO PATAFORMA LOGIN (Superadmin) -->
             <form id="form-portal-gestor" onsubmit="loginGestorDirectSubmit(event)" style="display: none;">
                 <div class="form-group">
                     <label>Usuário de Gestão:</label>
@@ -2102,10 +2156,10 @@
                     <label>Senha de Acesso:</label>
                     <input type="password" id="input-portal-gestor-pass" value="abc@123" placeholder="Senha de Acesso" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; background:linear-gradient(135deg, #0284c7, #0369a1); padding:0.7rem; font-size:0.9rem; margin-bottom:0.75rem;">
+                <button type="submit" class="btn-primary" style="width: 100%; background:linear-gradient(135deg, #0284c7, #0369a1); padding:0.75rem; font-size:0.92rem; margin-bottom:0.75rem;">
                     🏢 Entrar na Gestão PataForma
                 </button>
-                <button type="button" class="btn-primary" style="width: 100%; border:1px solid var(--panel-border); background:rgba(30,41,59,0.8);" onclick="abrirCadastroPetShopGestor()">
+                <button type="button" class="btn-primary" style="width: 100%; border:1px solid var(--panel-border); background:rgba(30,41,59,0.8); padding:0.65rem;" onclick="abrirCadastroPetShopGestor()">
                     ➕ Cadastrar Novo Pet Shop (CNPJ API)
                 </button>
             </form>

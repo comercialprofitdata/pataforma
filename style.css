@@ -526,6 +526,76 @@ nav.main-nav { display: flex; gap: 0.5rem; margin: 0.5rem 1.5rem; overflow-x: au
 }
 .card-btn:hover { border-color: rgba(129, 140, 248, 0.4); color: var(--primary); background: rgba(99, 102, 241, 0.1); }
 
+/* ── 🟡 SANDBOX DEMO BANNER ── */
+.sandbox-banner {
+    margin: 0.75rem 1.25rem 0 1.25rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(245, 158, 11, 0.08));
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.sandbox-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.sandbox-pill {
+    background: rgba(234, 179, 8, 0.25);
+    color: #fef08a;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.sandbox-text {
+    font-size: 0.8rem;
+    color: #fef9c3;
+}
+
+.sandbox-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-sandbox-cta {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    border: none;
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-sandbox-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-sandbox-exit {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.btn-sandbox-exit:hover { background: rgba(255, 255, 255, 0.2); }
+
 /* ===== ERP MAIN HEADER ===== */
 #main-header {
     margin: 0.75rem 1.25rem 0 1.25rem;

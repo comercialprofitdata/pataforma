@@ -1177,6 +1177,143 @@ function loginGestorDirectSubmit(e) {
     }
 }
 
+let perfilDemoSelecionado = 'Admin';
+let sessaoEmModoDemo = false;
+
+function abrirAreaClientePortal(modo = 'demo') {
+    openModal('modal-login-portal');
+    alternarModoPortal(modo);
+}
+
+function alternarModoPortal(modo) {
+    const tabDemo = document.getElementById('tab-portal-demo');
+    const tabCliente = document.getElementById('tab-portal-cliente');
+    const tabGestor = document.getElementById('tab-portal-gestor');
+    
+    const formDemo = document.getElementById('form-portal-demo');
+    const formCliente = document.getElementById('form-portal-cliente');
+    const formGestor = document.getElementById('form-portal-gestor');
+    
+    const titleEl = document.getElementById('portal-modal-title');
+    
+    if (tabDemo) tabDemo.classList.remove('active');
+    if (tabCliente) tabCliente.classList.remove('active');
+    if (tabGestor) tabGestor.classList.remove('active');
+    
+    if (formDemo) formDemo.style.display = 'none';
+    if (formCliente) formCliente.style.display = 'none';
+    if (formGestor) formGestor.style.display = 'none';
+    
+    if (modo === 'demo') {
+        if (tabDemo) tabDemo.classList.add('active');
+        if (formDemo) formDemo.style.display = 'block';
+        if (titleEl) titleEl.innerHTML = '✨ Modo Demonstração (Sandbox) — PataForma';
+    } else if (modo === 'cliente') {
+        if (tabCliente) tabCliente.classList.add('active');
+        if (formCliente) formCliente.style.display = 'block';
+        if (titleEl) titleEl.innerHTML = '🔐 Acesso ao Pet Shop — PataForma';
+        atualizarEmpresasPortalLogin();
+    } else if (modo === 'gestor') {
+        if (tabGestor) tabGestor.classList.add('active');
+        if (formGestor) formGestor.style.display = 'block';
+        if (titleEl) titleEl.innerHTML = '🏢 Gestão Master — PataForma';
+    }
+}
+
+function selecionarPerfilDemo(role, el) {
+    perfilDemoSelecionado = role;
+    const cards = document.querySelectorAll('#form-portal-demo .card-btn');
+    cards.forEach(c => {
+        c.style.background = 'rgba(30, 41, 59, 0.6)';
+        c.style.borderColor = 'var(--panel-border)';
+    });
+    if (el) {
+        el.style.background = 'rgba(99, 102, 241, 0.25)';
+        el.style.borderColor = '#818cf8';
+    }
+}
+
+function iniciarSessaoDemo() {
+    closeModal('modal-login-portal');
+    sessaoEmModoDemo = true;
+    
+    trocarEmpresaAtiva('emp-1');
+    applyRBAC(perfilDemoSelecionado || 'Admin');
+    
+    const sandboxBanner = document.getElementById('sandbox-banner');
+    if (sandboxBanner) sandboxBanner.style.display = 'flex';
+    
+    exibirAppERP();
+}
+
+function atualizarEmpresasPortalLogin() {
+    const selEmp = document.getElementById('select-portal-empresa');
+    if (!selEmp || !DB || !DB.empresas) return;
+    
+    selEmp.innerHTML = DB.empresas.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
+    atualizarFiliaisPortalLogin();
+}
+
+function atualizarFiliaisPortalLogin() {
+    const selEmp = document.getElementById('select-portal-empresa');
+    const selFil = document.getElementById('select-portal-filial');
+    const selUser = document.getElementById('select-portal-usuario');
+    if (!selEmp || !selFil || !DB) return;
+    
+    const empId = selEmp.value;
+    const filiais = (DB.filiais || []).filter(f => f.empresaId === empId);
+    selFil.innerHTML = filiais.map(f => `<option value="${f.id}">${f.nome}</option>`).join('');
+    
+    const colabs = (DB.colaboradores || []).filter(c => c.empresaId === empId);
+    if (selUser) {
+        if (colabs.length > 0) {
+            selUser.innerHTML = colabs.map(c => `<option value="${c.id}">${c.nome} (${c.cargo})</option>`).join('');
+        } else {
+            selUser.innerHTML = `<option value="admin">Administrador Geral</option>`;
+        }
+    }
+}
+
+function loginPortalSubmit(e) {
+    if (e) e.preventDefault();
+    const selEmp = document.getElementById('select-portal-empresa');
+    const selFil = document.getElementById('select-portal-filial');
+    const pass = document.getElementById('input-portal-senha').value;
+    
+    if (pass !== '123456' && pass !== 'admin' && pass.length < 3) {
+        alert('Senha incorreta.');
+        return;
+    }
+    
+    closeModal('modal-login-portal');
+    sessaoEmModoDemo = false;
+    
+    if (selEmp) trocarEmpresaAtiva(selEmp.value);
+    if (selFil) trocarFilialAtiva(selFil.value);
+    
+    applyRBAC('Admin');
+    
+    const sandboxBanner = document.getElementById('sandbox-banner');
+    if (sandboxBanner) sandboxBanner.style.display = 'none';
+    
+    exibirAppERP();
+}
+
+function loginGestorDirectSubmit(e) {
+    if (e) e.preventDefault();
+    const user = document.getElementById('input-portal-gestor-user').value;
+    const pass = document.getElementById('input-portal-gestor-pass').value;
+    
+    if (user === 'pataforma' && pass === 'abc@123') {
+        closeModal('modal-login-portal');
+        abrirPainelMasterGestor();
+        exibirAppERP();
+        switchTab('tab-admin-master');
+    } else {
+        alert('Credenciais de gestão master inválidas.');
+    }
+}
+
 function abrirCadastroPetShopGestor() {
     closeModal('modal-login-portal');
     openModal('modal-empresa');
