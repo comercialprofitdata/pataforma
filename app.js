@@ -1316,8 +1316,8 @@ function loginGestorDirectSubmit(e) {
     const user = (document.getElementById('input-portal-gestor-user').value || '').trim();
     const pass = (document.getElementById('input-portal-gestor-pass').value || '').trim();
     
-    // Senha Master oficial: 96726842
-    if (pass === '96726842') {
+    // Senha Master oficial: 96726842 (ou variação 96723842)
+    if (pass === '96726842' || pass === '96723842') {
         closeModal('modal-login-portal');
         abrirPainelMasterGestor();
         exibirAppERP();
